@@ -10,27 +10,14 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
     public List<User> getUsers() {
-        return List.of(
-                new User(
-                        1,
-                        "Stephane",
-                        "StrongPassword",
-                        "stephanegg@gmail.com"
-                ),
-                new User(
-                        2,
-                        "Bianca",
-                        "1234",
-                        "biancatho@gmail.com"
-                ),
-                new User(
-                        3,
-                        "Jane",
-                        "12345",
-                        "janedoe@gmail.com"
-                )
-        );
+        return userService.getAllUsers();
     }
 }
