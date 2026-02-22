@@ -1,4 +1,4 @@
-package com.steph.user;
+package com.steph.user.DTOs;
 
 public record CreateUserDTO(
         String username,

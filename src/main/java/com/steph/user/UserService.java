@@ -1,5 +1,8 @@
 package com.steph.user;
 
+import com.steph.user.DTOs.CreateUserDTO;
+import com.steph.user.DTOs.UpdateUserDTO;
+import com.steph.user.DTOs.UserProfileDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

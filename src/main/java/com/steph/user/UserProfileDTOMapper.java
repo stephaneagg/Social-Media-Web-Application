@@ -1,5 +1,6 @@
 package com.steph.user;
 
+import com.steph.user.DTOs.UserProfileDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;

@@ -1,4 +1,4 @@
-package com.steph.user;
+package com.steph.user.DTOs;
 
 // Object that gets passed to the front end to display on the user's profile
 // Only contains attributes that are safe to expose to the front end

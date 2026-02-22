@@ -1,6 +1,4 @@
-package com.steph.user;
-
-import java.security.PrivateKey;
+package com.steph.user.DTOs;
 
 // Object that gets passed from the front end to update an existing user with
 // Only contains attributes that the front end normally has access to update

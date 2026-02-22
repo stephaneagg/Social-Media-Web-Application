@@ -1,5 +1,6 @@
 package com.steph.user;
 
+import com.steph.user.DTOs.UpdateUserDTO;
 import jakarta.persistence.*;
 
 import java.time.Instant;
