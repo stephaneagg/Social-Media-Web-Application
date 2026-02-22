@@ -1,4 +1,4 @@
-package com.steph;
+package com.steph.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
