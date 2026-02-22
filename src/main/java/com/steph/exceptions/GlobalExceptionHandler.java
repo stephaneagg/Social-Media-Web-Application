@@ -1,4 +1,4 @@
-package com.steph.user.exceptions;
+package com.steph.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +35,18 @@ public class GlobalExceptionHandler {
                 webRequest.getDescription(false),
                 "USER_NOT_FOUND"
             );
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    // Handle PostException
+    @ExceptionHandler(PostException.class)
+    public ResponseEntity<ErrorDetails> handlePostException(PostException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "USER_NOT_FOUND"
+        );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 }

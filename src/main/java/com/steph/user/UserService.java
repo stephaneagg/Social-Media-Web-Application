@@ -3,10 +3,10 @@ package com.steph.user;
 import com.steph.user.DTOs.CreateUserDTO;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
-import com.steph.user.exceptions.UserException;
+import com.steph.user.DTOs.UserProfileDTOMapper;
+import com.steph.exceptions.UserException;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.AccountException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    // TODO: change runtime exception to something a bit more descriptive. Create an exception for this.
     public UserProfileDTO getUserById(Integer id){
         return userRepository.findById(id)
                 .map(userProfileDTOMapper)

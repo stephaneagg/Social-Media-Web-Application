@@ -1,4 +1,4 @@
-package com.steph.user.exceptions;
+package com.steph.exceptions;
 
 public class UserException extends RuntimeException {
     public UserException(String message) {

@@ -1,4 +1,4 @@
-package com.steph.user.exceptions;
+package com.steph.exceptions;
 
 public record ErrorDetails(
         java.time.LocalDateTime now,
