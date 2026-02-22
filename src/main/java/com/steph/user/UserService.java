@@ -3,8 +3,10 @@ package com.steph.user;
 import com.steph.user.DTOs.CreateUserDTO;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
+import com.steph.user.exceptions.UserException;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,7 @@ public class UserService {
     public UserProfileDTO getUserById(Integer id){
         return userRepository.findById(id)
                 .map(userProfileDTOMapper)
-                .orElseThrow(() -> new RuntimeException(id + " not found"));
+                .orElseThrow(() -> new UserException(id + " not found"));
     }
 
     public UserProfileDTO createUser(CreateUserDTO createUserDTO) {
@@ -52,7 +54,7 @@ public class UserService {
     public UserProfileDTO updateUser(UpdateUserDTO updateUserDTO, Integer id) {
         // retrieve the user we want to update
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(id + " not found"));
+                .orElseThrow(() -> new UserException(id + " not found"));
         // update the user
         user.updateFromDTO(updateUserDTO);
         userRepository.save(user);
