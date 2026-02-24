@@ -30,8 +30,8 @@ public class Post {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    // Method is authomatically executed before a user is inserted
-    // For now we just want to get the time the user is created
+    // Method is authomatically executed before a post is inserted
+    // For now we just want to get the time the post is created
     @PrePersist
     protected void onCreate() {
         this.createdAt = Instant.now();

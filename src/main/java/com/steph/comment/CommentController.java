@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService commentService;
 
     public CommentController(CommentService commentService){
         this.commentService = commentService;
@@ -21,10 +21,10 @@ public class CommentController {
 
     @GetMapping("/post/{id}")
     public List<CommentDTO> getComments(@PathVariable Integer id) {
-        return commentService.getComment(id);
+        return commentService.getComments(id);
     }
 
-    @PostMapping("/{postId}")
+    @PostMapping("/post/{postId}")
     public CommentDTO createComment(@RequestBody CreateCommentDTO createCommentDTO, @PathVariable Integer postId) {
         return commentService.createComment(createCommentDTO, postId);
     }
@@ -33,7 +33,7 @@ public class CommentController {
     public CommentDTO updateComment(@RequestBody UpdateCommentDTO updateCommentDTO, @PathVariable Integer id) {
         return commentService.updateComment(updateCommentDTO, id);
     }
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public void deleteComment(@PathVariable Integer id) {
         commentService.deleteComment(id);
     }

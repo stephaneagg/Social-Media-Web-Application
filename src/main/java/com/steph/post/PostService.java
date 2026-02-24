@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
 
-    PostRepository postRepository;
-    PostDTOMapper postDTOMapper;
-    UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final PostDTOMapper postDTOMapper;
+    private final UserRepository userRepository;
 
     public PostService(PostRepository postRepository, PostDTOMapper postDTOMapper, UserRepository userRepository) {
         this.postRepository = postRepository;

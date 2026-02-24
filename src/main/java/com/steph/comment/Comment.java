@@ -32,6 +32,13 @@ public class Comment {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    // Method is authomatically executed before a comment is inserted
+    // For now we just want to get the time the comment is created
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+    }
+
     // Constructors //
 
     public Comment(){
