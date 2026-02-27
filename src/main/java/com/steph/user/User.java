@@ -1,9 +1,17 @@
 package com.steph.user;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Collections;
+
 import com.steph.user.DTOs.UpdateUserDTO;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +21,7 @@ import java.util.Objects;
                 @UniqueConstraint(name= "email_unique", columnNames = "email")
         }
 )
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +55,10 @@ public class User {
         this.createdAt = Instant.now();
     }
 
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     // CONSTRUCTORS //
 
     protected User() {
@@ -66,6 +78,39 @@ public class User {
         return id;
     }
 
+    // Security //
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    //
+
     public String getUsername() {
         return username;
     }
@@ -74,9 +119,10 @@ public class User {
         return email;
     }
 
+    /*
     public String getPasswordHash() {
         return passwordHash;
-    }
+    }*/
 
     public String getDisplayName() {
         return displayName;
