@@ -48,6 +48,9 @@ public class User implements UserDetails {
     @Column (name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     // Method is authomatically executed before a user is inserted
     // For now we just want to get the time the user is created
     @PrePersist
@@ -55,21 +58,16 @@ public class User implements UserDetails {
         this.createdAt = Instant.now();
     }
 
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     // CONSTRUCTORS //
 
     protected User() {
     }
 
-    public User(Integer id, String username, String email, String passwordHash, String displayName) {
-        this.id = id;
+    public User(String username, String email, String passwordHash, Role role) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.displayName = displayName;
+        this.role = role;
     }
 
     // GETTERS //
@@ -109,7 +107,7 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    //
+//
 
     public String getUsername() {
         return username;

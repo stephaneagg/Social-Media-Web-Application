@@ -33,6 +33,7 @@ public class UserService {
                 .orElseThrow(() -> new UserException(id + " not found"));
     }
 
+    // SHOULD NOT BE USED ANYMORE. USER CREATION IS HANDLED BY AUTHENTICATION
     public UserProfileDTO createUser(CreateUserDTO createUserDTO) {
         // create new user and set all its attributes
         User user = new User();
@@ -49,6 +50,7 @@ public class UserService {
         // mpa user to userProfileDTO and return
         return userProfileDTOMapper.apply(user);
     }
+    //
 
     public UserProfileDTO updateUser(UpdateUserDTO updateUserDTO, Integer id) {
         // retrieve the user we want to update

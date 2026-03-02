@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +21,44 @@ public class JwtService {
 
     private static final String SECRET_KEY = "4c28710a3be29353f5705ca7fd672dc2ea065448df5e07c569fd3de9bfa02086";
 
+    @Value("${application.security.jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
     }
 
     public String generateToken(UserDetails userDetails) {
         return generateToken(Map.of(), userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
+    public String generateToken(
+            Map<String, Object> extraClaims,
+            UserDetails userDetails
+    ) {
+        return buildToken(extraClaims, userDetails, jwtExpiration);
+    }
+
+    public String generateRefreshToken(
+            UserDetails userDetails
+    ) {
+        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
+
+    public String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, Long expiration){
         return Jwts
                 .builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // 24 Minutes
+                .expiration(new Date(System.currentTimeMillis() + expiration)) // (1000 * 60 * 24) 24 Minutes
                 .signWith(getSignInKey()) // HS256 inferred
                 .compact();
     }
@@ -50,11 +74,6 @@ public class JwtService {
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {

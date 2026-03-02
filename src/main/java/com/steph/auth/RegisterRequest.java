@@ -1,40 +1,35 @@
 package com.steph.auth;
 
 
+import com.steph.user.Role;
+
 public class RegisterRequest {
 
-    private String firstName;
-    private String lastName;
+    private String username;
     private String email;
     private String password;
+    private Role role;
 
     // Constructors //
 
     public RegisterRequest() {}
 
-    public RegisterRequest(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public RegisterRequest(String username, String email, String password, Role role) {
+        this.username = username;
         this.email = email;
         this.password = password;
+        this.role = role;
+
     }
 
     // Getters and Setters //
 
-    public String getFirstName() {
-        return firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUsername(String firstName) {
+        this.username = username;
     }
 
     public String getEmail() {
