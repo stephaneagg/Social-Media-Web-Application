@@ -32,10 +32,12 @@ public class UserController {
         return userService.updateUser(updateUserDTO, id);
     }
 
+    // SHOULD BE REMOVED IN FAVOR FOR AuthenticationController's REGISTER METHOD
     @PostMapping
     public UserProfileDTO addNewUser(@RequestBody CreateUserDTO createUserDTO) {
         return userService.createUser(createUserDTO);
     }
+    //
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Integer id) {
