@@ -28,7 +28,7 @@ public class RegisterRequest {
         return username;
     }
 
-    public void setUsername(String firstName) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -46,5 +46,13 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
