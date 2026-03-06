@@ -35,7 +35,7 @@ public class AuthenticationService {
                 Role.USER
         );
         userRepository.save(user);
-        return new AuthenticationResponse(jwtService.generateToken(user), jwtService.generateRefreshToken(user));
+        return new AuthenticationResponse(jwtService.generateToken(user));
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -46,6 +46,6 @@ public class AuthenticationService {
                 )
         );
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserException("Fake news"));
-        return new AuthenticationResponse(jwtService.generateToken(user), jwtService.generateRefreshToken(user));
+        return new AuthenticationResponse(jwtService.generateToken(user));
     }
 }
