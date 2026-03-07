@@ -34,22 +34,22 @@ public class UserService {
     }
 
     // SHOULD NOT BE USED ANYMORE. USER CREATION IS HANDLED BY AUTHENTICATION
-    public UserProfileDTO createUser(CreateUserDTO createUserDTO) {
-        // create new user and set all its attributes
-        User user = new User();
-        user.setUsername(createUserDTO.username());
-        user.setEmail(createUserDTO.email());
-        user.setPasswordHash(createUserDTO.password()); // TODO: HASH THE PASSWORD
-        user.setDisplayName(createUserDTO.displayName());
-        user.setBio(createUserDTO.bio());
-        user.setProfileImageUrl(createUserDTO.profileImageUrl());
-
-        // save the user
-        userRepository.save(user);
-
-        // mpa user to userProfileDTO and return
-        return userProfileDTOMapper.apply(user);
-    }
+//    public UserProfileDTO createUser(CreateUserDTO createUserDTO) {
+//        // create new user and set all its attributes
+//        User user = new User();
+//        user.setUsername(createUserDTO.username());
+//        user.setEmail(createUserDTO.email());
+//        user.setPasswordHash(createUserDTO.password());
+//        user.setDisplayName(createUserDTO.displayName());
+//        user.setBio(createUserDTO.bio());
+//        user.setProfileImageUrl(createUserDTO.profileImageUrl());
+//
+//        // save the user
+//        userRepository.save(user);
+//
+//        // mpa user to userProfileDTO and return
+//        return userProfileDTOMapper.apply(user);
+//    }
     //
 
     public UserProfileDTO updateUser(UpdateUserDTO updateUserDTO, Integer id) {

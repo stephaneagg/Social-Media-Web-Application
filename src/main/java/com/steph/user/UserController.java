@@ -33,10 +33,10 @@ public class UserController {
     }
 
     // SHOULD BE REMOVED IN FAVOR FOR AuthenticationController's REGISTER METHOD
-    @PostMapping
-    public UserProfileDTO addNewUser(@RequestBody CreateUserDTO createUserDTO) {
-        return userService.createUser(createUserDTO);
-    }
+//    @PostMapping
+//    public UserProfileDTO addNewUser(@RequestBody CreateUserDTO createUserDTO) {
+//        return userService.createUser(createUserDTO);
+//    }
     //
 
     @DeleteMapping("/{id}")
