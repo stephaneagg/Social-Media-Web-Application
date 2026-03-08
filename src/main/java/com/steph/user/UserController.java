@@ -1,10 +1,9 @@
 package com.steph.user;
 
-import com.steph.config.JwtService;
-import com.steph.user.DTOs.CreateUserDTO;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
@@ -15,11 +14,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final JwtService jwtService;
 
-    public UserController(UserService userService, JwtService jwtService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -36,17 +33,9 @@ public class UserController {
     public UserProfileDTO updateUser(
             @PathVariable Integer userId,
             @RequestBody UpdateUserDTO dto,
-            @RequestHeader("Authorization") String authHeader) throws AccessDeniedException {
+            @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId) throws AccessDeniedException {
 
-        // Extract the token from "Bearer <token>"
-        String token = authHeader.replace("Bearer ", "");
-        Integer authenticatedUserId = jwtService.extractUserId(token);
-
-        if (!userId.equals(authenticatedUserId)) {
-            throw new AccessDeniedException("You can only update your own profile");
-        }
-
-        return userService.updateUser(dto, userId);
+        return userService.updateUser(dto, userId, authenticatedUserId);
     }
 
     // SHOULD BE REMOVED IN FAVOR FOR AuthenticationController's REGISTER METHOD
@@ -56,10 +45,13 @@ public class UserController {
 //    }
     //
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Integer id) {
-        userService.deleteUser(id);
+    public void deleteUser(@PathVariable Integer userId,
+                           @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
+            throws AccessDeniedException {
+
+        userService.deleteUser(userId, authenticatedUserId);
     }
 
 }

@@ -7,6 +7,7 @@ import com.steph.user.DTOs.UserProfileDTOMapper;
 import com.steph.exceptions.UserException;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,10 +28,10 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserProfileDTO getUserById(Integer id){
-        return userRepository.findById(id)
+    public UserProfileDTO getUserById(Integer userId){
+        return userRepository.findById(userId)
                 .map(userProfileDTOMapper)
-                .orElseThrow(() -> new UserException(id + " not found"));
+                .orElseThrow(() -> new UserException(userId + " not found"));
     }
 
     // SHOULD NOT BE USED ANYMORE. USER CREATION IS HANDLED BY AUTHENTICATION
@@ -52,10 +53,15 @@ public class UserService {
 //    }
     //
 
-    public UserProfileDTO updateUser(UpdateUserDTO updateUserDTO, Integer id) {
+    public UserProfileDTO updateUser(UpdateUserDTO updateUserDTO, Integer userId, Integer authenticatedUserId) throws AccessDeniedException {
+
+        if (!userId.equals(authenticatedUserId)) {
+            throw new AccessDeniedException("You can only update your own profile");
+        }
+
         // retrieve the user we want to update
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserException(id + " not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(userId + " not found"));
         // update the user
         user.updateFromDTO(updateUserDTO);
         userRepository.save(user);
@@ -64,7 +70,12 @@ public class UserService {
         return userProfileDTOMapper.apply(user);
     }
 
-    public void deleteUser(Integer id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Integer userId, Integer authenticatedUserId) throws AccessDeniedException {
+
+        if (!userId.equals(authenticatedUserId)) {
+            throw new AccessDeniedException("You can only delete your own profile");
+        }
+
+        userRepository.deleteById(userId);
     }
 }
