@@ -144,6 +144,14 @@ public class UserServiceTest {
         verifyNoInteractions(userProfileDTOMapper);
     }
 
+    @Test
+    void deleteUser_shouldCallRepository() {
 
+        Integer userId = 1;
+
+        userService.deleteUser(userId);
+
+        verify(userRepository).deleteById(userId);
+    }
 
 }

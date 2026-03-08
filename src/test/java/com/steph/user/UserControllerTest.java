@@ -1,5 +1,6 @@
 package com.steph.user;
 
+import com.steph.exceptions.UserException;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.config.JwtAuthenticationFilter;
@@ -14,9 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,10 +74,11 @@ class UserControllerTest {
         UpdateUserDTO updateDTO = new UpdateUserDTO("newName", "newBio", "newImage");
         UserProfileDTO updatedUser = new UserProfileDTO(1, "newName", "newBio", "newImage");
 
-        // <-- use argument matchers
+        when(jwtService.extractUserId(anyString())).thenReturn(1);
         when(userService.updateUser(any(UpdateUserDTO.class), eq(1))).thenReturn(updatedUser);
 
         mockMvc.perform(put("/users/1")
+                        .header("Authorization", "Bearer test-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
                 .andExpect(status().isOk())
@@ -85,5 +86,45 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.displayName").value("newName"))
                 .andExpect(jsonPath("$.bio").value("newBio"))
                 .andExpect(jsonPath("$.profileImageUrl").value("newImage"));
+    }
+
+    @Test
+    void updateUser_shouldReturnNotFound_whenUserDoesNotExist() throws Exception {
+
+        UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
+
+        when(jwtService.extractUserId(anyString())).thenReturn(1);
+
+        when(userService.updateUser(any(UpdateUserDTO.class), eq(1)))
+                .thenThrow(new UserException("User does not exist"));
+
+        mockMvc.perform(put("/users/1")
+                        .header("Authorization", "Bearer token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDTO)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("User does not exist"));
+    }
+
+    @Test
+    void deleteUser_shouldCallServiceAndReturnOk() throws Exception {
+
+        Integer userId = 1;
+
+        mockMvc.perform(delete("/users/{id}", userId))
+                .andExpect(status().isNoContent());
+
+        verify(userService).deleteUser(userId);
+    }
+
+    @Test
+    void deleteUser_shouldReturnNotFound_whenUserDoesNotExist() throws Exception {
+
+        doThrow(new UserException("User does not exist"))
+                .when(userService).deleteUser(1);
+
+        mockMvc.perform(delete("/users/1"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("User does not exist"));
     }
 }

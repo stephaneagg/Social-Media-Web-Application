@@ -4,6 +4,7 @@ import com.steph.config.JwtService;
 import com.steph.user.DTOs.CreateUserDTO;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
@@ -56,6 +57,7 @@ public class UserController {
     //
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
     }
