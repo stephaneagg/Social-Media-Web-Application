@@ -35,7 +35,7 @@ public class AuthenticationService {
                 Role.USER
         );
         userRepository.save(user);
-        return new AuthenticationResponse(jwtService.generateToken(user));
+        return new AuthenticationResponse(jwtService.generateToken(user, user.getId()));
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -45,7 +45,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserException("Fake news"));
-        return new AuthenticationResponse(jwtService.generateToken(user));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserException("User does not exist"));
+        return new AuthenticationResponse(jwtService.generateToken(user, user.getId()));
     }
 }
