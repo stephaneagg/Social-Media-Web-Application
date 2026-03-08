@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +101,7 @@ public class UserServiceTest {
     void updateUser_shouldReturnUpdatedUserProfileDTO_whenUserExists() {
         // Inputs
         Integer userId = 1;
+        Integer authenticatedUserId = 1;
         UpdateUserDTO updateDTO = new UpdateUserDTO("newName", "newBio", "newImage");
 
         // Existing user in repository
@@ -113,7 +115,9 @@ public class UserServiceTest {
         when(userProfileDTOMapper.apply(user)).thenReturn(mappedDTO);
 
         // Call the service method
-        UserProfileDTO result = userService.updateUser(updateDTO, userId);
+        UserProfileDTO result = assertDoesNotThrow(() ->
+                userService.updateUser(updateDTO, userId, authenticatedUserId)
+        );
 
         // Assertions
         assertEquals(mappedDTO, result);
@@ -129,12 +133,13 @@ public class UserServiceTest {
     void updateUser_shouldThrowUserException_whenUserDoesNotExist() {
 
         Integer userId = 99;
+        Integer authenticatedUserId = 99;
         UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         UserException exception = assertThrows(UserException.class, () ->
-                userService.updateUser(updateDTO, userId)
+                userService.updateUser(updateDTO, userId, authenticatedUserId)
         );
 
         assertEquals("99 not found", exception.getMessage());
@@ -148,10 +153,39 @@ public class UserServiceTest {
     void deleteUser_shouldCallRepository() {
 
         Integer userId = 1;
+        Integer authenticatedUserId = 1;
 
-        userService.deleteUser(userId);
+        assertDoesNotThrow(() -> userService.deleteUser(userId, authenticatedUserId));
 
         verify(userRepository).deleteById(userId);
+    }
+
+    @Test
+    void updateUser_shouldThrowAccessDeniedException_whenUserTriesToUpdateAnotherUser() {
+        Integer userId = 1;
+        Integer authenticatedUserId = 2;
+        UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
+
+        AccessDeniedException exception = assertThrows(AccessDeniedException.class, () ->
+                userService.updateUser(updateDTO, userId, authenticatedUserId)
+        );
+
+        assertEquals("You can only update your own profile", exception.getMessage());
+        verifyNoInteractions(userRepository);
+        verifyNoInteractions(userProfileDTOMapper);
+    }
+
+    @Test
+    void deleteUser_shouldThrowAccessDeniedException_whenUserTriesToDeleteAnotherUser() {
+        Integer userId = 1;
+        Integer authenticatedUserId = 2;
+
+        AccessDeniedException exception = assertThrows(AccessDeniedException.class, () ->
+                userService.deleteUser(userId, authenticatedUserId)
+        );
+
+        assertEquals("You can only delete your own profile", exception.getMessage());
+        verifyNoInteractions(userRepository);
     }
 
 }

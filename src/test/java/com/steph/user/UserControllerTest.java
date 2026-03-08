@@ -4,13 +4,15 @@ import com.steph.exceptions.UserException;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.config.JwtAuthenticationFilter;
-import com.steph.config.JwtService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -37,10 +39,12 @@ class UserControllerTest {
 
     // Mock security beans to prevent UnsatisfiedDependencyException
     @MockBean
-    private JwtService jwtService;
-
-    @MockBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @AfterEach
+    void clearSecurityContext() {
+        SecurityContextHolder.clearContext();
+    }
 
     @Test
     void getUsers_shouldReturnListOfUsers() throws Exception {
@@ -71,14 +75,14 @@ class UserControllerTest {
 
     @Test
     void updateUser_shouldReturnUpdatedUser() throws Exception {
+        authenticateAs(1);
+
         UpdateUserDTO updateDTO = new UpdateUserDTO("newName", "newBio", "newImage");
         UserProfileDTO updatedUser = new UserProfileDTO(1, "newName", "newBio", "newImage");
 
-        when(jwtService.extractUserId(anyString())).thenReturn(1);
-        when(userService.updateUser(any(UpdateUserDTO.class), eq(1))).thenReturn(updatedUser);
+        when(userService.updateUser(any(UpdateUserDTO.class), eq(1), eq(1))).thenReturn(updatedUser);
 
         mockMvc.perform(put("/users/1")
-                        .header("Authorization", "Bearer test-token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
                 .andExpect(status().isOk())
@@ -90,16 +94,14 @@ class UserControllerTest {
 
     @Test
     void updateUser_shouldReturnNotFound_whenUserDoesNotExist() throws Exception {
+        authenticateAs(1);
 
         UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
 
-        when(jwtService.extractUserId(anyString())).thenReturn(1);
-
-        when(userService.updateUser(any(UpdateUserDTO.class), eq(1)))
+        when(userService.updateUser(any(UpdateUserDTO.class), eq(1), eq(1)))
                 .thenThrow(new UserException("User does not exist"));
 
         mockMvc.perform(put("/users/1")
-                        .header("Authorization", "Bearer token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
                 .andExpect(status().isNotFound())
@@ -108,23 +110,36 @@ class UserControllerTest {
 
     @Test
     void deleteUser_shouldCallServiceAndReturnOk() throws Exception {
+        authenticateAs(1);
 
         Integer userId = 1;
 
         mockMvc.perform(delete("/users/{id}", userId))
                 .andExpect(status().isNoContent());
 
-        verify(userService).deleteUser(userId);
+        verify(userService).deleteUser(userId, userId);
     }
 
     @Test
     void deleteUser_shouldReturnNotFound_whenUserDoesNotExist() throws Exception {
+        authenticateAs(1);
 
         doThrow(new UserException("User does not exist"))
-                .when(userService).deleteUser(1);
+                .when(userService).deleteUser(1, 1);
 
         mockMvc.perform(delete("/users/1"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("User does not exist"));
+    }
+
+    private void authenticateAs(Integer userId) {
+        User principal = new User("user" + userId, "user" + userId + "@example.com", "password", Role.USER);
+        principal.setId(userId);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                principal,
+                null,
+                principal.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
