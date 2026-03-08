@@ -10,6 +10,7 @@ import com.steph.user.User;
 import com.steph.user.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,12 +40,16 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostDTO createPost(CreatePostDTO createPostDTO) {
+    public PostDTO createPost(CreatePostDTO createPostDTO, Integer authenticatedUserId) throws AccessDeniedException {
 
         // find user given userId
         Integer userId = createPostDTO.authorId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new PostException(userId + " not found"));
+
+        if (!userId.equals(authenticatedUserId)) {
+            throw new AccessDeniedException("You can only create posts for your own profile");
+        }
 
         // create a new post using info passed in creatPostDTO
         Post post = new Post();
@@ -58,10 +63,19 @@ public class PostService {
         return postDTOMapper.apply(post);
     }
 
-    public PostDTO updatePost(UpdatePostDTO updatePostDTO, Integer id) {
+    public PostDTO updatePost(UpdatePostDTO updatePostDTO,
+                              Integer postId,
+                              Integer authenticatedUserId)
+            throws AccessDeniedException {
         // retrieve the post we want to update
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostException(id + " not found"));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(postId + " not found"));
+
+        // Check the post belongs to the authenticated user
+        if (!post.getUser().getId().equals(authenticatedUserId)) {
+            throw new AccessDeniedException("You can only update posts for your own profile");
+        }
+
         // update the post
         post.updatePost(updatePostDTO);
         postRepository.save(post);
@@ -69,7 +83,18 @@ public class PostService {
         return postDTOMapper.apply(post);
     }
 
-    public void deletePost(Integer id) {
-        postRepository.deleteById(id);
+    public void deletePost(Integer postId, Integer authenticatedUserId)
+            throws AccessDeniedException {
+
+        // retrieve the post we want to update
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostException(postId + " not found"));
+
+        // Check the post belongs to the authenticated user
+        if (!post.getUser().getId().equals(authenticatedUserId)) {
+            throw new AccessDeniedException("You can only delete posts for your own profile");
+        }
+
+        postRepository.deleteById(postId);
     }
 }

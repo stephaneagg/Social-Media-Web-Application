@@ -3,8 +3,11 @@ package com.steph.post;
 import com.steph.post.DTOs.CreatePostDTO;
 import com.steph.post.DTOs.PostDTO;
 import com.steph.post.DTOs.UpdatePostDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -32,20 +35,29 @@ public class PostController {
 
     // Create a post
     @PostMapping
-    public PostDTO createPost(@RequestBody CreatePostDTO createPostDTO) {
-        return postService.createPost(createPostDTO);
+    public PostDTO createPost(@RequestBody CreatePostDTO createPostDTO,
+                              @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
+            throws AccessDeniedException {
+
+        return postService.createPost(createPostDTO, authenticatedUserId);
     }
 
     // Edit a post
     @PutMapping("/{id}")
-    public PostDTO updatePost(@RequestBody UpdatePostDTO updatePostDTO, @PathVariable Integer id) {
-        return postService.updatePost(updatePostDTO, id);
-    }
+    public PostDTO updatePost(@RequestBody UpdatePostDTO updatePostDTO,
+                              @PathVariable("id") Integer postId,
+                              @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
+            throws AccessDeniedException {
 
+        return postService.updatePost(updatePostDTO, postId, authenticatedUserId);
+    }
 
     // Delete a post
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Integer id) {
-        postService.deletePost(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePost(@PathVariable Integer id,
+                           @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
+            throws AccessDeniedException {
+        postService.deletePost(id, authenticatedUserId);
     }
 }
