@@ -7,6 +7,12 @@ public class UpdateUserDTO {
     private String bio;
     private String profileImageUrl;
 
+    public UpdateUserDTO(String profileImageUrl, String bio, String displayName) {
+        this.profileImageUrl = profileImageUrl;
+        this.bio = bio;
+        this.displayName = displayName;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
