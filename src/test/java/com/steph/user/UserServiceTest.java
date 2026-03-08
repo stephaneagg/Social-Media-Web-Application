@@ -1,6 +1,7 @@
 package com.steph.user;
 
 import com.steph.exceptions.UserException;
+import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.user.DTOs.UserProfileDTOMapper;
 import org.junit.jupiter.api.Test;
@@ -9,10 +10,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +47,7 @@ public class UserServiceTest {
 
 
     @Test
-    void GetUserById_shouldThrowException_whenUserDoesNotExist() {
+    void getUserById_shouldThrowException_whenUserDoesNotExist() {
         Integer userId = 1;
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -58,6 +59,91 @@ public class UserServiceTest {
         verify(userRepository).findById(userId);
         verifyNoInteractions(userProfileDTOMapper);
     }
+
+
+    @Test
+    void getAllUsers_shouldReturnListofUserProfileDTO_whenUsersExist() {
+
+    User user1 = new User();
+    User user2 = new User();
+    UserProfileDTO dto1 = new UserProfileDTO(1, "steph", null, null);
+    UserProfileDTO dto2 = new UserProfileDTO(2, "steph2", null, null);
+
+    when(userRepository.findAll()).thenReturn(List.of(user1, user2));
+    when(userProfileDTOMapper.apply(any(User.class))).thenReturn(dto1, dto2);
+
+
+    List<UserProfileDTO> result = userService.getAllUsers();
+
+    assertEquals(2, result.size());
+    assertTrue(result.contains(dto1));
+    assertTrue(result.contains(dto2));
+
+    verify(userRepository).findAll();
+    verify(userProfileDTOMapper, times(2)).apply(any(User.class));
+    }
+
+    @Test
+    void getAllUsers_shouldReturnEmptyList_whenNoUsersExist() {
+
+        when(userRepository.findAll()).thenReturn(List.of());
+
+        List<UserProfileDTO> result = userService.getAllUsers();
+
+        assertTrue(result.isEmpty());
+
+        verify(userRepository).findAll();
+        verifyNoInteractions(userProfileDTOMapper);
+    }
+
+    @Test
+    void updateUser_shouldReturnUpdatedUserProfileDTO_whenUserExists() {
+        // Inputs
+        Integer userId = 1;
+        UpdateUserDTO updateDTO = new UpdateUserDTO("newName", "newBio", "newImage");
+
+        // Existing user in repository
+        User user = mock(User.class); // or new User(), but mocking works for updateFromDTO
+
+        // DTO that mapper should return
+        UserProfileDTO mappedDTO = new UserProfileDTO(1, "newName", "newBio", "newImage");
+
+        // Stubs
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userProfileDTOMapper.apply(user)).thenReturn(mappedDTO);
+
+        // Call the service method
+        UserProfileDTO result = userService.updateUser(updateDTO, userId);
+
+        // Assertions
+        assertEquals(mappedDTO, result);
+
+        // Verify interactions
+        verify(userRepository).findById(userId);       // fetched user
+        verify(user).updateFromDTO(updateDTO);         // update was applied
+        verify(userRepository).save(user);             // saved user
+        verify(userProfileDTOMapper).apply(user);      // mapped to DTO
+    }
+
+    @Test
+    void updateUser_shouldThrowUserException_whenUserDoesNotExist() {
+
+        Integer userId = 99;
+        UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        UserException exception = assertThrows(UserException.class, () ->
+                userService.updateUser(updateDTO, userId)
+        );
+
+        assertEquals("99 not found", exception.getMessage());
+
+        verify(userRepository).findById(userId);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoInteractions(userProfileDTOMapper);
+    }
+
 
 
 }
