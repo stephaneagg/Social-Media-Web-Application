@@ -63,6 +63,11 @@ public class User implements UserDetails {
     protected User() {
     }
 
+    // USED FOR TESTING
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public User(String username, String email, String passwordHash, Role role) {
         this.username = username;
         this.displayName = username;
