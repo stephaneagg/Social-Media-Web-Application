@@ -40,7 +40,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostDTO createPost(CreatePostDTO createPostDTO, Integer authenticatedUserId) throws AccessDeniedException {
+    public PostDTO createPost(CreatePostDTO createPostDTO, Integer authenticatedUserId) {
         // find user given userId
         User user = userRepository.findById(authenticatedUserId)
                 .orElseThrow(() -> new PostException("User Id: "+ authenticatedUserId + " not found"));
