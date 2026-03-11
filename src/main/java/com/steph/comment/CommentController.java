@@ -31,8 +31,7 @@ public class CommentController {
     @PostMapping("/post/{postId}")
     public CommentDTO createComment(@RequestBody CreateCommentDTO createCommentDTO,
                                     @PathVariable Integer postId,
-                                    @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
-            throws AccessDeniedException {
+                                    @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId) {
         return commentService.createComment(createCommentDTO, postId, authenticatedUserId);
     }
 
