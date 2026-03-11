@@ -43,9 +43,9 @@ public class PostController {
     }
 
     // Edit a post
-    @PutMapping("/{id}")
+    @PutMapping("/{postId}")
     public PostDTO updatePost(@RequestBody UpdatePostDTO updatePostDTO,
-                              @PathVariable("id") Integer postId,
+                              @PathVariable("postId") Integer postId,
                               @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
             throws AccessDeniedException {
 

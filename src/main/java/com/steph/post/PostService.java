@@ -41,15 +41,9 @@ public class PostService {
     }
 
     public PostDTO createPost(CreatePostDTO createPostDTO, Integer authenticatedUserId) throws AccessDeniedException {
-
         // find user given userId
-        Integer userId = createPostDTO.authorId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new PostException(userId + " not found"));
-
-        if (!userId.equals(authenticatedUserId)) {
-            throw new AccessDeniedException("You can only create posts for your own profile");
-        }
+        User user = userRepository.findById(authenticatedUserId)
+                .orElseThrow(() -> new PostException("User Id: "+ authenticatedUserId + " not found"));
 
         // create a new post using info passed in creatPostDTO
         Post post = new Post();
