@@ -28,6 +28,10 @@ public class AuthenticationService {
 
     // Create a user, save to database and return the generated token out of it
     public AuthenticationResponse register(RegisterRequest request) {
+
+        // TODO: CHECK TO MAKE USER THE USERNAME AND EMAIL ARE NOT ALREADY TAKEN
+
+
         User user = new User(
                 request.getUsername(),
                 request.getEmail(),
