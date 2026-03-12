@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 exception.getMessage(),
                 webRequest.getDescription(false),
-                "FOLLOW_NOT_FOUND"
+                "FOLLOW_ERROR"
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
