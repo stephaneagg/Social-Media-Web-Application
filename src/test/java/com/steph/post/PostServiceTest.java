@@ -111,7 +111,7 @@ class PostServiceTest {
     void createPost_shouldReturnCreatedPostDTO_whenUserExists() {
         Integer userId = 10;
         Integer authenticatedUserId = 10;
-        CreatePostDTO createPostDTO = new CreatePostDTO(userId, "new post", "https://img");
+        CreatePostDTO createPostDTO = new CreatePostDTO("new post", "https://img");
 
         User user = new User(userId);
 
@@ -140,7 +140,7 @@ class PostServiceTest {
     void createPost_shouldThrowPostException_whenUserDoesNotExist() {
         Integer userId = 77;
         Integer authenticatedUserId = 77;
-        CreatePostDTO createPostDTO = new CreatePostDTO(userId, "content", "https://img");
+        CreatePostDTO createPostDTO = new CreatePostDTO("content", "https://img");
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -217,7 +217,7 @@ class PostServiceTest {
     void createPost_shouldThrowAccessDeniedException_whenCreatingPostForAnotherUser() {
         Integer authorId = 10;
         Integer authenticatedUserId = 11;
-        CreatePostDTO createPostDTO = new CreatePostDTO(authorId, "content", "https://img");
+        CreatePostDTO createPostDTO = new CreatePostDTO("content", "https://img");
 
         User user = new User(authorId);
         when(userRepository.findById(authorId)).thenReturn(Optional.of(user));

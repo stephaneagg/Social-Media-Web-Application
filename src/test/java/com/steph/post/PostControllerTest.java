@@ -88,7 +88,7 @@ class PostControllerTest {
     void createPost_shouldReturnCreatedPost() throws Exception {
         authenticateAs(10);
 
-        CreatePostDTO request = new CreatePostDTO(10, "new post", "https://img");
+        CreatePostDTO request = new CreatePostDTO("new post", "https://img");
         PostDTO created = new PostDTO(3, 10, "steph", "new post", "https://img", Instant.parse("2026-01-03T10:00:00Z"));
 
         when(postService.createPost(any(CreatePostDTO.class), eq(10))).thenReturn(created);
