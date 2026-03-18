@@ -2,6 +2,7 @@ package com.steph.auth;
 
 
 import com.steph.config.JwtService;
+import com.steph.exceptions.DuplicateResourceException;
 import com.steph.exceptions.UserException;
 import com.steph.user.Role;
 import com.steph.user.UserRepository;
@@ -30,7 +31,9 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
 
         // TODO: CHECK TO MAKE USER THE USERNAME AND EMAIL ARE NOT ALREADY TAKEN
-
+        if (userRepository.existsByEmail(request.getEmail()) || userRepository.existsByUsername(request.getUsername())) {
+            throw new DuplicateResourceException("Email Username is already in use");
+        }
 
         User user = new User(
                 request.getUsername(),
