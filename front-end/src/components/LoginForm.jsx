@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {Link} from "react-router-dom"
 import { login } from "../services/authService";
 
 export default function LoginForm() {
@@ -41,6 +42,8 @@ export default function LoginForm() {
       <button type="submit">Login</button>
 
       {error && <p>{error}</p>}
+
+      <Link to="/register">Register</Link>
     </form>
   );
 }
