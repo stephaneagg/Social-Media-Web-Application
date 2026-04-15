@@ -1,4 +1,4 @@
-import RegisterForm from "../components/RegisterForm.jsx"
+import RegisterForm from "../../components/RegisterForm.jsx"
 import "./register.scss"
 
 export default function RegisterPage() {
