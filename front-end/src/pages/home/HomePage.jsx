@@ -1,4 +1,4 @@
-import Header from "../../components/Header.jsx"
+import Header from "../../components/header/Header.jsx"
 import "./home.scss"
 
 export default function Home() {

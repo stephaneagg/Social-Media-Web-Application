@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Link} from "react-router-dom"
-import { login } from "../services/authService";
+import { login } from "../../services/authService";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

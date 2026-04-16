@@ -1,4 +1,4 @@
-import LoginForm from "../../components/LoginForm.jsx"
+import LoginForm from "../../components/forms/LoginForm.jsx"
 import {Link} from "react-router-dom"
 import "./login.scss"
 
