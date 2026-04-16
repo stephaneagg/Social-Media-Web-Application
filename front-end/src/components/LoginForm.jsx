@@ -42,8 +42,6 @@ export default function LoginForm() {
       <button type="submit">Login</button>
 
       {error && <p>{error}</p>}
-
-      <Link to="/register">Register</Link>
     </form>
   );
 }

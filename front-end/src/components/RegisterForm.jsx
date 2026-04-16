@@ -14,7 +14,7 @@ function handleSubmit(e) {
 
     return (
         <form onSubmit={handleSubmit}>
-            
+
             <input
                 type="email"
                 placeholder="Email"
@@ -22,9 +22,9 @@ function handleSubmit(e) {
                 onChange={(e) => setEmail(e.target.value)}
             />
 
-            <input 
+            <input
                 type=""
-                placeholder="username"
+                placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
             />
@@ -36,7 +36,7 @@ function handleSubmit(e) {
                 onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button type="submit">Login</button>
+            <button type="submit">Register</button>
 
         </form>
     )
