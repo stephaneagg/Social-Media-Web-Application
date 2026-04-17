@@ -26,11 +26,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
+        <Route path="/" element={<Layout/>} />
+          <Route path="/" element={<HomePage />} />
           <Route path="profile/:id" element={<ProfilePage />} />
-        </Route>
-
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage/>} />
       </Routes>
