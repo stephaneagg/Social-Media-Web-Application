@@ -16,7 +16,7 @@ export default function LeftBar() {
 
           <div className="item">
             <img src="src/resources/followers.png" alt=""/>
-            <span>Friends</span>
+            <span>Followers</span>
           </div>
 
           <div className="item">
