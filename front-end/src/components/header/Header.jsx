@@ -1,5 +1,6 @@
 import "./header.scss"
 import { ThemeContext } from "../../context/themeContext.jsx";
+import { AuthContext } from "../../context/authContext.jsx";
 import HomeIcon from '@mui/icons-material/Home';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -13,6 +14,7 @@ import { Link } from "react-router-dom"
 
 export default function Header() {
     const { toggle, darkMode } = useContext(ThemeContext);
+    const { currentUser } = useContext(AuthContext)
 
     return (
         <div className="header">
@@ -37,8 +39,8 @@ export default function Header() {
                 <PersonIcon />
                 <NotificationsIcon />
                 <div className="user">
-                    <img src="src/resources/tempProfileIcon.jpeg" alt=""/>
-                    <span>Jane Doe</span>
+                    <img src={currentUser.profilePic} alt=""/>
+                    <span>{currentUser.name}</span>
                 </div>
 
             </div>

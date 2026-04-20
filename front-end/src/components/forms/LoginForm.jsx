@@ -2,7 +2,7 @@ import { useState } from "react";
 import {Link} from "react-router-dom"
 import { login } from "../../services/authService";
 
-export default function LoginForm() {
+export default function LoginForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -39,7 +39,7 @@ export default function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button type="submit">Login</button>
+      <button type="submit" onClick={props.handleLogin}>Login</button>
 
       {error && <p>{error}</p>}
     </form>

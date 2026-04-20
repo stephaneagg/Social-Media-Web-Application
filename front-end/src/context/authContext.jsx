@@ -3,22 +3,21 @@ import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [darkMode, setDarkMode] = useState(() => {
-    return JSON.parse(localStorage.getItem("darkMode")) || false;
+  const [currentUser, setCurrentUser] = useState(() => {
+    return JSON.parse(localStorage.getItem("user")) || null;
   });
 
-const toggle = () => {
-    setDarkMode(prev => !prev);
+const login = () => {
+    // TODO
+    setCurrentUser({id:1, name:"Janes Doe", profilePic:"src/resources/tempProfileIcon.jpeg"})
   };
 
   useEffect(() => {
-    localStorage.setItem("darkMode", JSON.stringify(darkMode));
-
-    document.body.classList.toggle("theme-dark", darkMode);
-  }, [darkMode]);
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ darkMode, toggle }}>
+    <AuthContext.Provider value={{ currentUser, login }}>
       {children}
     </AuthContext.Provider>
   );
