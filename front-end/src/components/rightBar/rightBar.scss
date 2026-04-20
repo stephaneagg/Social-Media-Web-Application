@@ -4,6 +4,7 @@
   top: 70px;
   height: calc(100vh - 70px);
   overflow: scroll;
+  background-color: var(--bg-soft);
 
   &::-webkit-scrollbar {
     display: none;
@@ -15,7 +16,9 @@
       -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
       -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
       box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-      padding: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: var(--bg);
 
       span{
         color: grey;
@@ -39,7 +42,7 @@
           }
           span{
             font-weight: 500;
-            color: black;
+            color: var(--text-soft);
           }
         }
         .buttons{

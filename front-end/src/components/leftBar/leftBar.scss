@@ -5,6 +5,8 @@
   top: 70px;
   height: calc(100vh - 70px);
   overflow: scroll;
+  background-color: var(--bg);
+  color: var(--text-color);
 
   // disable scrollbar
   &::-webkit-scrollbar {
