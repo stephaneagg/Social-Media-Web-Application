@@ -1,11 +1,16 @@
 
 import {Link} from "react-router-dom"
+import { useState } from "react";
+import Comments from "../comments/Comments"
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 
 import "./post.scss"
 
 export default function Post(props) {
+
+  const [commentOpen, setCommentOpen] = useState(false)
+
   return (
     <div className="post">
       <div className="container">
@@ -15,7 +20,7 @@ export default function Post(props) {
               <div className="details">
                 <Link
                   to={`profile/${props.post.userId}`}
-                  style={{textDecoration:"none", color:"inheret"}}
+                  style={{textDecoration:"none", color:"inherit"}}
                 >
                   <span className="name">{props.post.name}</span>
                 </Link>
@@ -29,11 +34,12 @@ export default function Post(props) {
           <img src="src/resources/tempPostPic.jpg" alt="" />
         </div>
         <div className="info">
-          <div className="item">
+          <div className="item" onClick={()=>setCommentOpen(!commentOpen)}>
             <AddCommentIcon />
             12 Comments
           </div>
         </div>
+        {commentOpen ? <Comments />: null}
       </div>
     </div>
   )
