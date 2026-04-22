@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
 
 const login = () => {
     // TODO
-    setCurrentUser({id:1, name:"Janes Doe", profilePic:"src/resources/tempProfileIcon.jpeg"})
+    setCurrentUser({id:1, name:"Janes Doe", profilePic:"/resources/tempProfileIcon.jpeg"})
   };
 
   useEffect(() => {

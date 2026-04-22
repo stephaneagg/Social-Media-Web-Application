@@ -12,7 +12,7 @@ export default function RightBar() {
 
           <div className="user">
             <div className="userInfo">
-              <img src="src/resources/tempProfileIcon.jpeg" alt=""/>
+              <img src="/resources/tempProfileIcon.jpeg" alt=""/>
               <span>John Doe</span>
             </div>
 
@@ -29,7 +29,7 @@ export default function RightBar() {
 
           <div className="user">
             <div className="userInfo">
-              <img src="src/resources/tempProfileIcon.jpeg" alt=""/>
+              <img src="/resources/tempProfileIcon.jpeg" alt=""/>
               <span>John Doe</span>
             </div>
 

@@ -13,14 +13,14 @@ export default function Comments() {
       desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit.",
       name:"Janette Doe",
       userId:3,
-      profilePic:"src/resources/tempProfileIcon.jpeg"
+      profilePic:"/resources/tempProfileIcon.jpeg"
     },
     {
       id:2,
       desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit quisque.",
       name:"Jerry Doe",
       userId:5,
-      profilePic:"src/resources/tempProfileIcon.jpeg"
+      profilePic:"/resources/tempProfileIcon.jpeg"
     }
   ]
 

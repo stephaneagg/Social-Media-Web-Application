@@ -19,27 +19,27 @@ export default function LeftBar() {
           </div>
 
           <div className="item">
-            <img src="src/resources/followers.png" alt=""/>
+            <img src="/resources/followers.png" alt=""/>
             <span>Followers</span>
           </div>
 
           <div className="item">
-            <img src="src/resources/groupIcon.png" alt=""/>
+            <img src="/resources/groupIcon.png" alt=""/>
             <span>Groups</span>
           </div>
 
           <div className="item">
-            <img src="src/resources/messageIcon.png" alt=""/>
+            <img src="/resources/messageIcon.png" alt=""/>
             <span>Messages</span>
           </div>
 
           <div className="item">
-            <img src="src/resources/galleryIcon.png" alt=""/>
+            <img src="/resources/galleryIcon.png" alt=""/>
             <span>Gallery</span>
           </div>
 
           <div className="item">
-            <img src="src/resources/gameIcon.png" alt=""/>
+            <img src="/resources/gameIcon.png" alt=""/>
             <span>Gaming</span>
           </div>
 

@@ -31,7 +31,7 @@ export default function Post(props) {
         </div>
         <div className="content">
           <p>{props.post.desc}</p>
-          <img src="src/resources/tempPostPic.jpg" alt="" />
+          <img src="/resources/tempPostPic.jpg" alt="" />
         </div>
         <div className="info">
           <div className="item" onClick={()=>setCommentOpen(!commentOpen)}>

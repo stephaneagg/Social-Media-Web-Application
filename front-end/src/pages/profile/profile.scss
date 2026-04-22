@@ -1,0 +1,46 @@
+
+
+.profile {
+
+  background-color: var(--bg);
+
+  .images{
+    height: 300px;
+    width: 100%;
+    position: relative;
+
+    .cover{
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+
+    }
+    .profilePic{
+      height: 200px;
+      width: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      position: absolute;
+      top: 200px;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+  }
+
+  .profileContainer{
+      padding: 20px 70px;
+
+      .uInfo{
+        height: 180px;
+        -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        border-radius: 20px;
+        background-color: var(--bg);
+        color: var(--text-color);
+        padding: 50px;
+        //2h01
+      }
+    }
+}
