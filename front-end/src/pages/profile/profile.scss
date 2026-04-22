@@ -25,6 +25,7 @@
       left: 0;
       right: 0;
       margin: auto;
+      z-index: 2;
     }
   }
 
@@ -39,8 +40,58 @@
         border-radius: 20px;
         background-color: var(--bg);
         color: var(--text-color);
-        padding: 50px;
-        //2h01
+        padding: 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 20px;
+
+
+        .left{
+          flex: 1;
+          display: flex;
+          gap: 15px;
+          color: var(--text-color);
+
+          .post-count{
+            display: flex;
+            flex-direction: column;
+          }
+          .follower-count{
+            display: flex;
+            flex-direction: column;
+          }
+          .following-count{
+            display: flex;
+            flex-direction: column;
+          }
+        }
+        .center{
+
+          position: absolute;
+          left: 50%;
+          top: 70%;
+          transform: translateX(-50%);
+
+          button{
+            border: none;
+            background-color: #5271ff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
+
+        .right{
+          flex:1;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 10px;
+        }
       }
     }
 }

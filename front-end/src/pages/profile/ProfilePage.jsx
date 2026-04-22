@@ -1,5 +1,6 @@
 import "./profile.scss"
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Posts from "../../components/posts/Posts.jsx"
 
 export default function ProfilePage() {
   return (
@@ -26,12 +27,13 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className="center">
-
+            <button>follow</button>
           </div>
           <div className="right">
             <MoreHorizIcon />
           </div>
         </div>
+        <Posts />
       </div>
     </div>
   )
