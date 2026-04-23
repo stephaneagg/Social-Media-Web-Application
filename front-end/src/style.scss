@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --text-color: #000;
+  --bg: white;
+  --logo: darkblue;
+  --bg-soft: #f6f3f3;
+  --text-soft: #555;
+  --border: lightgrey;
+}
+
+.theme-dark {
+  --text-color: whitesmoke;
+  --bg: #222;
+  --logo: white;
+  --bg-soft: #333;
+  --text-soft: lightgrey;
+  --border: #444;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-color);
+  font-family: sans-serif;
+}
+
+
+@mixin mobile {
+  @media (max-width:480px) {
+    @content;
+  }
+}
