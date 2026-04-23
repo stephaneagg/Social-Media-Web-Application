@@ -1,7 +1,11 @@
-# Social Media Backend API
+# Social Media Web Application
+## Frontend
+A React frontend...
+
+## Backend
 A RESTful backend service for a social media platform that supports user authentication, profiles, and follow relationships.
 
-## Overview
+### Overview
 This project provides the backend infrastructure for a social media application. It handles:
 
 - User registration and authentication
@@ -10,7 +14,7 @@ This project provides the backend infrastructure for a social media application.
 - Data persistence with a relational database
 - REST API endpoints for frontend integration
 
-## Tech Stack
+### Tech Stack
 - Language: Java
 - Framework: Spring Boot
 - Database: PostgreSQL
@@ -35,25 +39,25 @@ src/
 ```
 -->
 
-## Features
-### User Management
+### Features
+#### User Management
 - Create account
 - Login / authentication
 - Check for existing email/username
-### Follow System
+#### Follow System
 - Follow/unfollow users
 - Retrieve followers/following lists
-### API Design
+#### API Design
 - RESTful endpoints
 - DTO-based responses avoiding direct entity exposure
 - Proper HTTP status codes
 
-## Setup & Installation
-### 1. Clone the repo
+### Setup & Installation
+#### 1. Clone the repo
 - git clone https://github.com/yourusername/social-media-backend.git
 - cd social-media-backend
 
-### 2. Configure database <br>
+#### 2. Configure database <br>
 Update application.properties:
 ```
 spring.datasource.url=jdbc:postgresql://localhost:5432/yourdb
@@ -62,23 +66,23 @@ spring.datasource.password=yourpassword
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-### 3. Run the application
+#### 3. Run the application
 ```mvn spring-boot:run```
 
-## API Endpoints
-### Auth
+### API Endpoints
+#### Auth
 ```
   POST /api/v1/auth/register
   POST /api/v1/auth/authenticate
 ```
-### Users
+#### Users
 ```
 GET /users/
 GET /users/{userId}
 PUT /users/{userId}
 DELETE /users/{userId}
 ```
-### Posts
+#### Posts
 ```
 GET /posts/{postId}
 GET /posts/user/{userId}
@@ -86,26 +90,26 @@ POST /posts
 PUT  /posts/{postId}
 DELETE  /posts{postId}
 ```
-### Comments
+#### Comments
 ```
 GET  /comments/post/{postId}
 POST /comments/post/{postId}
 PUT  /comments/{commentId}
 DELETE  /comments/{commentId}
 ```
-### Follow
+#### Follow
 ```
 GET /follows/followers/{userId}
 GET /follows/following/{userId}
 POST /follows/{followedUserId}
 DELETE /follows/{followedUserId}
 ```
-### Feed
+#### Feed
 ```
 GET /feed
 ```
 
-## Testing
+### Testing
 
 Run tests with:
 
@@ -114,7 +118,7 @@ Run tests with:
 - Unit tests use Mockito for mocking repositories/services
 - Focus on service layer logic and edge cases
 
-## Error Handling
+### Error Handling
 
 The API uses consistent error responses:
 ```
