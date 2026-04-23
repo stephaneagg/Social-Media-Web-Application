@@ -1,3 +1,5 @@
+@import "../../style.scss";
+
 
 .leftBar {
   flex: 2;
@@ -10,6 +12,10 @@
 
   // disable scrollbar
   &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include mobile{
     display: none;
   }
 

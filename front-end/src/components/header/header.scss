@@ -1,3 +1,4 @@
+@import "../../style.scss";
 
 .header {
   display: flex;
@@ -7,6 +8,7 @@
   height: 50px;
   border-bottom: 1px solid var(--border);
   position: sticky;
+  z-index: 1000;
   top: 0;
   background-color: var(--bg);
   color: var(--text-color);
@@ -35,6 +37,11 @@
         width: 400px;
         background-color: transparent;
         color: var(--text-color);
+
+        @include mobile{
+          display: none;
+        }
+
       }
       input:focus {
         outline: none;
@@ -46,6 +53,11 @@
     display: flex;
     align-items: center;
     gap: 20px;
+
+    @include mobile{
+      display: none;
+    }
+
     .user {
       display: flex;
       align-items: center;

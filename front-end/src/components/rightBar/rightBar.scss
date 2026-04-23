@@ -1,3 +1,5 @@
+@import "../../style.scss";
+
 .rightBar {
   flex: 3;
   position: sticky;
@@ -5,6 +7,10 @@
   height: calc(100vh - 70px);
   overflow: scroll;
   background-color: var(--bg-soft);
+
+  @include mobile{
+    display: none;
+  }
 
   &::-webkit-scrollbar {
     display: none;

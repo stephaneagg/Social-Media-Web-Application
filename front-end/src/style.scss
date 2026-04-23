@@ -27,3 +27,10 @@ body {
   color: var(--text-color);
   font-family: sans-serif;
 }
+
+
+@mixin mobile {
+  @media (max-width:480px) {
+    @content;
+  }
+}

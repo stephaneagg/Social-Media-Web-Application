@@ -1,5 +1,11 @@
+@import "../../style.scss";
 
 .home {
   background-color: var(--bg-soft);
   padding: 20px 70px;
+
+
+  @include mobile{
+    padding: 10px;
+  }
 }

@@ -1,4 +1,4 @@
-
+@import "../../style.scss";
 
 .profile {
 
@@ -32,6 +32,10 @@
   .profileContainer{
       padding: 20px 70px;
 
+      @include mobile {
+        padding: 10px;
+      }
+
       .uInfo{
         height: 180px;
         -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
@@ -48,12 +52,23 @@
         position: relative;
         margin-bottom: 20px;
 
+        @include mobile{
+          flex-direction: column;
+          height: 23svh;
+          padding: 20px;
+          margin-top: 100px;
+        }
+
 
         .left{
           flex: 1;
           display: flex;
           gap: 15px;
           color: var(--text-color);
+
+          @include mobile {
+            order: 1;
+          }
 
           .post-count{
             display: flex;
@@ -75,6 +90,13 @@
           top: 70%;
           transform: translateX(-50%);
 
+          @include mobile {
+            position: static;
+            transform: none;
+            order: 2;
+            margin-top: 10px;
+          }
+
           button{
             border: none;
             background-color: #5271ff;
@@ -91,6 +113,11 @@
           align-items: center;
           justify-content: flex-end;
           gap: 10px;
+
+
+          @include mobile {
+            order: 3;
+          }
         }
       }
     }
