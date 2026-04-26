@@ -2,7 +2,7 @@ package com.steph.auth;
 
 public class AuthenticationRequest {
 
-    private String email;
+    private String login;
 
     private String password;
 
@@ -10,19 +10,19 @@ public class AuthenticationRequest {
 
     public AuthenticationRequest(){}
 
-    public AuthenticationRequest(String email, String password) {
-        this.email = email;
+    public AuthenticationRequest(String login, String password) {
+        this.login = login;
         this.password = password;
     }
 
     // Getters and Setters //
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {

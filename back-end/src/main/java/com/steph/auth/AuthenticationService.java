@@ -30,7 +30,6 @@ public class AuthenticationService {
     // Create a user, save to database and return the generated token out of it
     public AuthenticationResponse register(RegisterRequest request) {
 
-        // TODO: CHECK TO MAKE USER THE USERNAME AND EMAIL ARE NOT ALREADY TAKEN
         if (userRepository.existsByEmail(request.getEmail()) || userRepository.existsByUsername(request.getUsername())) {
             throw new DuplicateResourceException("Email Username is already in use");
         }
@@ -48,11 +47,12 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getLogin(),
                         request.getPassword()
                 )
         );
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserException("User does not exist"));
+        User user = userRepository.findByEmailOrUsername(request.getLogin(), request.getLogin())
+                .orElseThrow(() -> new UserException("User does not exist"));
         return new AuthenticationResponse(jwtService.generateToken(user, user.getId()));
     }
 }
