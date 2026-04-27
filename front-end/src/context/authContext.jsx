@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
   }, [currentUser]);
 
   // auto-login on refresh
-  userEffect( () => {
+  useEffect( () => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
