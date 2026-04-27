@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import { AuthContext } from "../../context/authContext"
 
 export default function LoginForm() {
@@ -9,12 +9,14 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await login(loginInput, password);
-      console.log("Logged in!")
+      navigate("/")
     } catch (err) {
       setError("Invalid credentials");
     }
