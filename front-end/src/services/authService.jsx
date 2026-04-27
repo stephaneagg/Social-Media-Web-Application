@@ -1,7 +1,7 @@
-const API_URL = "http://localhost:8080/api/v1/auth/"
+const API_URL = "http://localhost:8080/"
 
 export async function login(login,password) {
-    const res = await fetch(`${API_URL}authenticate`, {
+    const res = await fetch(`${API_URL}api/v1/auth/authenticate`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -17,7 +17,7 @@ export async function login(login,password) {
 }
 
 export async function getCurrentUser(token) {
-    const res = await fetch(`{API_URL}users/me`, {
+    const res = await fetch(`${API_URL}users/me`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
