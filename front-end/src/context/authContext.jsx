@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import * as authService from "../services/authService";
 
 export const AuthContext = createContext();
 
@@ -7,17 +8,39 @@ export function AuthProvider({ children }) {
     return JSON.parse(localStorage.getItem("user")) || null;
   });
 
-const login = () => {
-    // TODO
-    setCurrentUser({id:1, name:"Janes Doe", profilePic:"/resources/tempProfileIcon.jpeg"})
+  const loginUser = async (loginInput, password) => {
+    // 1. get token
+    const data = await authService.login(loginInput, password);
+    const token = data.access_token;
+
+    // 2. store token
+    localStorage.setItem("token", data.token);
+
+    // 3. fetch user
+    const user = await authService.getCurrentUser(token);
+
+    // 4. store user
+    setCurrentUser(user);
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setCurrentUser(null);
+  }
+
+  // persist user
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
+  // auto-login on refresh
+  userEffect( () => {
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
+
   return (
-    <AuthContext.Provider value={{ currentUser, login }}>
+    <AuthContext.Provider value={{ currentUser, login: loginUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -26,7 +26,7 @@ export default function LoginPage() {
                 </div>
                 <div className="right">
                     <h1>Login</h1>
-                    <LoginForm handleLogin={handleLogin}/>
+                    <LoginForm />
                 </div>
             </div>
         </div>

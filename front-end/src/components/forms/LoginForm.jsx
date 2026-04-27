@@ -1,9 +1,11 @@
 import { useState } from "react";
 import {Link} from "react-router-dom"
-import { login } from "../../services/authService";
+import { AuthContext } from "../../context/authContext"
 
-export default function LoginForm(props) {
-  const [email, setEmail] = useState("");
+export default function LoginForm() {
+  const { login } = useContext(AuthContext);
+
+  const [loginInput, setLoginInput] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -11,13 +13,8 @@ export default function LoginForm(props) {
     e.preventDefault();
 
     try {
-      const data = await login(email, password);
-
-      // store JWT
-      localStorage.setItem("token", data.token);
-
-      // redirect later (we'll add routing soon)
-      console.log("Logged in!");
+      await login(loginInput, password);
+      console.log("Logged in!")
     } catch (err) {
       setError("Invalid credentials");
     }
@@ -26,10 +23,10 @@ export default function LoginForm(props) {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        type="text"
+        placeholder="Email or Username"
+        value={loginInput}
+        onChange={(e) => setLoginInput(e.target.value)}
       />
 
       <input
@@ -39,7 +36,7 @@ export default function LoginForm(props) {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button type="submit" onClick={props.handleLogin}>Login</button>
+      <button type="submit">Login</button>
 
       {error && <p>{error}</p>}
     </form>
