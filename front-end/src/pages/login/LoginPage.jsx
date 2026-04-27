@@ -1,17 +1,9 @@
 import LoginForm from "../../components/forms/LoginForm.jsx"
 import {Link} from "react-router-dom"
-import { useContext } from "react";
-import { AuthContext } from "../../context/authContext.jsx";
 import "./login.scss"
 
 
 export default function LoginPage() {
-
-    const {login} = useContext(AuthContext);
-
-    function handleLogin() {
-        login();
-    }
 
     return (
         <div className="login">

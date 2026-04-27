@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
     const token = data.access_token;
 
     // 2. store token
-    localStorage.setItem("token", data.token);
+    localStorage.setItem("token", data.access_token);
 
     // 3. fetch user
     const user = await authService.getCurrentUser(token);
@@ -22,6 +22,13 @@ export function AuthProvider({ children }) {
     // 4. store user
     setCurrentUser(user);
   };
+
+    const registerUser = async (username, email, password) => {
+      // 1. call register endpoint
+      await authService.register(username, email, password);
+      // 2. log user in
+      await loginUser(username, password);
+  }
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -35,12 +42,19 @@ export function AuthProvider({ children }) {
   }, [currentUser]);
 
   // auto-login on refresh
-  useEffect( () => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
-  }, [currentUser]);
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+
+    if (!currentUser && token) {
+      authService
+        .getCurrentUser(token)
+        .then((user) => setCurrentUser(user))
+        .catch(() => logout());
+    }
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login: loginUser, logout }}>
+    <AuthContext.Provider value={{ currentUser, login: loginUser, register: registerUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

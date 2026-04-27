@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import {Link, useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../../context/authContext"
 
 export default function LoginForm() {
@@ -16,7 +16,7 @@ export default function LoginForm() {
 
     try {
       await login(loginInput, password);
-      navigate("/")
+      navigate("/");
     } catch (err) {
       setError("Invalid credentials");
     }
