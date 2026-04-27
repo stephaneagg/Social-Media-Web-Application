@@ -1,5 +1,6 @@
 package com.steph.user;
 
+import com.steph.user.DTOs.CurrentUserDTO;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import org.springframework.http.HttpStatus;
@@ -24,9 +25,14 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public UserProfileDTO getUserById(@PathVariable Integer id) {
-        return userService.getUserById(id);
+    @GetMapping("/{userId}")
+    public UserProfileDTO getUserById(@PathVariable Integer userId) {
+        return userService.getUserById(userId);
+    }
+
+    @GetMapping("/me")
+    public CurrentUserDTO getCurrentUser(@AuthenticationPrincipal(expression = "id") Integer authenticatedUserId) {
+        return userService.getCurrentUser(authenticatedUserId);
     }
 
     @PutMapping("/{userId}")
@@ -37,13 +43,6 @@ public class UserController {
 
         return userService.updateUser(dto, userId, authenticatedUserId);
     }
-
-    // SHOULD BE REMOVED IN FAVOR FOR AuthenticationController's REGISTER METHOD
-//    @PostMapping
-//    public UserProfileDTO addNewUser(@RequestBody CreateUserDTO createUserDTO) {
-//        return userService.createUser(createUserDTO);
-//    }
-    //
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

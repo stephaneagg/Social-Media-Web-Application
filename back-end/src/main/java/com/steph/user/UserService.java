@@ -1,9 +1,6 @@
 package com.steph.user;
 
-import com.steph.user.DTOs.CreateUserDTO;
-import com.steph.user.DTOs.UpdateUserDTO;
-import com.steph.user.DTOs.UserProfileDTO;
-import com.steph.user.DTOs.UserProfileDTOMapper;
+import com.steph.user.DTOs.*;
 import com.steph.exceptions.UserException;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +12,15 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final UserProfileDTOMapper userProfileDTOMapper;
+    private final CurrentUserDTOMapper currentUserDTOMapper;
 
-    public UserService( UserRepository userRepository, UserProfileDTOMapper userProfileDTOMapper) {
+    public UserService(
+            UserRepository userRepository,
+            UserProfileDTOMapper userProfileDTOMapper,
+            CurrentUserDTOMapper currentUserDTOMapper) {
         this.userRepository = userRepository;
         this.userProfileDTOMapper = userProfileDTOMapper;
+        this.currentUserDTOMapper = currentUserDTOMapper;
     }
 
     public List<UserProfileDTO> getAllUsers() {
@@ -34,24 +36,13 @@ public class UserService {
                 .orElseThrow(() -> new UserException(userId + " not found"));
     }
 
-    // SHOULD NOT BE USED ANYMORE. USER CREATION IS HANDLED BY AUTHENTICATION
-//    public UserProfileDTO createUser(CreateUserDTO createUserDTO) {
-//        // create new user and set all its attributes
-//        User user = new User();
-//        user.setUsername(createUserDTO.username());
-//        user.setEmail(createUserDTO.email());
-//        user.setPasswordHash(createUserDTO.password());
-//        user.setDisplayName(createUserDTO.displayName());
-//        user.setBio(createUserDTO.bio());
-//        user.setProfileImageUrl(createUserDTO.profileImageUrl());
-//
-//        // save the user
-//        userRepository.save(user);
-//
-//        // mpa user to userProfileDTO and return
-//        return userProfileDTOMapper.apply(user);
-//    }
-    //
+
+    public CurrentUserDTO getCurrentUser(Integer authenticatedUserId) {
+        User user = userRepository.findById(authenticatedUserId)
+                .orElseThrow( () -> new UserException(authenticatedUserId + " not Found"));
+
+        return currentUserDTOMapper.apply(user);
+    }
 
     public UserProfileDTO updateUser(UpdateUserDTO updateUserDTO, Integer userId, Integer authenticatedUserId) throws AccessDeniedException {
 
