@@ -23,12 +23,12 @@ export function AuthProvider({ children }) {
     setCurrentUser(user);
   };
 
-    const registerUser = async (username, email, password) => {
-      // 1. call register endpoint
-      await authService.register(username, email, password);
-      // 2. log user in
-      await loginUser(username, password);
-  }
+  const registerUser = async (username, email, password) => {
+    // 1. call register endpoint
+    await authService.register(username, email, password);
+    // 2. log user in
+    await loginUser(username, password);
+  };
 
   const logout = () => {
     localStorage.removeItem("token");
