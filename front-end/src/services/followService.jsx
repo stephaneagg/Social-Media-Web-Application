@@ -14,6 +14,8 @@ export async function getFollowers(userId) {
   if (!res.ok) {
     throw new Error("Failed to fetch followers");
   }
+
+  return await res.json(); // {[userProfileDTO,...]}
 }
 
 export async function getFollowees(userId) {
@@ -29,6 +31,8 @@ export async function getFollowees(userId) {
   if (!res.ok) {
     throw new Error("Failed to fetch followees");
   }
+
+  return await res.json(); // {[{id, displayName, bio, profileImageUrl},...]}
 }
 
 export async function follow(userId) {
@@ -44,6 +48,8 @@ export async function follow(userId) {
   if (!res.ok) {
     throw new Error(`Failed to follow userId: ${userId}`);
   }
+
+  return await res
 }
 
 export async function unfollow(userId) {
@@ -59,5 +65,6 @@ export async function unfollow(userId) {
   if (!res.ok) {
     throw new Error(`Failed to unfollow userId: ${userId}`);
   }
+  return await res
 }
 
