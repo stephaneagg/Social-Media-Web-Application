@@ -39,8 +39,8 @@ export default function Header() {
                 <PersonIcon />
                 <NotificationsIcon />
                 <div className="user">
-                    <img src={currentUser.profilePic} alt=""/>
-                    <span>{currentUser.name}</span>
+                    <img src={currentUser.profileImageUrl} alt=""/>
+                    <span>{currentUser.displayName}</span>
                 </div>
 
             </div>
