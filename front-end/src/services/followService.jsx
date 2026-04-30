@@ -4,7 +4,7 @@ const API_URL = "http://localhost:8080/follows/"
 export async function getFollowers(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}/followers/${userId}`, {
+  const res = await fetch(`${API_URL}followers/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -15,13 +15,13 @@ export async function getFollowers(userId) {
     throw new Error("Failed to fetch followers");
   }
 
-  return await res.json(); // {[userProfileDTO,...]}
+  return await res.json(); // {[{id, displayName, bio, profileImageUrl},...]}
 }
 
 export async function getFollowees(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}/following/${userId}`, {
+  const res = await fetch(`${API_URL}following/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export async function getFollowees(userId) {
 export async function follow(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}/${userId}`, {
+  const res = await fetch(`${API_URL}${userId}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ export async function follow(userId) {
 export async function unfollow(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}/${userId}`, {
+  const res = await fetch(`${API_URL}${userId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
