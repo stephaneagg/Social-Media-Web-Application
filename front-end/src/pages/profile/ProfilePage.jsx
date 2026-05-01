@@ -1,6 +1,6 @@
 import "./profile.scss"
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Posts from "../../components/posts/Posts.jsx"
+import Feed from "../../components/feed/Feed.jsx"
 
 export default function ProfilePage() {
   return (
@@ -33,7 +33,7 @@ export default function ProfilePage() {
             <MoreHorizIcon />
           </div>
         </div>
-        <Posts />
+        <Feed />
       </div>
     </div>
   )

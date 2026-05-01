@@ -1,10 +1,10 @@
 import Post from "../post/Post.jsx"
-import "./posts.scss"
+import "./feed.scss"
 
-export default function Posts() {
+export default function Feed() {
 
   // TEMP DATA
-  const posts = [ {
+  const feed = [ {
       id:1,
       name:"James Doe",
       userId:1,
@@ -25,8 +25,8 @@ export default function Posts() {
 
 
   return (
-    <div className="posts">
-      {posts.map( post => (
+    <div className="feed">
+      {feed.map( post => (
         <Post post={post} key={post.id}/>
       ))}
     </div>
