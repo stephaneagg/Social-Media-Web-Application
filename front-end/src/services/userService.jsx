@@ -3,7 +3,7 @@ const API_URL = "http://localhost:8080/users/"
 export async function getUser(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}/${userId}`, {
+  const res = await fetch(`${API_URL}${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -11,7 +11,7 @@ export async function getUser(userId) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to create user");
+    throw new Error("Failed to get user");
   }
 
   return await res.json(); // {id, displayName, bio, profileImageUrl}
@@ -26,17 +26,27 @@ export async function editUser(userId, displayName, bio, profileImageUrl) {
   if (bio != null) body.bio = bio;
   if (profileImageUrl != null) body.profileImageUrl = profileImageUrl;
 
-  const res = await fetch(`${API_URL}/${userId}`, {
+  const res = await fetch(`${API_URL}${userId}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   });
 
   if (!res.ok) {
-    throw new Error("Failed to create user");
+    const text = await res.text();
+
+    try {
+      const json = JSON.parse(text);
+      console.log(json);
+      throw new Error(json.message);
+    } catch {
+      throw new Error(text);
+    }
   }
+
 
   return await res.json(); // {id, displayName, bio, profileImageUrl}
 }
@@ -45,7 +55,7 @@ export async function editUser(userId, displayName, bio, profileImageUrl) {
 export async function deleteUser(userId) {s
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}/${userId}`, {
+  const res = await fetch(`${API_URL}${userId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -53,7 +63,7 @@ export async function deleteUser(userId) {s
   });
 
   if (!res.ok) {
-    throw new Error("Failed to create user");
+    throw new Error("Failed to delete user");
   }
 
   return await res
