@@ -36,6 +36,12 @@ export function AuthProvider({ children }) {
     setCurrentUser(null);
   }
 
+  const refreshCurrentUser = async () => {
+    const token = localStorage.getItem("token")
+    const user = await authService.getCurrentUser(token);
+    setCurrentUser(user);
+  }
+
   // persist user
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
@@ -54,7 +60,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login: loginUser, register: registerUser, logout }}>
+    <AuthContext.Provider value={{ currentUser, login: loginUser, register: registerUser, logout, refreshCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );
