@@ -1,6 +1,9 @@
 import Post from "../post/Post.jsx"
 import "./feed.scss"
 
+import { useEffect } from "react";
+import { getFeed } from "../../services/feedService"
+
 export default function Feed() {
 
   // TEMP DATA
@@ -22,7 +25,14 @@ export default function Feed() {
     }
   ]
 
+useEffect(() => {
+  const loadFeed = async () => {
+    const data = await getFeed();
+    console.log(data);
+  };
 
+  loadFeed();
+}, []);
 
   return (
     <div className="feed">

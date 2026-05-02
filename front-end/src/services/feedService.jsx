@@ -18,5 +18,5 @@ export async function getFeed(){
     throw new Error(data.message || data);
   }
 
-  return await res.json() // [ {{id, authorId, authorName, content, imageUrl, createdAt}}, ... ]
+  return await res.json() // [ {{id, authorId, authorName, content, userProfileImageUrl, imageUrl, createdAt}}, ... ]
 }

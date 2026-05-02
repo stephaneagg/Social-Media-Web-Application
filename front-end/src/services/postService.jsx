@@ -18,7 +18,7 @@ export async function getPost(postId) {
   throw new Error(data.message || data);
 }
 
-  return await res.json(); // {id, authorId, authorName, content, imageUrl, createdAt}
+  return await res.json(); // {id, authorId, authorName, content, userProfileImageUrl, imageUrl, createdAt}
 }
 
 export async function getUsersPosts(userId) {
@@ -39,7 +39,7 @@ export async function getUsersPosts(userId) {
     throw new Error(data.message || data);
   }
 
-  return await res.json(); // [{id, authorId, authorName, content, imageUrl, createdAt}, ...]
+  return await res.json(); // [{id, authorId, authorName, content, userProfileImageUrl, imageUrl, createdAt}, ...]
 }
 
 export async function createPost(content, imageUrl) {
@@ -62,7 +62,7 @@ export async function createPost(content, imageUrl) {
     throw new Error(data.message || data);
   }
 
-  return await res.json(); // {id, authorId, authorName, content, imageUrl, createdAt}
+  return await res.json(); // {id, authorId, authorName, content, userProfileImageUrl, imageUrl, createdAt}
 }
 
 export async function editPost(postId, content, imageUrl) {
@@ -90,7 +90,7 @@ export async function editPost(postId, content, imageUrl) {
     throw new Error(data.message || data);
   }
 
-  return await res.json(); // {id, authorId, authorName, content, imageUrl, createdAt}
+  return await res.json(); // {id, authorId, authorName, content, userProfileImageUrl, imageUrl, createdAt}
 }
 
 export async function deletePost(postId) {
