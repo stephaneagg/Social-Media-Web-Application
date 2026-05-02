@@ -16,6 +16,7 @@ public class PostDTOMapper implements Function<Post, PostDTO> {
                 post.getUser().getId(), // authorId
                 post.getUser().getDisplayName(), // authorName
                 post.getContentText(), // content
+                post.getUser().getProfileImageUrl(), //userProfileImageUrl
                 post.getImageUrl(), // imageUrl
                 post.getCreatedAt() // createdAt
         );

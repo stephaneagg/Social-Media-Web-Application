@@ -7,6 +7,7 @@ public record PostDTO(
         Integer authorId,
         String authorName,
         String content,
+        String userProfileImageUrl,
         String imageUrl,
         Instant createdAt
 ) {
