@@ -1,5 +1,6 @@
 package com.steph.upload;
 
+import com.steph.exceptions.FileValidationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,15 +50,15 @@ public class FileStorageService {
     public void validateFile(MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
-            throw new IllegalArgumentException("File is empty");
+            throw new FileValidationException("File is empty");
         }
 
         if (!Objects.requireNonNull(file.getContentType()).startsWith("image/")) {
-            throw new IllegalArgumentException("Only image files are allowed");
+            throw new FileValidationException("Only image files are allowed");
         }
 
         if (file.getSize() > 5_000_000) {
-            throw new IllegalArgumentException("File too large");
+            throw new FileValidationException("File too large");
         }
 
     }

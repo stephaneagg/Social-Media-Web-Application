@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleGenericException(Exception exception, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
-                exception.getMessage(),
+                "Unexpected Error occured",
                 webRequest.getDescription(false),
                 "INTERNAL_SERVER_ERROR"
         );
@@ -78,8 +78,18 @@ public class GlobalExceptionHandler {
 
     // Handle AccessDeniedException
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    public ResponseEntity<ErrorDetails> handleAccessDeniedException(
+            AccessDeniedException exception,
+            WebRequest webRequest
+    ) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "FORBIDDEN"
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
     }
 
 
@@ -105,5 +115,20 @@ public class GlobalExceptionHandler {
                 "USER_ALREADY_EXISTS"
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FileValidationException.class)
+    public ResponseEntity<ErrorDetails> handleFileValidationException(
+            FileValidationException exception,
+            WebRequest webRequest
+    ) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "FILE_VALIDATION_ERROR"
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 }
