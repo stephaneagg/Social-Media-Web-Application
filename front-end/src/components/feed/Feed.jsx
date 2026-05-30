@@ -55,9 +55,13 @@ return (
 
     {error ? <p>Failed to load feed.</p> : null}
 
-    {!loading && !error && posts.map((post) => (
+    {/* {!loading && !error && posts.map((post) => (
       <PostList posts={posts} />
-    ))}
+    ))} */}
+
+    {!loading && !error &&
+      <PostList posts={posts} />
+    }
   </div>
 );
 }
