@@ -20,9 +20,13 @@ export default function Header() {
         <div className="header">
             <div className="left">
                 <Link to="/" style={{textDecoration:"none"}}>
-                <span>Steph's Social</span>
+                    <span>Steph's Social</span>
                 </Link>
-                <HomeIcon />
+
+                <Link to="/" style={{textDecoration:"none", color: "inherit" }} >
+                    <HomeIcon />
+                </Link>
+
                 {darkMode ?
                     <LightModeIcon onClick={toggle}/>
                     : <DarkModeIcon onClick={toggle}/>}
@@ -36,11 +40,19 @@ export default function Header() {
             </div>
 
             <div className="right">
-                <PersonIcon />
+                <Link to={`profile/${currentUser.id}`} style={{textDecoration:"none", color: "inherit" }} >
+                    <PersonIcon />
+                </Link>
+
                 <NotificationsIcon />
                 <div className="user">
-                    <img src={currentUser.profileImageUrl} alt=""/>
-                    <span>{currentUser.displayName}</span>
+                    <Link
+                        to={`profile/${currentUser.id}`}
+                        className="userLink"
+                    >
+                        <img src={currentUser.profileImageUrl} alt=""/>
+                        <span>{currentUser.displayName}</span>
+                    </Link>
                 </div>
 
             </div>

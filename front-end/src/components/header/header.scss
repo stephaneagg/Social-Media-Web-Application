@@ -63,6 +63,15 @@
       align-items: center;
       gap: 10px;
       font-weight: 500;
+
+      .userLink {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: inherit;
+      }
+
       img{
         height: 30px;
         width: 30px;
