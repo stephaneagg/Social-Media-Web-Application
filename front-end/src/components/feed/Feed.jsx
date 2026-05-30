@@ -1,4 +1,5 @@
 import Post from "../post/Post.jsx"
+import PostList from "../post/PostList";
 import "./feed.scss"
 
 import { useState, useEffect } from "react";
@@ -7,7 +8,7 @@ import { getFeed } from "../../services/feedService"
 export default function Feed() {
 
 
-  const [feed, setFeed] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,12 +32,12 @@ export default function Feed() {
   // ]
 
 useEffect(() => {
-  const loadFeed = async () => {
+  const load = async () => {
     try {
       setLoading(true);
       const data = await getFeed();
       // console.log(data);
-      setFeed(data);
+      setPosts(data);
     } catch (err) {
       setError(err);
     } finally {
@@ -45,7 +46,7 @@ useEffect(() => {
 
   };
 
-  loadFeed();
+  load();
 }, []);
 
 return (
@@ -54,8 +55,8 @@ return (
 
     {error ? <p>Failed to load feed.</p> : null}
 
-    {!loading && !error && feed.map((post) => (
-      <Post post={post} key={post.id} />
+    {!loading && !error && posts.map((post) => (
+      <PostList posts={posts} />
     ))}
   </div>
 );

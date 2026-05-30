@@ -21,7 +21,7 @@
       border-radius: 50%;
       object-fit: cover;
       position: absolute;
-      top: 135px;
+      top: 125px;
       left: 0;
       right: 0;
       margin: auto;
@@ -37,7 +37,7 @@
       }
 
       .uInfo{
-        height: 180px;
+        height: 200px;
         -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
         -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
         box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
@@ -124,7 +124,7 @@
           // transform: translateX(-50%);
           display: flex;
           justify-content: center;
-          min-height: 32px;
+          // min-height: 32px;
 
           @include mobile {
             position: static;
@@ -141,6 +141,18 @@
             border-radius: 5px;
             cursor: pointer;
           }
+        }
+
+        .bio {
+          display: flex;
+          justify-content: center;
+          text-align: center;
+          color: var(--text-color-soft);
+          font-size: 14px;
+          line-height: 1.4;
+          margin-top: 8px;
+          padding: 0 20px;
+          word-break: break-word;
         }
       }
     }
