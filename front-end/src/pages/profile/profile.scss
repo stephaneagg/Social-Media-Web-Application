@@ -21,7 +21,7 @@
       border-radius: 50%;
       object-fit: cover;
       position: absolute;
-      top: 200px;
+      top: 135px;
       left: 0;
       right: 0;
       margin: auto;
@@ -47,10 +47,15 @@
         padding: 30px;
 
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        margin-bottom: 20px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 15px;
+
+        // display: flex;
+        // flex-direction: column;
+        // align-items: center;
+        // justify-content: center;
+        // gap: 15px;
 
         @include mobile{
           flex-direction: column;
@@ -59,36 +64,67 @@
           margin-top: 100px;
         }
 
-
-        .left{
-          flex: 1;
+        .topName {
           display: flex;
-          gap: 15px;
-          color: var(--text-color);
+          justify-content: center;
+          font-size: 20px;
+          font-weight: 600;
+        }
 
-          @include mobile {
-            order: 1;
+        .middle{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .left{
+            // flex: 1;
+            display: flex;
+            gap: 15px;
+            color: var(--text-color);
+
+            @include mobile {
+              order: 1;
+            }
+
+            .post-count{
+              display: flex;
+              flex-direction: column;
+            }
+            .follower-count{
+              display: flex;
+              flex-direction: column;
+            }
+            .following-count{
+              display: flex;
+              flex-direction: column;
+            }
           }
 
-          .post-count{
+          .right{
+            // flex:1;
             display: flex;
-            flex-direction: column;
-          }
-          .follower-count{
-            display: flex;
-            flex-direction: column;
-          }
-          .following-count{
-            display: flex;
-            flex-direction: column;
+            // align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+
+
+            @include mobile {
+              order: 3;
+            }
           }
         }
+
+
+
         .center{
 
-          position: absolute;
-          left: 50%;
-          top: 70%;
-          transform: translateX(-50%);
+          // position: absolute;
+          // left: 50%;
+          // top: 70%;
+          // transform: translateX(-50%);
+          display: flex;
+          justify-content: center;
+          min-height: 32px;
 
           @include mobile {
             position: static;
@@ -104,19 +140,6 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-          }
-        }
-
-        .right{
-          flex:1;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          gap: 10px;
-
-
-          @include mobile {
-            order: 3;
           }
         }
       }
