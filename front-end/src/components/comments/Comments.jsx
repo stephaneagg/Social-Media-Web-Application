@@ -1,28 +1,42 @@
-import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
 import "./comments.scss"
 
-export default function Comments() {
+import { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../../context/authContext";
+import { getComments } from "../../services/commentService"
 
-  const {currentUser} = useContext(AuthContext)
+export default function Comments(props) {
+
+  const {currentUser} = useContext(AuthContext);
+  const [comments, setComments] = useState([]);
 
   // Temporary comment data
-  const comments = [
-    {
-      id:1,
-      desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit.",
-      name:"Janette Doe",
-      userId:3,
-      profilePic:"/resources/tempProfileIcon.jpeg"
-    },
-    {
-      id:2,
-      desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit quisque.",
-      name:"Jerry Doe",
-      userId:5,
-      profilePic:"/resources/tempProfileIcon.jpeg"
-    }
-  ]
+  // const comments = [
+  //   {
+  //     id:1,
+  //     desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit.",
+  //     name:"Janette Doe",
+  //     userId:3,
+  //     profilePic:"/resources/tempProfileIcon.jpeg"
+  //   },
+  //   {
+  //     id:2,
+  //     desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit quisque.",
+  //     name:"Jerry Doe",
+  //     userId:5,
+  //     profilePic:"/resources/tempProfileIcon.jpeg"
+  //   }
+  // ]
+
+  useEffect( () => {
+    const loadComments = async () => {
+      const data = await getComments(props.postId);
+      setComments(data);
+      console.log(data)
+    };
+    loadComments();
+  }, [props.postId]);
+
+
 
   return (
     <div className="comments">
@@ -37,9 +51,9 @@ export default function Comments() {
           <img src={comment.profilePic} alt="" />
           <div className="comment-info">
             <span>{comment.name}</span>
-            <p>{comment.desc}</p>
+            <p>{comment.content}</p>
           </div>
-          <span className="date">1 hour ago</span>
+          <span className="date">{comment.createdAt}</span> {/* TODO: format the date*/}
         </div>
       ))}
     </div>
