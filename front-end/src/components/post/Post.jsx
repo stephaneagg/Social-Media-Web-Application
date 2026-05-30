@@ -16,22 +16,22 @@ export default function Post(props) {
       <div className="container">
         <div className="user">
             <div className="userInfo">
-              <img src={props.post.profilePic} alt="" />
+              <img src={props.post.userProfileImageUrl} alt="" />
               <div className="details">
                 <Link
-                  to={`profile/${props.post.userId}`}
+                  to={`profile/${props.post.authorId}`}
                   style={{textDecoration:"none", color:"inherit"}}
                 >
-                  <span className="name">{props.post.name}</span>
+                  <span className="name">{props.post.authorName}</span>
                 </Link>
-                <span className="date">1 min ago</span>
+                <span className="date">{props.post.createdAt}</span> {/* TODO: Format the date */}
               </div>
             </div>
             <MoreHorizIcon />
         </div>
         <div className="content">
-          <p>{props.post.desc}</p>
-          <img src="/resources/tempPostPic.jpg" alt="" />
+          <p>{props.post.content}</p>
+          <img src={props.post.imageUrl} alt="" />
         </div>
         <div className="info">
           <div className="item" onClick={()=>setCommentOpen(!commentOpen)}>
@@ -39,7 +39,7 @@ export default function Post(props) {
             12 Comments
           </div>
         </div>
-        {commentOpen ? <Comments />: null}
+        {commentOpen ? <Comments postId={props.post.id} />: null}
       </div>
     </div>
   )
