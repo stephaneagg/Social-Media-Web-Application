@@ -104,8 +104,6 @@ export default function ProfilePage() {
             {user ? <span>{user.bio}</span> : null}
           </div>
 
-          {/* Section to put bio in */}
-
         </div>
         <PostList posts={posts} />
       </div>
