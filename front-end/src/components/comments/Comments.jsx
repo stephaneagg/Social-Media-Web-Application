@@ -41,16 +41,16 @@ export default function Comments(props) {
   return (
     <div className="comments">
       <div className="write">
-        <img src={currentUser.profilePic} alt="" />
+        <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt="" />
         <input type="text" placeholder="write a comment" />
         <button>Comment</button>
       </div>
 
       {comments.map( (comment) => (
-        <div className="comment">
-          <img src={comment.profilePic} alt="" />
+        <div className="comment" key={comment.id}>
+          <img src={`http://localhost:8080${comment.profilePictureUrl}`} alt="" />
           <div className="comment-info">
-            <span>{comment.name}</span>
+            <span>{comment.displayName}</span>
             <p>{comment.content}</p>
           </div>
           <span className="date">{comment.createdAt}</span> {/* TODO: format the date*/}
