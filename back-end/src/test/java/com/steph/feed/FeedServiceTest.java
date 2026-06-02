@@ -36,8 +36,8 @@ class FeedServiceTest {
         Post first = new Post(1, new User(2), "latest", "https://img1", Instant.parse("2026-01-02T10:00:00Z"));
         Post second = new Post(2, new User(3), "older", "https://img2", Instant.parse("2026-01-01T10:00:00Z"));
 
-        PostDTO firstDto = new PostDTO(1, 2, "alice", "latest", "https://img1", Instant.parse("2026-01-02T10:00:00Z"));
-        PostDTO secondDto = new PostDTO(2, 3, "bob", "older", "https://img2", Instant.parse("2026-01-01T10:00:00Z"));
+        PostDTO firstDto = new PostDTO(1, 2, "alice", "latest", null, "https://img1", 0, Instant.parse("2026-01-02T10:00:00Z"));
+        PostDTO secondDto = new PostDTO(2, 3, "bob", "older", null, "https://img2", 0, Instant.parse("2026-01-01T10:00:00Z"));
 
         when(postRepository.findFeedPosts(userId)).thenReturn(List.of(first, second));
         when(postDTOMapper.apply(first)).thenReturn(firstDto);

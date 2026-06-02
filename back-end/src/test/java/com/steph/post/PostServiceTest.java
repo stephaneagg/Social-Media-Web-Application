@@ -49,7 +49,7 @@ class PostServiceTest {
     void getPost_shouldReturnPostDTO_whenPostExists() {
         Integer postId = 1;
         Post post = new Post();
-        PostDTO dto = new PostDTO(1, 10, "steph", "hello", "https://img", Instant.parse("2026-01-01T10:00:00Z"));
+        PostDTO dto = new PostDTO(1, 10, "steph", "hello", null, "https://img", 0, Instant.parse("2026-01-01T10:00:00Z"));
 
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
         when(postDTOMapper.apply(post)).thenReturn(dto);
@@ -79,8 +79,8 @@ class PostServiceTest {
 
         Post post1 = new Post();
         Post post2 = new Post();
-        PostDTO dto1 = new PostDTO(1, 10, "steph", "latest", "https://img1", Instant.parse("2026-01-02T10:00:00Z"));
-        PostDTO dto2 = new PostDTO(2, 10, "steph", "older", "https://img2", Instant.parse("2026-01-01T10:00:00Z"));
+        PostDTO dto1 = new PostDTO(1, 10, "steph", "latest", null, "https://img1", 0, Instant.parse("2026-01-02T10:00:00Z"));
+        PostDTO dto2 = new PostDTO(2, 10, "steph", "older", null, "https://img2", 0, Instant.parse("2026-01-01T10:00:00Z"));
 
         when(postRepository.findByUserIdOrderByCreatedAtDesc(userId)).thenReturn(List.of(post1, post2));
         when(postDTOMapper.apply(any(Post.class))).thenReturn(dto1, dto2);
@@ -115,7 +115,7 @@ class PostServiceTest {
 
         User user = new User(userId);
 
-        PostDTO mappedDTO = new PostDTO(3, 10, "steph", "new post", "https://img", Instant.parse("2026-01-03T10:00:00Z"));
+        PostDTO mappedDTO = new PostDTO(3, 10, "steph", "new post", null, "https://img", 0, Instant.parse("2026-01-03T10:00:00Z"));
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(postDTOMapper.apply(any(Post.class))).thenReturn(mappedDTO);
@@ -164,7 +164,7 @@ class PostServiceTest {
         User user = new User(authenticatedUserId);
 
         Post post = mock(Post.class);
-        PostDTO mappedDTO = new PostDTO(1, 10, "steph", "updated", "https://new-img", Instant.parse("2026-01-04T10:00:00Z"));
+        PostDTO mappedDTO = new PostDTO(1, 10, "steph", "updated", null, "https://new-img", 0, Instant.parse("2026-01-04T10:00:00Z"));
 
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
         when(post.getUser()).thenReturn(user);

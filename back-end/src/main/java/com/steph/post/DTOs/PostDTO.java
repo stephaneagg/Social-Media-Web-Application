@@ -9,6 +9,7 @@ public record PostDTO(
         String content,
         String userProfileImageUrl,
         String imageUrl,
+        Integer commentCount,
         Instant createdAt
 ) {
 }

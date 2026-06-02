@@ -46,8 +46,8 @@ class FeedControllerTest {
     void getFeed_returnsFeedForAuthenticatedUser() throws Exception {
         authenticateAs(5);
 
-        PostDTO first = new PostDTO(1, 2, "alice", "latest", "https://img1", Instant.parse("2026-01-02T10:00:00Z"));
-        PostDTO second = new PostDTO(2, 3, "bob", "older", "https://img2", Instant.parse("2026-01-01T10:00:00Z"));
+        PostDTO first = new PostDTO(1, 2, "alice", "latest", null, "https://img1", 0, Instant.parse("2026-01-02T10:00:00Z"));
+        PostDTO second = new PostDTO(2, 3, "bob", "older", null, "https://img2", 0, Instant.parse("2026-01-01T10:00:00Z"));
 
         when(feedService.getFeed(5)).thenReturn(List.of(first, second));
 

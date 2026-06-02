@@ -55,7 +55,7 @@ class PostControllerTest {
 
     @Test
     void getPost_shouldReturnPostById() throws Exception {
-        PostDTO post = new PostDTO(1, 10, "steph", "hello", "https://img", Instant.parse("2026-01-01T10:00:00Z"));
+        PostDTO post = new PostDTO(1, 10, "steph", "hello", null, "https://img", 0, Instant.parse("2026-01-01T10:00:00Z"));
         when(postService.getPost(1)).thenReturn(post);
 
         mockMvc.perform(get("/posts/1"))
@@ -70,8 +70,8 @@ class PostControllerTest {
 
     @Test
     void getPostsByUser_shouldReturnPostsForUser() throws Exception {
-        PostDTO first = new PostDTO(1, 10, "steph", "latest", "https://img1", Instant.parse("2026-01-02T10:00:00Z"));
-        PostDTO second = new PostDTO(2, 10, "steph", "older", "https://img2", Instant.parse("2026-01-01T10:00:00Z"));
+        PostDTO first = new PostDTO(1, 10, "steph", "latest", null, "https://img1", 0, Instant.parse("2026-01-02T10:00:00Z"));
+        PostDTO second = new PostDTO(2, 10, "steph", "older", null, "https://img2", 0, Instant.parse("2026-01-01T10:00:00Z"));
 
         when(postService.getPostsByUser(10)).thenReturn(List.of(first, second));
 
@@ -89,7 +89,7 @@ class PostControllerTest {
         authenticateAs(10);
 
         CreatePostDTO request = new CreatePostDTO("new post", "https://img");
-        PostDTO created = new PostDTO(3, 10, "steph", "new post", "https://img", Instant.parse("2026-01-03T10:00:00Z"));
+        PostDTO created = new PostDTO(3, 10, "steph", "new post", null, "https://img", 0, Instant.parse("2026-01-03T10:00:00Z"));
 
         when(postService.createPost(any(CreatePostDTO.class), eq(10))).thenReturn(created);
 
@@ -110,7 +110,7 @@ class PostControllerTest {
         request.setContent("updated");
         request.setImageUrl("https://new-img");
 
-        PostDTO updated = new PostDTO(1, 10, "steph", "updated", "https://new-img", Instant.parse("2026-01-04T10:00:00Z"));
+        PostDTO updated = new PostDTO(1, 10, "steph", "updated", null, "https://new-img", 0, Instant.parse("2026-01-04T10:00:00Z"));
 
         when(postService.updatePost(any(UpdatePostDTO.class), eq(1), eq(10))).thenReturn(updated);
 
