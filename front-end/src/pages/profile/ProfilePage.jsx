@@ -64,7 +64,7 @@ export default function ProfilePage() {
     <div className="profile">
       <div className="images">
         <img src="/resources/tempCoverPic.jpg" alt="" className="cover"/>
-        <img src="/resources/tempProfileIcon.jpeg" alt="" className="profilePic"/>
+        <img src={user ? `http://localhost:8080${user.profileImageUrl}` : ""} alt="" className="profilePic"/>
       </div>
 
       <div className="profileContainer">

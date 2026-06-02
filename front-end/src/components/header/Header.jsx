@@ -50,7 +50,7 @@ export default function Header() {
                         to={`profile/${currentUser.id}`}
                         className="userLink"
                     >
-                        <img src={currentUser.profileImageUrl} alt=""/>
+                        <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt=""/>
                         <span>{currentUser.displayName}</span>
                     </Link>
                 </div>

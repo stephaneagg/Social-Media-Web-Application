@@ -16,7 +16,7 @@ export default function Post(props) {
       <div className="container">
         <div className="user">
             <div className="userInfo">
-              <img src={props.post.userProfileImageUrl} alt="" />
+              <img src={`http://localhost:8080${props.post.userProfileImageUrl}`} alt="" />
               <div className="details">
                 <Link
                   to={`profile/${props.post.authorId}`}
@@ -31,7 +31,7 @@ export default function Post(props) {
         </div>
         <div className="content">
           <p>{props.post.content}</p>
-          <img src={props.post.imageUrl} alt="" />
+          <img src={`http://localhost:8080${props.post.imageUrl}`} alt="" />
         </div>
         <div className="info">
           <div className="item" onClick={()=>setCommentOpen(!commentOpen)}>

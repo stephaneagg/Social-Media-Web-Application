@@ -14,7 +14,7 @@ export default function LeftBar() {
         <div className="menu">
 
           <div className="user">
-            <img src={currentUser.profileImageUrl} alt="" />
+            <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt="" />
             <span>{currentUser.displayName}</span>
           </div>
 
