@@ -4,6 +4,7 @@ import { useState } from "react";
 import Comments from "../comments/Comments"
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AddCommentIcon from '@mui/icons-material/AddComment';
+import { timeAgo } from "../../utils/formatDate";
 
 import "./post.scss"
 
@@ -24,7 +25,7 @@ export default function Post(props) {
                 >
                   <span className="name">{props.post.authorName}</span>
                 </Link>
-                <span className="date">{props.post.createdAt}</span> {/* TODO: Format the date */}
+                <span className="date">{timeAgo(props.post.createdAt)}</span>
               </div>
             </div>
             <MoreHorizIcon />

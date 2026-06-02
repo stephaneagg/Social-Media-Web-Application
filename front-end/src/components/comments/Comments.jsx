@@ -3,6 +3,7 @@ import "./comments.scss"
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { getComments } from "../../services/commentService"
+import { timeAgo } from "../../utils/formatDate";
 
 export default function Comments(props) {
 
@@ -53,7 +54,7 @@ export default function Comments(props) {
             <span>{comment.displayName}</span>
             <p>{comment.content}</p>
           </div>
-          <span className="date">{comment.createdAt}</span> {/* TODO: format the date*/}
+          <span className="date">{timeAgo(comment.createdAt)}</span>
         </div>
       ))}
     </div>
