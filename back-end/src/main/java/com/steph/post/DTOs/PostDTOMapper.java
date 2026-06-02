@@ -3,6 +3,7 @@ package com.steph.post.DTOs;
 
 import com.steph.comment.CommentRepository;
 import com.steph.post.Post;
+import com.steph.upload.ImageUrlNormalizer;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
@@ -11,9 +12,11 @@ import java.util.function.Function;
 public class PostDTOMapper implements Function<Post, PostDTO> {
 
     private final CommentRepository commentRepository;
+    private final ImageUrlNormalizer imageUrlNormalizer;
 
-    public PostDTOMapper(CommentRepository commentRepository) {
+    public PostDTOMapper(CommentRepository commentRepository, ImageUrlNormalizer imageUrlNormalizer) {
         this.commentRepository = commentRepository;
+        this.imageUrlNormalizer = imageUrlNormalizer;
     }
 
     @Override
@@ -23,8 +26,8 @@ public class PostDTOMapper implements Function<Post, PostDTO> {
                 post.getUser().getId(), // authorId
                 post.getUser().getDisplayName(), // authorName
                 post.getContentText(), // content
-                post.getUser().getProfileImageUrl(), //userProfileImageUrl
-                post.getImageUrl(), // imageUrl
+                imageUrlNormalizer.normalize(post.getUser().getProfileImageUrl()), //userProfileImageUrl
+                imageUrlNormalizer.normalize(post.getImageUrl()), // imageUrl
                 commentRepository.countByPostId(post.getId()), // commentCount
                 post.getCreatedAt() // createdAt
         );

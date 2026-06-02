@@ -20,12 +20,12 @@ public class FileStorageService {
 
     public String saveUserImage(MultipartFile file) throws IOException {
         validateFile(file);
-        return save(file, userUploadPath, "uploads/users/");
+        return save(file, userUploadPath, "/uploads/users/");
     }
 
     public String savePostImage(MultipartFile file) throws IOException {
         validateFile(file);
-        return save(file, postUploadPath, "uploads/posts/");
+        return save(file, postUploadPath, "/uploads/posts/");
     }
 
     public String save(MultipartFile file, Path uploadPath, String urlPrefix) throws IOException {
