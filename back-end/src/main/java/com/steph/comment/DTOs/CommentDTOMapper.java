@@ -26,6 +26,7 @@ public class CommentDTOMapper implements Function<Comment, CommentDTO> {
                 comment.getPost().getId(),
                 comment.getContent(),
                 imageUrlNormalizer.normalize(comment.getUser().getProfileImageUrl()),
+                comment.getUser().getDisplayName(),
                 comment.getCreatedAt()
         );
     }
