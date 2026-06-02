@@ -36,7 +36,7 @@ export default function Post(props) {
         <div className="info">
           <div className="item" onClick={()=>setCommentOpen(!commentOpen)}>
             <AddCommentIcon />
-            12 Comments
+            {props.post.commentCount} Comments
           </div>
         </div>
         {commentOpen ? <Comments postId={props.post.id} />: null}
