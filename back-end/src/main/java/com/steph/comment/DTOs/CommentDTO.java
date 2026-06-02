@@ -7,6 +7,7 @@ public record CommentDTO(
         Integer userId,
         Integer postId,
         String content,
+        String profilePictureUrl,
         Instant createdAt
 ) {
 }
