@@ -22,7 +22,8 @@ public class CurrentUserDTOMapper implements Function<User, CurrentUserDTO> {
                 user.getUsername(),
                 user.getEmail(),
                 user.getDisplayName(),
-                imageUrlNormalizer.normalize(user.getProfileImageUrl())
+                imageUrlNormalizer.normalize(user.getProfileImageUrl()),
+                imageUrlNormalizer.normalize(user.getCoverImageUrl())
         );
     }
 }

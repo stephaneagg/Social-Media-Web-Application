@@ -21,7 +21,8 @@ public class UserProfileDTOMapper implements Function<User, UserProfileDTO> {
                 user.getId(),
                 user.getDisplayName(),
                 user.getBio(),
-                imageUrlNormalizer.normalize(user.getProfileImageUrl())
+                imageUrlNormalizer.normalize(user.getProfileImageUrl()),
+                imageUrlNormalizer.normalize(user.getCoverImageUrl())
         );
     }
 }

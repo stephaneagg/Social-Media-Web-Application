@@ -49,8 +49,8 @@ class FollowControllerTest {
     @Test
     void getFollowers_shouldReturnListOfFollowers() throws Exception {
 
-        UserProfileDTO user1 = new UserProfileDTO(1, "user1", null, null);
-        UserProfileDTO user2 = new UserProfileDTO(2, "user2", null, null);
+        UserProfileDTO user1 = new UserProfileDTO(1, "user1", null, null, null);
+        UserProfileDTO user2 = new UserProfileDTO(2, "user2", null, null, null);
 
         when(followService.getFollowers(10)).thenReturn(List.of(user1, user2));
 
@@ -66,7 +66,7 @@ class FollowControllerTest {
     @Test
     void getFollows_shouldReturnUsersBeingFollowed() throws Exception {
 
-        UserProfileDTO user1 = new UserProfileDTO(3, "user3", null, null);
+        UserProfileDTO user1 = new UserProfileDTO(3, "user3", null, null, null);
 
         when(followService.getFollows(5)).thenReturn(List.of(user1));
 

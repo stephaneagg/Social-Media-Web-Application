@@ -42,7 +42,7 @@ class FollowServiceTest {
         User follower = new User(1); follower.setDisplayName("Alice");
         Follow follow = new Follow(follower, new User(2));
         when(followRepository.findByFollowedId(2)).thenReturn(List.of(follow));
-        UserProfileDTO dto = new UserProfileDTO(1, "Alice", null, null);
+        UserProfileDTO dto = new UserProfileDTO(1, "Alice", null, null, null);
         when(mapper.apply(follower)).thenReturn(dto);
 
         List<UserProfileDTO> result = followService.getFollowers(2);
@@ -56,7 +56,7 @@ class FollowServiceTest {
         User followed = new User(2); followed.setDisplayName("Bob");
         Follow follow = new Follow(new User(1), followed);
         when(followRepository.findByFollowerId(1)).thenReturn(List.of(follow));
-        UserProfileDTO dto = new UserProfileDTO(2, "Bob", null, null);
+        UserProfileDTO dto = new UserProfileDTO(2, "Bob", null, null, null);
         when(mapper.apply(followed)).thenReturn(dto);
 
         List<UserProfileDTO> result = followService.getFollows(1);

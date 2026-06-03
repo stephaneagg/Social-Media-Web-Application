@@ -52,8 +52,8 @@ class CommentControllerTest {
 
     @Test
     void getComments_returnsCommentsForPost() throws Exception {
-        CommentDTO first = new CommentDTO(1, 2, 10, "hi", Instant.parse("2026-02-01T00:00:00Z"));
-        CommentDTO second = new CommentDTO(2, 3, 10, "hey", Instant.parse("2026-02-02T00:00:00Z"));
+        CommentDTO first = new CommentDTO(1, 2, 10, "hi", null, null, Instant.parse("2026-02-01T00:00:00Z"));
+        CommentDTO second = new CommentDTO(2, 3, 10, "hey", null, null, Instant.parse("2026-02-02T00:00:00Z"));
 
         when(commentService.getComments(10)).thenReturn(List.of(first, second));
 
@@ -72,7 +72,7 @@ class CommentControllerTest {
     void createComment_returnsCreatedComment() throws Exception {
         authenticateAs(5);
         CreateCommentDTO request = new CreateCommentDTO(10, "Nice post");
-        CommentDTO created = new CommentDTO(3, 5, 10, "Nice post", Instant.parse("2026-03-01T00:00:00Z"));
+        CommentDTO created = new CommentDTO(3, 5, 10, "Nice post", null, null, Instant.parse("2026-03-01T00:00:00Z"));
 
         when(commentService.createComment(any(CreateCommentDTO.class), eq(10), eq(5))).thenReturn(created);
 
@@ -93,7 +93,7 @@ class CommentControllerTest {
         authenticateAs(5);
         UpdateCommentDTO request = new UpdateCommentDTO();
         request.setContent("updated");
-        CommentDTO updated = new CommentDTO(3, 5, 10, "updated", Instant.parse("2026-04-01T00:00:00Z"));
+        CommentDTO updated = new CommentDTO(3, 5, 10, "updated", null, null, Instant.parse("2026-04-01T00:00:00Z"));
 
         when(commentService.updateComment(any(UpdateCommentDTO.class), eq(3), eq(5))).thenReturn(updated);
 

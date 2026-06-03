@@ -48,8 +48,8 @@ class UserControllerTest {
 
     @Test
     void getUsers_shouldReturnListOfUsers() throws Exception {
-        UserProfileDTO user1 = new UserProfileDTO(1, "steph", null, null);
-        UserProfileDTO user2 = new UserProfileDTO(2, "steph2", null, null);
+        UserProfileDTO user1 = new UserProfileDTO(1, "steph", null, null, null);
+        UserProfileDTO user2 = new UserProfileDTO(2, "steph2", null, null, null);
 
         when(userService.getAllUsers()).thenReturn(List.of(user1, user2));
 
@@ -64,7 +64,7 @@ class UserControllerTest {
 
     @Test
     void getUserById_shouldReturnUser_whenUserExists() throws Exception {
-        UserProfileDTO user = new UserProfileDTO(1, "steph", null, null);
+        UserProfileDTO user = new UserProfileDTO(1, "steph", null, null, null);
         when(userService.getUserById(1)).thenReturn(user);
 
         mockMvc.perform(get("/users/1"))
@@ -77,8 +77,8 @@ class UserControllerTest {
     void updateUser_shouldReturnUpdatedUser() throws Exception {
         authenticateAs(1);
 
-        UpdateUserDTO updateDTO = new UpdateUserDTO("newName", "newBio", "newImage");
-        UserProfileDTO updatedUser = new UserProfileDTO(1, "newName", "newBio", "newImage");
+        UpdateUserDTO updateDTO = new UpdateUserDTO("newProfileImage", "newCoverImage", "newBio", "newName");
+        UserProfileDTO updatedUser = new UserProfileDTO(1, "newName", "newBio", "newProfileImage", "newCoverImage");
 
         when(userService.updateUser(any(UpdateUserDTO.class), eq(1), eq(1))).thenReturn(updatedUser);
 
@@ -89,14 +89,15 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.displayName").value("newName"))
                 .andExpect(jsonPath("$.bio").value("newBio"))
-                .andExpect(jsonPath("$.profileImageUrl").value("newImage"));
+                .andExpect(jsonPath("$.profileImageUrl").value("newProfileImage"))
+                .andExpect(jsonPath("$.coverImageUrl").value("newCoverImage"));
     }
 
     @Test
     void updateUser_shouldReturnNotFound_whenUserDoesNotExist() throws Exception {
         authenticateAs(1);
 
-        UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
+        UpdateUserDTO updateDTO = new UpdateUserDTO("profileImage", "coverImage", "bio", "name");
 
         when(userService.updateUser(any(UpdateUserDTO.class), eq(1), eq(1)))
                 .thenThrow(new UserException("User does not exist"));

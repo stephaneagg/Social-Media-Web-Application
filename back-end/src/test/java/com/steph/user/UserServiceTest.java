@@ -1,6 +1,7 @@
 package com.steph.user;
 
 import com.steph.exceptions.UserException;
+import com.steph.user.DTOs.CurrentUserDTOMapper;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.user.DTOs.UserProfileDTOMapper;
@@ -26,6 +27,9 @@ public class UserServiceTest {
     @Mock
     private UserProfileDTOMapper userProfileDTOMapper;
 
+    @Mock
+    private CurrentUserDTOMapper currentUserDTOMapper;
+
     @InjectMocks
     private UserService userService;
 
@@ -34,7 +38,7 @@ public class UserServiceTest {
         Integer userId = 1;
 
         User user = new User();
-        UserProfileDTO dto = new UserProfileDTO(1, "stephane", null, null);
+        UserProfileDTO dto = new UserProfileDTO(1, "stephane", null, null, null);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(userProfileDTOMapper.apply(user)).thenReturn(dto);
@@ -67,8 +71,8 @@ public class UserServiceTest {
 
     User user1 = new User();
     User user2 = new User();
-    UserProfileDTO dto1 = new UserProfileDTO(1, "steph", null, null);
-    UserProfileDTO dto2 = new UserProfileDTO(2, "steph2", null, null);
+    UserProfileDTO dto1 = new UserProfileDTO(1, "steph", null, null, null);
+    UserProfileDTO dto2 = new UserProfileDTO(2, "steph2", null, null, null);
 
     when(userRepository.findAll()).thenReturn(List.of(user1, user2));
     when(userProfileDTOMapper.apply(any(User.class))).thenReturn(dto1, dto2);
@@ -102,13 +106,13 @@ public class UserServiceTest {
         // Inputs
         Integer userId = 1;
         Integer authenticatedUserId = 1;
-        UpdateUserDTO updateDTO = new UpdateUserDTO("newName", "newBio", "newImage");
+        UpdateUserDTO updateDTO = new UpdateUserDTO("newProfileImage", "newCoverImage", "newBio", "newName");
 
         // Existing user in repository
         User user = mock(User.class); // or new User(), but mocking works for updateFromDTO
 
         // DTO that mapper should return
-        UserProfileDTO mappedDTO = new UserProfileDTO(1, "newName", "newBio", "newImage");
+        UserProfileDTO mappedDTO = new UserProfileDTO(1, "newName", "newBio", "newProfileImage", "newCoverImage");
 
         // Stubs
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -134,7 +138,7 @@ public class UserServiceTest {
 
         Integer userId = 99;
         Integer authenticatedUserId = 99;
-        UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
+        UpdateUserDTO updateDTO = new UpdateUserDTO("profileImage", "coverImage", "bio", "name");
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -164,7 +168,7 @@ public class UserServiceTest {
     void updateUser_shouldThrowAccessDeniedException_whenUserTriesToUpdateAnotherUser() {
         Integer userId = 1;
         Integer authenticatedUserId = 2;
-        UpdateUserDTO updateDTO = new UpdateUserDTO("name", "bio", "image");
+        UpdateUserDTO updateDTO = new UpdateUserDTO("profileImage", "coverImage", "bio", "name");
 
         AccessDeniedException exception = assertThrows(AccessDeniedException.class, () ->
                 userService.updateUser(updateDTO, userId, authenticatedUserId)

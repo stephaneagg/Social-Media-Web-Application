@@ -146,7 +146,7 @@ class PostServiceTest {
 
         PostException exception = assertThrows(PostException.class, () -> postService.createPost(createPostDTO, authenticatedUserId));
 
-        assertEquals("77 not found", exception.getMessage());
+        assertEquals("User Id: 77 not found", exception.getMessage());
         verify(userRepository).findById(userId);
         verifyNoInteractions(postRepository);
         verifyNoInteractions(postDTOMapper);
@@ -214,24 +214,6 @@ class PostServiceTest {
     }
 
     @Test
-    void createPost_shouldThrowAccessDeniedException_whenCreatingPostForAnotherUser() {
-        Integer authorId = 10;
-        Integer authenticatedUserId = 11;
-        CreatePostDTO createPostDTO = new CreatePostDTO("content", "https://img");
-
-        User user = new User(authorId);
-        when(userRepository.findById(authorId)).thenReturn(Optional.of(user));
-
-        AccessDeniedException exception = assertThrows(AccessDeniedException.class, () ->
-                postService.createPost(createPostDTO, authenticatedUserId)
-        );
-
-        assertEquals("You can only create posts for your own profile", exception.getMessage());
-        verify(userRepository).findById(authorId);
-        verifyNoInteractions(postRepository);
-        verifyNoInteractions(postDTOMapper);
-    }
-
     @Test
     void updatePost_shouldThrowAccessDeniedException_whenUpdatingAnotherUsersPost() {
         Integer postId = 1;

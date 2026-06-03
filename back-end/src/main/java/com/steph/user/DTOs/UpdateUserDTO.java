@@ -6,9 +6,11 @@ public class UpdateUserDTO {
     private String displayName;
     private String bio;
     private String profileImageUrl;
+    private String coverImageUrl;
 
-    public UpdateUserDTO(String profileImageUrl, String bio, String displayName) {
+    public UpdateUserDTO(String profileImageUrl, String coverImageUrl, String bio, String displayName) {
         this.profileImageUrl = profileImageUrl;
+        this.coverImageUrl = coverImageUrl;
         this.bio = bio;
         this.displayName = displayName;
     }
@@ -35,6 +37,14 @@ public class UpdateUserDTO {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
     }
 }
 

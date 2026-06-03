@@ -45,6 +45,9 @@ public class User implements UserDetails {
     @Column (name = "profile_image_url", length = 500)
     private String profileImageUrl;
 
+    @Column (name = "cover_image_url", length = 500)
+    private String coverImageUrl;
+
     @Column (name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -140,6 +143,10 @@ public class User implements UserDetails {
         return profileImageUrl;
     }
 
+    public String getCoverImageUrl() {
+        return coverImageUrl;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -174,6 +181,10 @@ public class User implements UserDetails {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.coverImageUrl = coverImageUrl;
+    }
+
     // HELPERS //
 
     /**
@@ -185,17 +196,18 @@ public class User implements UserDetails {
         if (updateUserDTO.getDisplayName() != null) this.displayName = updateUserDTO.getDisplayName();
         if (updateUserDTO.getBio() != null) this.bio = updateUserDTO.getBio();
         if (updateUserDTO.getProfileImageUrl() != null) this.profileImageUrl = updateUserDTO.getProfileImageUrl();
+        if (updateUserDTO.getCoverImageUrl() != null) this.coverImageUrl = updateUserDTO.getCoverImageUrl();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(displayName, user.displayName) && Objects.equals(bio, user.bio) && Objects.equals(profileImageUrl, user.profileImageUrl) && Objects.equals(createdAt, user.createdAt);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(displayName, user.displayName) && Objects.equals(bio, user.bio) && Objects.equals(profileImageUrl, user.profileImageUrl) && Objects.equals(coverImageUrl, user.coverImageUrl) && Objects.equals(createdAt, user.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, passwordHash, displayName, bio, profileImageUrl, createdAt);
+        return Objects.hash(id, username, email, passwordHash, displayName, bio, profileImageUrl, coverImageUrl, createdAt);
     }
 }

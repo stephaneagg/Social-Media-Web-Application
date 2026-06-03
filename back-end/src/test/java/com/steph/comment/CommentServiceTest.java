@@ -49,8 +49,8 @@ class CommentServiceTest {
     void getComments_returnsMappedComments() {
         Comment first = new Comment(1, new User(2), new Post(10, new User(9), "p1", null, Instant.parse("2026-01-01T00:00:00Z")), "hi", Instant.parse("2026-02-01T00:00:00Z"));
         Comment second = new Comment(2, new User(3), new Post(10, new User(8), "p2", null, Instant.parse("2026-01-02T00:00:00Z")), "hey", Instant.parse("2026-02-02T00:00:00Z"));
-        CommentDTO dto1 = new CommentDTO(1, 2, 10, "hi", Instant.parse("2026-02-01T00:00:00Z"));
-        CommentDTO dto2 = new CommentDTO(2, 3, 10, "hey", Instant.parse("2026-02-02T00:00:00Z"));
+        CommentDTO dto1 = new CommentDTO(1, 2, 10, "hi", null, null, Instant.parse("2026-02-01T00:00:00Z"));
+        CommentDTO dto2 = new CommentDTO(2, 3, 10, "hey", null, null, Instant.parse("2026-02-02T00:00:00Z"));
 
         when(commentRepository.findByPostIdOrderByCreatedAtDesc(10)).thenReturn(List.of(first, second));
         when(commentDTOMapper.apply(any(Comment.class))).thenReturn(dto1, dto2);
@@ -72,7 +72,7 @@ class CommentServiceTest {
 
         User user = new User(userId);
         Post post = new Post(postId, new User(20), "p", null, Instant.parse("2026-01-01T00:00:00Z"));
-        CommentDTO mapped = new CommentDTO(3, userId, postId, "Nice post", Instant.parse("2026-03-01T00:00:00Z"));
+        CommentDTO mapped = new CommentDTO(3, userId, postId, "Nice post", null, null, Instant.parse("2026-03-01T00:00:00Z"));
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
@@ -132,7 +132,7 @@ class CommentServiceTest {
         Comment comment = mock(Comment.class);
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
         when(comment.getUser()).thenReturn(new User(userId));
-        CommentDTO mapped = new CommentDTO(commentId, userId, 10, "updated", Instant.parse("2026-04-01T00:00:00Z"));
+        CommentDTO mapped = new CommentDTO(commentId, userId, 10, "updated", null, null, Instant.parse("2026-04-01T00:00:00Z"));
         when(commentDTOMapper.apply(comment)).thenReturn(mapped);
 
         CommentDTO result = commentService.updateComment(updateDTO, commentId, userId);

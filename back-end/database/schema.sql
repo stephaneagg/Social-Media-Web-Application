@@ -10,6 +10,7 @@ CREATE TABLE public.users (
                               username varchar(50) NULL,
                               display_name varchar(100) NULL,
                               profile_image_url varchar(500) NULL,
+                              cover_image_url varchar(500) NULL,
                               bio text NULL,
                               email varchar(255) NULL,
                               password_hash varchar(255) NOT NULL,

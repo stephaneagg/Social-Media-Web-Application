@@ -6,6 +6,7 @@ public record UserProfileDTO(
         Integer id,
         String displayName,
         String bio,
-        String profileImageUrl
+        String profileImageUrl,
+        String coverImageUrl
 ) {
 }
