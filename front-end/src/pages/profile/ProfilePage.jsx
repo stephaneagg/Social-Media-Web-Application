@@ -63,8 +63,8 @@ export default function ProfilePage() {
   return (
     <div className="profile">
       <div className="images">
-        <img src="/resources/tempCoverPic.jpg" alt="" className="cover"/>
-        <img src={user ? `http://localhost:8080${user.profileImageUrl}` : ""} alt="" className="profilePic"/>
+        <img src={user && user.coverImageUrl != null ? `http://localhost:8080${user.coverImageUrl}` : "/resources/tempCoverPic.jpg"} alt="" className="cover"/>
+        <img src={user && user.profileImageUrl != null ? `http://localhost:8080${user.profileImageUrl}` : "/resources/tempProfileIcon.jpg"} alt="" className="profilePic"/>
       </div>
 
       <div className="profileContainer">

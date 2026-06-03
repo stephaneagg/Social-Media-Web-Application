@@ -14,7 +14,7 @@ export async function getUser(userId) {
     throw new Error("Failed to get user");
   }
 
-  return await res.json(); // {id, displayName, bio, profileImageUrl}
+  return await res.json(); // {id, displayName, bio, profileImageUrl, coverImageUrl}
 }
 
 export async function editUser(userId, displayName, bio, profileImageUrl) {
@@ -48,7 +48,7 @@ export async function editUser(userId, displayName, bio, profileImageUrl) {
   }
 
 
-  return await res.json(); // {id, displayName, bio, profileImageUrl}
+  return await res.json(); // {id, displayName, bio, profileImageUrl, coverImageUrl}
 }
 
 // Think about if this function is even needed
