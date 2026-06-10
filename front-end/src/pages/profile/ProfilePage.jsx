@@ -2,6 +2,7 @@ import "./profile.scss"
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Feed from "../../components/feed/Feed.jsx"
 import PostList from "../../components/post/PostList";
+import CreatePost from "../../components/post/CreatePost.jsx"
 
 import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -105,6 +106,7 @@ export default function ProfilePage() {
           </div>
 
         </div>
+        {isOwnProfile ? <CreatePost /> : null}
         <PostList posts={posts} />
       </div>
     </div>

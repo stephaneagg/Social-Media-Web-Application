@@ -2,8 +2,7 @@
 
 .profile {
 
-  background-color: var(--bg);
-
+  background-color: var(--bg-soft);
   .images{
     height: 300px;
     width: 100%;
@@ -31,6 +30,10 @@
 
   .profileContainer{
       padding: 20px 70px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
 
       @include mobile {
         padding: 10px;

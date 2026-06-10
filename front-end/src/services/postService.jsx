@@ -42,7 +42,7 @@ export async function getUsersPosts(userId) {
   return await res.json(); // [{id, authorId, authorName, content, userProfileImageUrl, imageUrl, createdAt}, ...]
 }
 
-export async function createPost(content, imageUrl) {
+export async function createPost({content, imageUrl}) {
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${API_URL}`, {
@@ -51,7 +51,7 @@ export async function createPost(content, imageUrl) {
       Authorization: `Bearer ${token}`,
       "Content-type": "application/json",
     },
-    body: JSON.stringify({ content, imageUrl })
+    body: JSON.stringify({ content, imageUrl: imageUrl ?? null })
   })
 
   if (!res.ok) {

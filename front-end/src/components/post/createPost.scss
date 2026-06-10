@@ -1,0 +1,81 @@
+.createPost {
+  background: var(--bg);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .top input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text-color);
+  }
+
+  .preview {
+    position: relative;
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+
+      width: 24px;
+      height: 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+
+      font-size: 14px;
+      line-height: 1;
+    }
+  }
+
+
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .upload {
+    cursor: pointer;
+    color: #5271ff;
+    font-weight: 500;
+  }
+
+  button {
+    background: #5271ff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
