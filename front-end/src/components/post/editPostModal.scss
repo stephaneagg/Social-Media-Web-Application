@@ -1,0 +1,106 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  .modal {
+    background-color: var(--bg);
+    color: var(--text-color);
+    border-radius: 20px;
+    padding: 20px;
+    width: 500px;
+    max-width: 90vw;
+
+    -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+    -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+    box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-soft);
+      color: var(--text-color);
+      font-size: 14px;
+      resize: vertical;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: var(--text-color);
+      }
+    }
+
+    img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 16px;
+    }
+
+    input[type="file"] {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+
+    .error {
+      margin-top: 10px;
+      font-size: 13px;
+      color: red;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+
+      button {
+        padding: 8px 16px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:first-child {
+          background-color: var(--bg-soft);
+          color: var(--text-color);
+
+          &:hover {
+            background-color: var(--border);
+          }
+        }
+
+        &:last-child {
+          background-color: var(--button-bg, #5271ff);
+          color: white;
+
+          &:hover {
+            opacity: 0.9;
+          }
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

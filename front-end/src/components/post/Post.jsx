@@ -1,9 +1,10 @@
 import { useState, useContext, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext.jsx";
-import { deletePost, editPost } from "../../services/postService"
+import { deletePost } from "../../services/postService"
 
 import Comments from "../comments/Comments";
+import EditPostModal from './EditPostModal';
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import { timeAgo } from "../../utils/formatDate";
@@ -13,6 +14,7 @@ import "./post.scss";
 export default function Post(props) {
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
   const isOwner = currentUser.id === props.post.authorId;
@@ -51,8 +53,6 @@ export default function Post(props) {
     }
   }
 
-  function handleEdit() {}
-
   function handleLink() {}
 
   return (
@@ -86,17 +86,15 @@ export default function Post(props) {
           <div ref={menuRef} className={`postMenu${menuOpen ? " open" : ""}`}>
             {isOwner && (
               <>
-                <button
-                  onClick={() => {
-                    handleEdit();
+                <button onClick={() => {
+                    setEditing(true);
                     setMenuOpen(false);
                   }}
                 >
                   Edit Post
                 </button>
 
-                <button
-                  onClick={() => {
+                <button onClick={() => {
                     handleDelete();
                     setMenuOpen(false);
                   }}
@@ -106,8 +104,7 @@ export default function Post(props) {
               </>
             )}
 
-            <button
-              onClick={() => {
+            <button onClick={() => {
                 handleLink();
                 setMenuOpen(false);
               }}
@@ -115,6 +112,15 @@ export default function Post(props) {
               Copy Link
             </button>
           </div>
+
+          {editing && (
+            <EditPostModal
+              post={props.post}
+              onClose={() => setEditing(false)}
+              onUpdate={() => window.location.reload()} // or update state properly later
+            />
+          )}
+
         </div>
 
         <div className="content">
