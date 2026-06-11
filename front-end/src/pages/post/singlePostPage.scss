@@ -1,0 +1,12 @@
+.singlePostPage {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  min-height: 100%;
+  background-color: var(--bg-soft);
+
+  .container {
+    width: 100%;
+    max-width: 600px;
+  }
+}
