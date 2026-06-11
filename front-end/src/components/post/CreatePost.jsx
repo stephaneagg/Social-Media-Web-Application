@@ -31,31 +31,31 @@ export default function CreatePost() {
 
     if (!text && !file) return;
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    let imageUrl = null;
+      let imageUrl = null;
 
-    // STEP 1: upload image (if exists)
-    if (file) {
-      const uploadRes = await uploadPostPhoto(file);
-      imageUrl = uploadRes.imageUrl;
+      // STEP 1: upload image (if exists)
+      if (file) {
+        const uploadRes = await uploadPostPhoto(file);
+        imageUrl = uploadRes.imageUrl;
+      }
+
+      // STEP 2: create post
+      const newPost = await createPost({
+        content: text,
+        imageUrl
+      });
+
+      // reset
+      setText("");
+      setFile(null);
+      setPreview(null);
+
+    } finally {
+      setLoading(false);
     }
-
-    // STEP 2: create post
-    const newPost = await createPost({
-      content: text,
-      imageUrl
-    });
-
-    // reset
-    setText("");
-    setFile(null);
-    setPreview(null);
-
-  } finally {
-    setLoading(false);
-  }
   };
 
 
