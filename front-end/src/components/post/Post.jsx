@@ -15,6 +15,7 @@ export default function Post(props) {
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
   const isOwner = currentUser.id === props.post.authorId;
@@ -53,7 +54,14 @@ export default function Post(props) {
     }
   }
 
-  function handleLink() {}
+  function handleLink() {
+    navigator.clipboard.writeText(`http://localhost:5173/post/${props.post.id}`);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+      setMenuOpen(false);
+    }, 2000);
+  }
 
   return (
     <div className="post">
@@ -104,13 +112,10 @@ export default function Post(props) {
               </>
             )}
 
-            <button onClick={() => {
-                handleLink();
-                setMenuOpen(false);
-              }}
-            >
-              Copy Link
+            <button onClick={() => handleLink()}>
+              {copied ? "Link Copied!" : "Copy Link"}
             </button>
+
           </div>
 
           {editing && (
