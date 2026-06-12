@@ -5,7 +5,7 @@ import PostList from "../../components/post/PostList";
 import CreatePost from "../../components/post/CreatePost.jsx"
 
 import { useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { AuthContext } from "../../context/authContext.jsx";
 import { getUser } from "../../services/userService"
 import { getUsersPosts } from "../../services/postService"
@@ -24,6 +24,13 @@ export default function ProfilePage() {
   const [followeeInfo, setFolloweeInfo] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+  const loadPosts = useCallback(async () => {
+    const data = await getUsersPosts(id);
+    setPosts(data);
+    }, [id]);
+
+
   // User Info
   useEffect( () => {
     const loadUser = async () => {
@@ -35,13 +42,13 @@ export default function ProfilePage() {
 
   // List of Posts
   useEffect( () => {
-    const loadPosts = async () => {
-      const data = await getUsersPosts(id);
-      setPosts(data);
-    };
+    // const loadPosts = async () => {
+    //   const data = await getUsersPosts(id);
+    //   setPosts(data);
+    // };
 
     loadPosts()
-  }, [id]);
+  }, [loadPosts]);
 
   // List of Followers
   useEffect( () => {
@@ -106,8 +113,8 @@ export default function ProfilePage() {
           </div>
 
         </div>
-        {isOwnProfile ? <CreatePost /> : null}
-        <PostList posts={posts} />
+        {isOwnProfile ? <CreatePost loadPosts={loadPosts}/> : null}
+        <PostList posts={posts} loadPosts={loadPosts}/>
       </div>
     </div>
   )

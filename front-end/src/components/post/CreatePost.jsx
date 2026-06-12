@@ -4,7 +4,7 @@ import {uploadPostPhoto} from "../../services/uploadService";
 import "./createPost.scss";
 
 
-export default function CreatePost() {
+export default function CreatePost({loadPosts}) {
 
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
@@ -55,7 +55,7 @@ export default function CreatePost() {
 
     } finally {
       setLoading(false);
-      window.location.reload()
+      loadPosts();
     }
   };
 

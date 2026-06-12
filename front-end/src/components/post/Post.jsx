@@ -46,7 +46,7 @@ export default function Post(props) {
     if (confirmed) {
       try {
         await deletePost(props.post.id);
-        window.location.reload();
+        props.loadPosts();
       } catch (err) {
         console.error(err);
         alert("Failed to delete post. Please try again.");
