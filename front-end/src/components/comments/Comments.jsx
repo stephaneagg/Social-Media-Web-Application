@@ -1,41 +1,49 @@
 import "./comments.scss"
 
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { AuthContext } from "../../context/authContext";
-import { getComments } from "../../services/commentService"
+import { getComments, createComment } from "../../services/commentService"
 import { timeAgo } from "../../utils/formatDate";
 
 export default function Comments(props) {
 
   const {currentUser} = useContext(AuthContext);
   const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [loading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Temporary comment data
-  // const comments = [
-  //   {
-  //     id:1,
-  //     desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit.",
-  //     name:"Janette Doe",
-  //     userId:3,
-  //     profilePic:"/resources/tempProfileIcon.jpeg"
-  //   },
-  //   {
-  //     id:2,
-  //     desc:"Lorem ipsum dolor sit amet consectetur adipiscing elit quisque.",
-  //     name:"Jerry Doe",
-  //     userId:5,
-  //     profilePic:"/resources/tempProfileIcon.jpeg"
-  //   }
-  // ]
+  const loadComments = useCallback(async () => {
+    const data = await getComments(props.postId);
+    setComments(data);
+  }, [props.postId]);
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+
+    if (!newComment) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+      // call commentService's createComment(postId, content<newComment>)
+      await createComment(props.postId, newComment);
+      // reset newComment
+      setNewComment("");
+    } catch (err) {
+      console.error(err);
+      setError("Failed to create comment. Please try again.");
+    } finally {
+      // reset loading
+      setLoading(false);
+    }
+    // reload comments
+    loadComments();
+  }
 
   useEffect( () => {
-    const loadComments = async () => {
-      const data = await getComments(props.postId);
-      setComments(data);
-      console.log(data)
-    };
     loadComments();
-  }, [props.postId]);
+  }, [loadComments]);
 
 
 
@@ -43,8 +51,18 @@ export default function Comments(props) {
     <div className="comments">
       <div className="write">
         <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt="" />
-        <input type="text" placeholder="write a comment" />
-        <button>Comment</button>
+        <form onSubmit={handleAddComment}>
+          <input
+            type="text"
+            placeholder="write a comment"
+            value={newComment}
+            onChange= {(e) => setNewComment(e.target.value)}
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? "Commenting..." : "Comment"}
+          </button>
+        </form>
+
       </div>
 
       {comments.map( (comment) => (
