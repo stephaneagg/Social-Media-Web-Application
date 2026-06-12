@@ -1,9 +1,10 @@
 import "./comments.scss"
 
-import { useContext, useState, useEffect, useCallback } from "react";
+import { useContext, useState, useEffect, useCallback, useRef } from "react";
 import { AuthContext } from "../../context/authContext";
 import { getComments, createComment } from "../../services/commentService"
 import { timeAgo } from "../../utils/formatDate";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 export default function Comments(props) {
 
@@ -12,6 +13,8 @@ export default function Comments(props) {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+  // indicates if the more menu is open. null if closed, commentId if open (to keep track of the comment).
+  const [menuOpen, setMenuOpen] = useState(null);
 
   const loadComments = useCallback(async () => {
     const data = await getComments(props.postId);
@@ -42,6 +45,23 @@ export default function Comments(props) {
     // reload comments
     loadComments();
   }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        !event.target.closest(".commentMenu") &&
+        !event.target.closest(".menuButton")
+      ) {
+        setMenuOpen(null);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   useEffect( () => {
     loadComments();
@@ -74,6 +94,38 @@ export default function Comments(props) {
             <span>{comment.displayName}</span>
             <p>{comment.content}</p>
           </div>
+
+
+          {currentUser.id === comment.userId ?
+            <div
+              className="menuButton"
+              onClick={() => setMenuOpen(menuOpen === comment.id ? null : comment.id)}
+            >
+              <MoreHorizIcon />
+            </div>
+            : null
+          }
+          {menuOpen === comment.id ?
+            <div className="commentMenu">
+              <>
+                <button onClick={() => {
+                    setMenuOpen(null);
+                  }}
+                >
+                  Edit Comment
+                </button>
+
+                <button onClick={() => {
+                    setMenuOpen(null);
+                  }}
+                >
+                  Delete Comment
+                </button>
+              </>
+            </div>
+            : null
+          }
+
           <span className="date">{timeAgo(comment.createdAt)}</span>
         </div>
       ))}
