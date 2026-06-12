@@ -48,7 +48,7 @@ export async function createComment({postId, content}){
 }
 
 
-export async function editComment(commentId, content){
+export async function editComment({commentId, content}){
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${API_URL}/${commentId}`, {
