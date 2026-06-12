@@ -55,6 +55,7 @@ export default function CreatePost() {
 
     } finally {
       setLoading(false);
+      window.location.reload()
     }
   };
 

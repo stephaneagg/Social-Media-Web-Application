@@ -65,7 +65,7 @@ export async function createPost({content, imageUrl}) {
   return await res.json(); // {id, authorId, authorName, content, userProfileImageUrl, imageUrl, createdAt}
 }
 
-export async function editPost(postId, content, imageUrl) {
+export async function editPost({postId, content, imageUrl}) {
   const token = localStorage.getItem("token");
 
   const body = {}
@@ -81,6 +81,8 @@ export async function editPost(postId, content, imageUrl) {
     },
     body: JSON.stringify(body),
   });
+
+  console.log(res)
 
   if (!res.ok) {
     const data = await res.text().then(t => {

@@ -30,7 +30,9 @@ export default function EditPostModal({ post, onClose, onUpdate }) {
         newImageUrl = uploaded.imageUrl;
       }
 
-      await editPost(post.id, text, newImageUrl);
+      await editPost({
+        postId: post.id, content: text, imageUrl: newImageUrl
+      });
       onUpdate();
       onClose();
     } catch (err) {
