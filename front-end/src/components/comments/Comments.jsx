@@ -2,7 +2,7 @@ import "./comments.scss"
 
 import { useContext, useState, useEffect, useCallback, useRef } from "react";
 import { AuthContext } from "../../context/authContext";
-import { getComments, createComment } from "../../services/commentService"
+import { getComments, createComment, deleteComment } from "../../services/commentService"
 import { timeAgo } from "../../utils/formatDate";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
@@ -44,6 +44,19 @@ export default function Comments(props) {
     }
     // reload comments
     loadComments();
+  }
+
+  const handleDeleteComment = async (commentId) => {
+    const confirmed = window.confirm("Are you sure you want to delete this comment? \nThis cannot be undone...");
+    if (confirmed) {
+      try {
+        await deleteComment(commentId);
+        loadComments();
+      } catch (err) {
+      console.log(err);
+      alert("Failed to delete comment. Please try again.");
+      }
+    }
   }
 
   useEffect(() => {
@@ -116,6 +129,7 @@ export default function Comments(props) {
                 </button>
 
                 <button onClick={() => {
+                    handleDeleteComment(comment.id);
                     setMenuOpen(null);
                   }}
                 >
