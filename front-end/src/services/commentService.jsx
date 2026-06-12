@@ -24,7 +24,7 @@ export async function getComments(postId) {
 }
 
 
-export async function createComment(postId, content){
+export async function createComment({postId, content}){
   const token = localStorage.getItem("token");
 
   const res = await fetch(`${API_URL}/post/${postId}`, {

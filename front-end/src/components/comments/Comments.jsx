@@ -27,7 +27,9 @@ export default function Comments(props) {
       setLoading(true);
       setError(null);
       // call commentService's createComment(postId, content<newComment>)
-      await createComment(props.postId, newComment);
+      await createComment({
+        postId: props.postId, content: newComment
+      });
       // reset newComment
       setNewComment("");
     } catch (err) {
