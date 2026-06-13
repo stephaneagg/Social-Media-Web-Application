@@ -13,6 +13,7 @@ export default function Comments(props) {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+
   // indicates if the more menu is open. null if closed, commentId if open (to keep track of the comment).
   const [menuOpen, setMenuOpen] = useState(null);
 
@@ -35,20 +36,16 @@ export default function Comments(props) {
     try {
       setLoading(true);
       setError(null);
-      // call commentService's createComment(postId, content<newComment>)
       await createComment({
         postId: props.postId, content: newComment
       });
-      // reset newComment
       setNewComment("");
     } catch (err) {
       console.error(err);
       setError("Failed to create comment. Please try again.");
     } finally {
-      // reset loading
       setLoading(false);
     }
-    // reload comments
     loadComments();
   }
 
@@ -56,11 +53,15 @@ export default function Comments(props) {
     const confirmed = window.confirm("Are you sure you want to delete this comment? \nThis cannot be undone...");
     if (confirmed) {
       try {
+        setLoading(true);
+        setError(null);
         await deleteComment(commentId);
         loadComments();
       } catch (err) {
       console.error(err);
       setError("Failed to delete comment. Please try again.");
+      } finally {
+        setLoading(false)
       }
     }
   }
@@ -114,6 +115,7 @@ export default function Comments(props) {
             placeholder="write a comment"
             value={newComment}
             onChange= {(e) => setNewComment(e.target.value)}
+            disabled={loading}
           />
           <button type="submit" disabled={loading}>
             {loading ? "Commenting..." : "Comment"}
@@ -121,6 +123,9 @@ export default function Comments(props) {
         </form>
 
       </div>
+
+
+      {error && <p className="error">{error}</p>}
 
       {comments.map( (comment) => (
         <div className="comment" key={comment.id}>
@@ -133,6 +138,7 @@ export default function Comments(props) {
                 type="text"
                 value={newCommentEdit}
                 onChange={(e) => setNewCommentEdit(e.target.value)}
+                disabled={loading}
               />
             :
               <p>{comment.content}</p>
@@ -157,6 +163,7 @@ export default function Comments(props) {
                     setNewCommentEdit(comment.content);
                     setMenuOpen(null);
                   }}
+                  disabled={loading}
                 >
                   Edit Comment
                 </button>
@@ -165,6 +172,7 @@ export default function Comments(props) {
                     handleDeleteComment(comment.id);
                     setMenuOpen(null);
                   }}
+                  disabled={loading}
                 >
                   Delete Comment
                 </button>
@@ -179,6 +187,7 @@ export default function Comments(props) {
               <button onClick={() => {
                   setEditing(null);
                 }}
+                disabled={loading}
               >
               Cancel
               </button>
@@ -187,6 +196,7 @@ export default function Comments(props) {
                   handleEditComment(comment.id, newCommentEdit);
                   setEditing(null);
                 }}
+                disabled={loading}
               >
               Save
               </button>

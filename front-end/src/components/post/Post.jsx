@@ -1,10 +1,12 @@
 import { useState, useContext, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+
 import { AuthContext } from "../../context/authContext.jsx";
 import { deletePost } from "../../services/postService"
 
 import Comments from "../comments/Comments";
 import EditPostModal from './EditPostModal';
+
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import { timeAgo } from "../../utils/formatDate";
@@ -12,6 +14,8 @@ import { timeAgo } from "../../utils/formatDate";
 import "./post.scss";
 
 export default function Post(props) {
+
+  // States
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -20,9 +24,11 @@ export default function Post(props) {
   const { currentUser } = useContext(AuthContext);
   const isOwner = currentUser.id === props.post.authorId;
 
+  // Refs for the menu dropdown and trigger button, used to detect outside clicks
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
+ // Close menu when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -40,6 +46,8 @@ export default function Post(props) {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  // Helper Functions
 
   async function handleDelete() {
     const confirmed = window.confirm("Are you sure you want to delete this post? \nThis cannot be undone...");

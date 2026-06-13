@@ -30,6 +30,8 @@ export default function ProfilePage() {
   // indicates if the current user follows the owner of this profile page. true if current user follows the owner. false if current user does not follow the owner OR if current user is the owner
   const isFollower = followerInfo.some(user => user.id === currentUser.id);
 
+  // Callback functions
+
   const loadPosts = useCallback(async () => {
     const data = await getUsersPosts(id);
     setPosts(data);
@@ -39,6 +41,8 @@ export default function ProfilePage() {
     const data = await getFollowers(id);
     setFollowerInfo(data);
   }, [id])
+
+  // Helper Functions
 
   const handleUnfollow = async () => {
     setLoading(true);
@@ -64,12 +68,20 @@ export default function ProfilePage() {
     }
   }
 
+
+  // Conditionally render a follow button
   let followButton = null
   if (!isOwnProfile) {
     if (isFollower) {
-      followButton = <button className="unfollowButton" onClick={handleUnfollow}>Unfollow</button>;
+      followButton = <button className="unfollowButton"
+        onClick={handleUnfollow}
+        disabled={loading}
+        >Unfollow</button>;
     } else {
-      followButton = <button className="followButton" onClick={handleFollow}>Follow</button>;
+      followButton = <button className="followButton"
+       onClick={handleFollow}
+       disabled={loading}
+       >Follow</button>;
     }
   }
 
@@ -104,15 +116,28 @@ export default function ProfilePage() {
   return (
     <div className="profile">
       <div className="images">
-        <img src={user && user.coverImageUrl != null ? `http://localhost:8080${user.coverImageUrl}` : "/resources/tempCoverPic.jpg"} alt="" className="cover"/>
-        <img src={user && user.profileImageUrl != null ? `http://localhost:8080${user.profileImageUrl}` : "/resources/tempProfileIcon.jpg"} alt="" className="profilePic"/>
+        <img
+          src={user && user.coverImageUrl != null ?
+            `http://localhost:8080${user.coverImageUrl}`
+            :
+            "/resources/tempCoverPic.jpg"}
+          alt="Cover Picture"
+          className="cover"
+        />
+        <img
+          src={user && user.profileImageUrl != null ?
+            `http://localhost:8080${user.profileImageUrl}`
+            :
+            "/resources/tempProfileIcon.jpg"}
+          alt="Profile Picture"
+          className="profilePic"/>
       </div>
 
       <div className="profileContainer">
         <div className="uInfo">
 
           <div className="topName">
-            {user ? <span>{user.displayName}</span> : null}
+            {user && <span>{user.displayName}</span>}
           </div>
 
           <div className="middle">
@@ -138,16 +163,16 @@ export default function ProfilePage() {
 
 
           <div className="center">
-            {/* {isOwnProfile ? null : <button>Follow</button>} */}
+            {/* Render followButton when user is not null */}
             {user && followButton}
           </div>
 
           <div className="bio">
-            {user ? <span>{user.bio}</span> : null}
+            {user && <span>{user.bio}</span>}
           </div>
 
         </div>
-        {isOwnProfile ? <CreatePost loadPosts={loadPosts}/> : null}
+        {isOwnProfile && <CreatePost loadPosts={loadPosts}/>}
         <PostList posts={posts} loadPosts={loadPosts}/>
       </div>
     </div>
