@@ -45,6 +45,7 @@
     justify-content: space-between;
     gap: 20px;
     position: relative;
+    align-items: flex-end;
 
     .comment-info{
       flex: 5;
@@ -56,6 +57,14 @@
       span{
         font-weight: bold;
 
+      }
+
+      input{
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border);
+        background-color: transparent;
+        color: var(--text-color);
       }
 
       p{
@@ -96,6 +105,27 @@
         }
       }
     }
+
+    .editButtons{
+      display: flex;
+      gap: 10px;
+      margin-bottom: 5px;
+
+      button{
+            border: none;
+            padding: 5px;
+            color: white;
+            cursor: pointer;
+
+            &:first-child {
+              background-color: #f0544f;
+            }
+            &:last-child {
+              background-color: #5271ff;
+            }
+      }
+    }
+
     .date{
       flex: 1;
       align-self: center;

@@ -2,7 +2,7 @@ import "./comments.scss"
 
 import { useContext, useState, useEffect, useCallback, useRef } from "react";
 import { AuthContext } from "../../context/authContext";
-import { getComments, createComment, deleteComment } from "../../services/commentService"
+import { getComments, createComment, deleteComment, editComment } from "../../services/commentService"
 import { timeAgo } from "../../utils/formatDate";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
@@ -15,6 +15,12 @@ export default function Comments(props) {
   const [error, setError] = useState(null);
   // indicates if the more menu is open. null if closed, commentId if open (to keep track of the comment).
   const [menuOpen, setMenuOpen] = useState(null);
+
+  // indicates if a comment is being edited. null if no, commentId if yes (to keep track of the comment).
+  const [editing, setEditing] = useState(false);
+
+  // keeps track of input when editing a comment
+  const [newCommentEdit, setNewCommentEdit] = useState(null)
 
   const loadComments = useCallback(async () => {
     const data = await getComments(props.postId);
@@ -53,9 +59,27 @@ export default function Comments(props) {
         await deleteComment(commentId);
         loadComments();
       } catch (err) {
-      console.log(err);
-      alert("Failed to delete comment. Please try again.");
+      console.error(err);
+      setError("Failed to delete comment. Please try again.");
       }
+    }
+  }
+
+  const handleEditComment = async (commentId, content) => {
+    setLoading(true);
+    setError(null);
+
+    if (!commentId || !content) {return}
+
+    try {
+      await editComment({commentId, content});
+      setEditing(false);
+      loadComments()
+    } catch (err) {
+      console.error(err);
+      setError("Failed to update comment. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -80,8 +104,6 @@ export default function Comments(props) {
     loadComments();
   }, [loadComments]);
 
-
-
   return (
     <div className="comments">
       <div className="write">
@@ -105,7 +127,16 @@ export default function Comments(props) {
           <img src={`http://localhost:8080${comment.profilePictureUrl}`} alt="" />
           <div className="comment-info">
             <span>{comment.displayName}</span>
-            <p>{comment.content}</p>
+            { editing == comment.id ?
+              <input
+                autoFocus
+                type="text"
+                value={newCommentEdit}
+                onChange={(e) => setNewCommentEdit(e.target.value)}
+              />
+            :
+              <p>{comment.content}</p>
+            }
           </div>
 
 
@@ -114,7 +145,7 @@ export default function Comments(props) {
               className="menuButton"
               onClick={() => setMenuOpen(menuOpen === comment.id ? null : comment.id)}
             >
-              <MoreHorizIcon />
+              {editing !== comment.id  && <MoreHorizIcon />}
             </div>
             : null
           }
@@ -122,6 +153,8 @@ export default function Comments(props) {
             <div className="commentMenu">
               <>
                 <button onClick={() => {
+                    setEditing(comment.id);
+                    setNewCommentEdit(comment.content);
                     setMenuOpen(null);
                   }}
                 >
@@ -140,7 +173,27 @@ export default function Comments(props) {
             : null
           }
 
-          <span className="date">{timeAgo(comment.createdAt)}</span>
+
+          { editing === comment.id ?
+            <div className="editButtons">
+              <button onClick={() => {
+                  setEditing(null);
+                }}
+              >
+              Cancel
+              </button>
+
+              <button onClick={() => {
+                  handleEditComment(comment.id, newCommentEdit);
+                  setEditing(null);
+                }}
+              >
+              Save
+              </button>
+            </div>
+          :
+            <span className="date">{timeAgo(comment.createdAt)}</span>
+          }
         </div>
       ))}
     </div>
