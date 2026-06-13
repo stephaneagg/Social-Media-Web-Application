@@ -9,14 +9,17 @@ import { useContext, useEffect, useState, useCallback } from "react";
 import { AuthContext } from "../../context/authContext.jsx";
 import { getUser } from "../../services/userService"
 import { getUsersPosts } from "../../services/postService"
-import { getFollowers, getFollowees } from "../../services/followService"
+import { getFollowers, getFollowees, follow, unfollow } from "../../services/followService"
 
 
 export default function ProfilePage() {
 
   const { id } = useParams();
   const { currentUser } = useContext(AuthContext)
+
+  // indicates if this profile belongs to the current user. true if yes false if no
   const isOwnProfile = currentUser.id == id;
+
 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -24,12 +27,51 @@ export default function ProfilePage() {
   const [followeeInfo, setFolloweeInfo] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // indicates if the current user follows the owner of this profile page. true if current user follows the owner. false if current user does not follow the owner OR if current user is the owner
+  const isFollower = followerInfo.some(user => user.id === currentUser.id);
 
   const loadPosts = useCallback(async () => {
     const data = await getUsersPosts(id);
     setPosts(data);
     }, [id]);
 
+  const loadFollowers = useCallback(async () => {
+    const data = await getFollowers(id);
+    setFollowerInfo(data);
+  }, [id])
+
+  const handleUnfollow = async () => {
+    setLoading(true);
+    try {
+      await unfollow(id);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      loadFollowers()
+      setLoading(false);
+    }
+  }
+
+  const handleFollow = async () => {
+    setLoading(true);
+    try {
+      await follow(id);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      loadFollowers()
+      setLoading(false);
+    }
+  }
+
+  let followButton = null
+  if (!isOwnProfile) {
+    if (isFollower) {
+      followButton = <button className="unfollowButton" onClick={handleUnfollow}>Unfollow</button>;
+    } else {
+      followButton = <button className="followButton" onClick={handleFollow}>Follow</button>;
+    }
+  }
 
   // User Info
   useEffect( () => {
@@ -40,24 +82,15 @@ export default function ProfilePage() {
     loadUser()
   }, [id]);
 
-  // List of Posts
+  // Load posts on inital render and when the callback function is recreated
   useEffect( () => {
-    // const loadPosts = async () => {
-    //   const data = await getUsersPosts(id);
-    //   setPosts(data);
-    // };
-
     loadPosts()
   }, [loadPosts]);
 
-  // List of Followers
+  // Load list of followers in inital render and when the callback function is recreated
   useEffect( () => {
-    const loadFollowers = async () => {
-      const data = await getFollowers(id)
-      setFollowerInfo(data);
-    };
     loadFollowers()
-  }, [id]);
+  }, [loadFollowers]);
 
   // List of Followees
     useEffect( () => {
@@ -105,7 +138,8 @@ export default function ProfilePage() {
 
 
           <div className="center">
-            {isOwnProfile ? null : <button>Follow</button>}
+            {/* {isOwnProfile ? null : <button>Follow</button>} */}
+            {user && followButton}
           </div>
 
           <div className="bio">
