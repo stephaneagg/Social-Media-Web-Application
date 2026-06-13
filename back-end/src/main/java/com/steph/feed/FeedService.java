@@ -19,7 +19,7 @@ public class FeedService {
         this.postDTOMapper = postDTOMapper;
     }
 
-    // Method should return a list of posts belonging to users the authenticated user follows
+    // Method should return a list of posts belonging the authenticated user to users the authenticated user follows
     // The list should be ordered by date
     public List<PostDTO> getFeed(Integer userId) {
 
