@@ -6,6 +6,7 @@ import com.steph.post.DTOs.CreatePostDTO;
 import com.steph.post.DTOs.PostDTO;
 import com.steph.post.DTOs.PostDTOMapper;
 import com.steph.post.DTOs.UpdatePostDTO;
+import com.steph.upload.FileStorageService;
 import com.steph.user.User;
 import com.steph.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,13 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostDTOMapper postDTOMapper;
     private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
 
-    public PostService(PostRepository postRepository, PostDTOMapper postDTOMapper, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, PostDTOMapper postDTOMapper, UserRepository userRepository, FileStorageService fileStorageService) {
         this.postRepository = postRepository;
         this.postDTOMapper = postDTOMapper;
         this.userRepository = userRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     public PostDTO getPost(Integer id){
@@ -70,9 +73,17 @@ public class PostService {
             throw new AccessDeniedException("You can only update posts for your own profile");
         }
 
+        // Grab old image URL in case of update
+        String oldImageURL = post.getImageUrl();
+
         // update the post
         post.updatePost(updatePostDTO);
         postRepository.save(post);
+
+        if (oldImageURL != null && !post.getImageUrl().equals(oldImageURL)) {
+            fileStorageService.deleteFile(oldImageURL);
+        }
+
         // map post to postDTO and return
         return postDTOMapper.apply(post);
     }
