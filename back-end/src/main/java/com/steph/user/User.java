@@ -188,7 +188,7 @@ public class User implements UserDetails {
     // HELPERS //
 
     /**
-     * Function take an instance of UpdateUserDTO and updates the this user with
+     * Function take an instance of UpdateUserDTO and updates the user with
      * its attrtibutes
      * @param updateUserDTO object containing user attributes that should are updateable
      */

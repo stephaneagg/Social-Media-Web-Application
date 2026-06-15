@@ -110,7 +110,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleDuplicateResourceException(DuplicateResourceException exception, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
-                exception.getMessage(),  // usually "Bad credentials"
+                exception.getMessage(),
                 webRequest.getDescription(false),
                 "USER_ALREADY_EXISTS"
         );
@@ -127,6 +127,21 @@ public class GlobalExceptionHandler {
                 exception.getMessage(),
                 webRequest.getDescription(false),
                 "FILE_VALIDATION_ERROR"
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileDeleteException.class)
+    public ResponseEntity<ErrorDetails> handleFileDeleteException(
+            FileValidationException exception,
+            WebRequest webRequest
+    ) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "FILE_DELETE_ERROR"
         );
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);

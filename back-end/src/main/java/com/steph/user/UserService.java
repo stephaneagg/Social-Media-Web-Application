@@ -1,5 +1,6 @@
 package com.steph.user;
 
+import com.steph.upload.FileStorageService;
 import com.steph.user.DTOs.*;
 import com.steph.exceptions.UserException;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserProfileDTOMapper userProfileDTOMapper;
     private final CurrentUserDTOMapper currentUserDTOMapper;
+    private final FileStorageService fileStorageService;
 
     public UserService(
             UserRepository userRepository,
             UserProfileDTOMapper userProfileDTOMapper,
-            CurrentUserDTOMapper currentUserDTOMapper) {
+            CurrentUserDTOMapper currentUserDTOMapper,
+            FileStorageService fileStorageService) {
         this.userRepository = userRepository;
         this.userProfileDTOMapper = userProfileDTOMapper;
         this.currentUserDTOMapper = currentUserDTOMapper;
+        this.fileStorageService = fileStorageService;
     }
 
     public List<UserProfileDTO> getAllUsers() {
@@ -53,11 +57,26 @@ public class UserService {
         // retrieve the user we want to update
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(userId + " not found"));
+
+        // Grab old image Urls in case of update
+        String oldProfileImageURL = user.getProfileImageUrl();
+        String oldCoverImageURL = user.getCoverImageUrl();
+
         // update the user
         user.updateFromDTO(updateUserDTO);
         userRepository.save(user);
 
-        // mpa user to userProfileDTO and return
+        // Check if old images need to be deleted
+        // Check ProfileImage
+        if (oldProfileImageURL != null && !user.getProfileImageUrl().equals(oldProfileImageURL)) {
+            fileStorageService.deleteFile(oldProfileImageURL);
+        }
+        // Check CoverImage
+        if (oldCoverImageURL != null && !user.getCoverImageUrl().equals(oldCoverImageURL)) {
+            fileStorageService.deleteFile(oldCoverImageURL);
+        }
+
+        // map user to userProfileDTO and return
         return userProfileDTOMapper.apply(user);
     }
 

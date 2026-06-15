@@ -1,5 +1,6 @@
 package com.steph.upload;
 
+import com.steph.exceptions.FileDeleteException;
 import com.steph.exceptions.FileValidationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,5 +62,18 @@ public class FileStorageService {
             throw new FileValidationException("File too large");
         }
 
+    }
+
+    public void deleteFile(String imageUrl) {
+        if (imageUrl == null) {
+            return;
+        }
+
+        try {
+            Path file = Paths.get(imageUrl.substring(1)); // remove leading '/'
+            Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new FileDeleteException("Failed to Delete file");
+        }
     }
 }
