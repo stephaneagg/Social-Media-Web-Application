@@ -1,0 +1,33 @@
+.modal-overlay {
+  .modal {
+    p {
+      font-size: 14px;
+      color: var(--text-color);
+      margin-bottom: 6px;
+      margin-top: 16px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-soft);
+      color: var(--text-color);
+      font-size: 14px;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: var(--text-color);
+      }
+    }
+
+    img {
+      width: 75%;
+    }
+
+    .modal-actions {
+    }
+  }
+}
