@@ -17,7 +17,7 @@ export async function getUser(userId) {
   return await res.json(); // {id, displayName, bio, profileImageUrl, coverImageUrl}
 }
 
-export async function editUser(userId, displayName, bio, profileImageUrl) {
+export async function editUser({userId, displayName, bio, profileImageUrl, coverImageUrl}) {
   const token = localStorage.getItem("token")
 
   const body = {};
@@ -25,6 +25,7 @@ export async function editUser(userId, displayName, bio, profileImageUrl) {
   if (displayName != null) body.displayName = displayName;
   if (bio != null) body.bio = bio;
   if (profileImageUrl != null) body.profileImageUrl = profileImageUrl;
+  if (coverImageUrl != null) body.coverImageUrl = coverImageUrl;
 
   const res = await fetch(`${API_URL}${userId}`, {
     method: "PUT",
