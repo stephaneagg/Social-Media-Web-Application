@@ -3,9 +3,10 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Feed from "../../components/feed/Feed.jsx"
 import PostList from "../../components/post/PostList";
 import CreatePost from "../../components/post/CreatePost.jsx"
+import EditUserModal from "../../components/profile/EditUserModal"
 
 import { useParams } from "react-router-dom";
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState, useCallback, useRef } from "react";
 import { AuthContext } from "../../context/authContext.jsx";
 import { getUser } from "../../services/userService"
 import { getUsersPosts } from "../../services/postService"
@@ -25,12 +26,24 @@ export default function ProfilePage() {
   const [posts, setPosts] = useState([]);
   const [followerInfo, setFollowerInfo] = useState([]);
   const [followeeInfo, setFolloweeInfo] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Refs for the menu dropdown and trigger button, used to detect outside clicks
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
 
   // indicates if the current user follows the owner of this profile page. true if current user follows the owner. false if current user does not follow the owner OR if current user is the owner
   const isFollower = followerInfo.some(user => user.id === currentUser.id);
 
   // Callback functions
+
+  const loadUser = useCallback(async () => {
+    const data = await getUser(id);
+    setUser(data);
+  }, [id]);
 
   const loadPosts = useCallback(async () => {
     const data = await getUsersPosts(id);
@@ -68,6 +81,33 @@ export default function ProfilePage() {
     }
   }
 
+  function handleLink() {
+    navigator.clipboard.writeText(`http://localhost:5173/profile/${id}`);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+      setMenuOpen(false);
+    }, 2000);
+  }
+
+  const profileMenu = (<div className="profileMenu">
+    {isOwnProfile &&
+      <button onClick={() => {
+        setEditing(true);
+        setMenuOpen(false);
+      }}
+      >
+        Edit Profile
+      </button>}
+
+      <button onClick={() => {
+        handleLink()
+      }}
+      >
+        {copied ? "Link Copied!" : "Copy Link"}
+      </button>
+    </div>)
+
 
   // Conditionally render a follow button
   let followButton = null
@@ -87,12 +127,8 @@ export default function ProfilePage() {
 
   // User Info
   useEffect( () => {
-    const loadUser = async () => {
-      const data = await getUser(id);
-      setUser(data)
-    };
     loadUser()
-  }, [id]);
+  }, [loadUser]);
 
   // Load posts on inital render and when the callback function is recreated
   useEffect( () => {
@@ -156,9 +192,24 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <div className="right">
+            <div
+              ref={buttonRef}
+              className="menuButton"
+              onClick={() => setMenuOpen((prev) => !prev)}
+            >
               <MoreHorizIcon />
             </div>
+
+            {menuOpen && profileMenu}
+
+            {editing && (
+              <EditUserModal
+                user={user}
+                onClose={() => setEditing(false)}
+                onUpdate={() => {loadUser(); loadPosts()}}
+              />
+            )}
+
           </div>
 
 
