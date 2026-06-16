@@ -23,7 +23,6 @@ public class UploadController {
 
     @PostMapping("/user")
     public ResponseEntity<Map<String, String>> uploadUserImage(@RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println("Here we are in uploadController");
         String imageUrl = fileStorageService.saveUserImage(file);
 
         return ResponseEntity.ok(Map.of(
