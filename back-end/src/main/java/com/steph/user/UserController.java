@@ -1,9 +1,11 @@
 package com.steph.user;
 
+import com.steph.user.DTOs.ChangePasswordDTO;
 import com.steph.user.DTOs.CurrentUserDTO;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,17 @@ public class UserController {
 
         return userService.updateUser(dto, userId, authenticatedUserId);
     }
+
+    @PutMapping("/{userId}/password")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable Integer userId,
+            @RequestBody ChangePasswordDTO dto,
+            @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId) throws AccessDeniedException {
+
+        userService.changePassword(dto, userId, authenticatedUserId);
+        return ResponseEntity.noContent().build();
+    }
+
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

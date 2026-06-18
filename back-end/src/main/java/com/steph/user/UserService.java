@@ -3,6 +3,7 @@ package com.steph.user;
 import com.steph.upload.FileStorageService;
 import com.steph.user.DTOs.*;
 import com.steph.exceptions.UserException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -15,16 +16,19 @@ public class UserService {
     private final UserProfileDTOMapper userProfileDTOMapper;
     private final CurrentUserDTOMapper currentUserDTOMapper;
     private final FileStorageService fileStorageService;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(
             UserRepository userRepository,
             UserProfileDTOMapper userProfileDTOMapper,
             CurrentUserDTOMapper currentUserDTOMapper,
-            FileStorageService fileStorageService) {
+            FileStorageService fileStorageService,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userProfileDTOMapper = userProfileDTOMapper;
         this.currentUserDTOMapper = currentUserDTOMapper;
         this.fileStorageService = fileStorageService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserProfileDTO> getAllUsers() {
@@ -78,6 +82,27 @@ public class UserService {
 
         // map user to userProfileDTO and return
         return userProfileDTOMapper.apply(user);
+    }
+
+    public void changePassword(ChangePasswordDTO dto, Integer userId, Integer authenticatedUserId) throws AccessDeniedException {
+        if (!userId.equals(authenticatedUserId)) {
+            throw new AccessDeniedException("You can only update your own profile");
+        }
+
+        // retrieve the user we want to update
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(userId + " not found"));
+
+        if (!passwordEncoder.matches(
+                dto.getCurrentPassword(),
+                user.getPassword()
+        )) {
+            throw new UserException("Current password is incorrect");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
+
+        userRepository.save(user);
     }
 
     public void deleteUser(Integer userId, Integer authenticatedUserId) throws AccessDeniedException {
