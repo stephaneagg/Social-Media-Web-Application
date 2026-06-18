@@ -63,13 +63,35 @@
       align-items: center;
       gap: 10px;
       font-weight: 500;
+      position: relative;
 
-      .userLink {
+      .userMenu {
+        position: absolute;
+
         display: flex;
-        align-items: center;
-        gap: 10px;
+        flex-direction: column;
+
+        top: 40px;
+        right: 0;
+
+        background-color: var(--bg-soft);
+        border-radius: 8px;
+        padding: 8px;
+
+        box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        z-index: 9999;
+
+        a{
+        padding: 8px 12px;
         text-decoration: none;
-        color: inherit;
+        color: var(--text-color);
+        border-radius: 6px;
+        transition: background-color 0.15s ease, color 0.15s ease;
+        &:hover {
+          background-color: var(--bg);
+        }
+        }
+
       }
 
       img{

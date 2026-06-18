@@ -9,12 +9,30 @@ import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom"
 
 export default function Header() {
     const { toggle, darkMode } = useContext(ThemeContext);
     const { currentUser } = useContext(AuthContext)
+    const [ userMenu, setUserMenu] = useState(false);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+        if (
+            !event.target.closest(".userMenu") &&
+            !event.target.closest(".user")
+        ) {
+            setUserMenu(false);
+        }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+        document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="header">
@@ -45,15 +63,28 @@ export default function Header() {
                 </Link>
 
                 <NotificationsIcon />
-                <div className="user">
-                    <Link
-                        to={`profile/${currentUser.id}`}
-                        className="userLink"
-                    >
-                        <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt=""/>
-                        <span>{currentUser.displayName}</span>
-                    </Link>
+                <div className="user" onClick={() => setUserMenu((prev) => !prev)}>
+                    <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt=""/>
+                    <span>{currentUser.displayName}</span>
+
+                    {userMenu && (
+                        <div className="userMenu">
+                            <Link
+                                to={`profile/${currentUser.id}`}
+                                className="userLink"
+                            >
+                                Profile
+                            </Link>
+                            <Link
+                                to={`profile/${currentUser.id}/settings`}
+                                className="settingsLink"
+                            >
+                                Settings
+                            </Link>
+                        </div>
+                    )}
                 </div>
+
 
             </div>
 
