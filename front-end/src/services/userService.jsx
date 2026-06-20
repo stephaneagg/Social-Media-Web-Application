@@ -38,22 +38,53 @@ export async function editUser({userId, displayName, bio, profileImageUrl, cover
 
   if (!res.ok) {
     const text = await res.text();
+    let message = text;
 
     try {
       const json = JSON.parse(text);
-      console.log(json);
-      throw new Error(json.message);
-    } catch {
-      throw new Error(text);
-    }
+      message = json.message;
+    } catch {}
+    throw new Error(message)
   }
-
 
   return await res.json(); // {id, displayName, bio, profileImageUrl, coverImageUrl}
 }
 
+export async function changePassword({userId, currentPassword, newPassword, confirmPassword}) {
+  const token = localStorage.getItem("token");
+
+  const body = {currentPassword: currentPassword,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword};
+
+  const res = await fetch(`${API_URL}${userId}/password`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    let message = text;
+
+    try {
+      const json = JSON.parse(text);
+      message = json.message
+    } catch {
+
+    }
+    throw new Error(message)
+  }
+  return await res;
+}
+
+
+
 // Think about if this function is even needed
-export async function deleteUser(userId) {s
+export async function deleteUser(userId) {
   const token = localStorage.getItem("token")
 
   const res = await fetch(`${API_URL}${userId}`, {
