@@ -7,6 +7,7 @@ import { getUser } from "../../services/userService"
 
 import EditUserModal from "../../components/profile/EditUserModal"
 import ChangePasswordForm from "../../components/forms/ChangePasswordForm"
+import DeleteUserModal from "../../components/profile/DeleteUserModal"
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -23,6 +24,7 @@ export default function SettingsPage() {
   const [profileInfoMenu, setProfileInfoMenu] = useState(false);
   const [expandPassword, setExpandPassword] = useState(false);
   const [expandDeleteUser, setExpandDeleteUser] = useState(false);
+  const [deletingUser, setDeletingUser] = useState(false);
 
 
   const loadUser = useCallback(async () => {
@@ -82,9 +84,10 @@ export default function SettingsPage() {
       </h3>
       {expandDeleteUser && (
         <div className="deleteUser">
-          <button>Delete User</button>
+          <button onClick={() => setDeletingUser(true)}>Delete User</button>
         </div>
       )}
+      {deletingUser && <DeleteUserModal userId={id} onClose={() => setDeletingUser(false)}/>}
 
     </div>
   )

@@ -1,0 +1,18 @@
+.modal-overlay {
+  .modal {
+    .warning {
+      margin: 16px 0;
+      font-size: 13px;
+      color: var(--text-color-soft);
+      line-height: 1.4;
+    }
+
+    .modal-actions button.deleteConfirm {
+      background-color: #f0544f;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
