@@ -2,6 +2,8 @@ package com.steph.follows;
 
 import com.steph.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -16,11 +18,13 @@ public class Follow {
     @ManyToOne(optional = false)
     @MapsId("followerId")
     @JoinColumn(name = "follower_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User follower;
 
     @ManyToOne(optional = false)
     @MapsId("followedId")
     @JoinColumn(name = "followed_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User followed;
 
     @Column(name = "created_at", nullable = false, updatable = false)

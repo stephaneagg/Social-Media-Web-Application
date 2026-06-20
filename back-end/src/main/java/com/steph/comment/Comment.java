@@ -4,6 +4,8 @@ import com.steph.comment.DTOs.UpdateCommentDTO;
 import com.steph.user.User;
 import com.steph.post.Post;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -19,11 +21,13 @@ public class Comment {
     // Many comments can belong to one User
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     // Many Comments can belong to one Post
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 
     @Column(name = "content", length = 1000)

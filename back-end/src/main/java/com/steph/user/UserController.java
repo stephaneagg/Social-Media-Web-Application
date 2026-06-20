@@ -1,9 +1,6 @@
 package com.steph.user;
 
-import com.steph.user.DTOs.ChangePasswordDTO;
-import com.steph.user.DTOs.CurrentUserDTO;
-import com.steph.user.DTOs.UpdateUserDTO;
-import com.steph.user.DTOs.UserProfileDTO;
+import com.steph.user.DTOs.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -60,10 +57,12 @@ public class UserController {
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Integer userId,
+                           @RequestBody DeleteUserDTO dto,
                            @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
             throws AccessDeniedException {
 
-        userService.deleteUser(userId, authenticatedUserId);
+        System.out.println("in controller");
+        userService.deleteUser(userId, dto, authenticatedUserId);
     }
 
 }

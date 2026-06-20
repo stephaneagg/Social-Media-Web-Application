@@ -109,10 +109,23 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Integer userId, Integer authenticatedUserId) throws AccessDeniedException {
+    public void deleteUser(Integer userId, DeleteUserDTO dto, Integer authenticatedUserId) throws AccessDeniedException {
+
+        System.out.println("in service");
 
         if (!userId.equals(authenticatedUserId)) {
             throw new AccessDeniedException("You can only delete your own profile");
+        }
+
+        // retrieve the user we want to update
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(userId + " not found"));
+
+        if (!passwordEncoder.matches(
+                dto.getPassword(),
+                user.getPassword()
+        )) {
+            throw new UserException("Current password is incorrect");
         }
 
         userRepository.deleteById(userId);

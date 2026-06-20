@@ -4,6 +4,8 @@ package com.steph.post;
 import com.steph.post.DTOs.UpdatePostDTO;
 import com.steph.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -19,6 +21,7 @@ public class Post {
     // Many Posts can belong to one user. But, a post always have a user
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(name = "content_text", length = 2000)
