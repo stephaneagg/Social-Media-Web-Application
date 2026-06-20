@@ -1,0 +1,100 @@
+.settings {
+  max-width: 600px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  h3 {
+    margin: 0;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-color);
+
+    &:hover {
+      background-color: var(--bg-soft);
+    }
+  }
+
+  .profileInfo,
+  .password,
+  .deleteUser {
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-top: -8px;
+    padding: 16px 20px;
+
+    p {
+      cursor: pointer;
+      color: var(--text-color);
+      font-size: 14px;
+
+      &:hover {
+        color: var(--text-color-soft);
+      }
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    input {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background-color: var(--bg-soft);
+      color: var(--text-color);
+
+      &:focus {
+        outline: none;
+        border-color: var(--text-color);
+      }
+    }
+
+    button[type="submit"] {
+      align-self: center;
+      background-color: #5271ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .deleteUser {
+    display: flex;
+    justify-content: center;
+
+    button {
+      background-color: #f0544f;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}

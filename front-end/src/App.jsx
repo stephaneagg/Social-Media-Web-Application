@@ -5,6 +5,7 @@ import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import HomePage from "./pages/home/HomePage"
 import ProfilePage from "./pages/profile/ProfilePage"
+import SettingsPage from "./pages/settings/SettingsPage"
 import SinglePostPage from "./pages/post/SinglePostPage"
 import Header from "./components/header/Header"
 import LeftBar from "./components/leftBar/LeftBar"
@@ -44,6 +45,7 @@ function App() {
         <Route path="/" element={<ProtectedRoute> <Layout /> </ProtectedRoute>}>
           <Route index element={<HomePage />} />
           <Route path="profile/:id" element={<ProfilePage />} />
+          <Route path="profile/:id/settings" element={<SettingsPage />} />
           <Route path="post/:id" element={<SinglePostPage />} />
         </Route>
 
