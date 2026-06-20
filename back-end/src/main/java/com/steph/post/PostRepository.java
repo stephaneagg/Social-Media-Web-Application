@@ -9,6 +9,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> findByUserIdOrderByCreatedAtDesc(Integer userId);
+    List<Post> findByContentTextContainingIgnoreCase(String query);
 
     @Query("""
     SELECT p
