@@ -6,7 +6,7 @@ import "./home.scss"
 export default function Home() {
     return (
         <div className="home">
-            <CreatePost />
+            <CreatePost loadPosts={() => {window.location.reload()}}/>
             <Feed />
         </div>
 
