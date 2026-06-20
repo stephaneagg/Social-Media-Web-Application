@@ -100,6 +100,10 @@ public class UserService {
             throw new UserException("Current password is incorrect");
         }
 
+        if (dto.getNewPassword().length() < 8) {
+            throw new UserException("New password must be at least 8 characters");
+        }
+
         user.setPasswordHash(passwordEncoder.encode(dto.getNewPassword()));
 
         userRepository.save(user);
