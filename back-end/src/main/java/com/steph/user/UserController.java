@@ -61,7 +61,6 @@ public class UserController {
                            @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId)
             throws AccessDeniedException {
 
-        System.out.println("in controller");
         userService.deleteUser(userId, dto, authenticatedUserId);
     }
 
