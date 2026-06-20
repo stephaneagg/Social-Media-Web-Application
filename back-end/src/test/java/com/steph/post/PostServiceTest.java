@@ -214,7 +214,6 @@ class PostServiceTest {
     }
 
     @Test
-    @Test
     void updatePost_shouldThrowAccessDeniedException_whenUpdatingAnotherUsersPost() {
         Integer postId = 1;
         Integer ownerId = 10;

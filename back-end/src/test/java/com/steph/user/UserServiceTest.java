@@ -1,15 +1,13 @@
 package com.steph.user;
 
 import com.steph.exceptions.UserException;
-import com.steph.user.DTOs.CurrentUserDTOMapper;
-import com.steph.user.DTOs.UpdateUserDTO;
-import com.steph.user.DTOs.UserProfileDTO;
-import com.steph.user.DTOs.UserProfileDTOMapper;
+import com.steph.user.DTOs.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -29,6 +27,9 @@ public class UserServiceTest {
 
     @Mock
     private CurrentUserDTOMapper currentUserDTOMapper;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -154,13 +155,21 @@ public class UserServiceTest {
     }
 
     @Test
-    void deleteUser_shouldCallRepository() {
-
+    void deleteUser_shouldCallRepository() throws AccessDeniedException {
         Integer userId = 1;
         Integer authenticatedUserId = 1;
+        DeleteUserDTO dto = new DeleteUserDTO("correctPassword");
 
-        assertDoesNotThrow(() -> userService.deleteUser(userId, authenticatedUserId));
+        User user = mock(User.class);
+        when(user.getPassword()).thenReturn("hashedPassword");
 
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(dto.getPassword(), user.getPassword())).thenReturn(true);
+
+        assertDoesNotThrow(() -> userService.deleteUser(userId, dto, authenticatedUserId));
+
+        verify(userRepository).findById(userId);
+        verify(passwordEncoder).matches(dto.getPassword(), user.getPassword());
         verify(userRepository).deleteById(userId);
     }
 
@@ -183,13 +192,56 @@ public class UserServiceTest {
     void deleteUser_shouldThrowAccessDeniedException_whenUserTriesToDeleteAnotherUser() {
         Integer userId = 1;
         Integer authenticatedUserId = 2;
+        DeleteUserDTO dto = new DeleteUserDTO("anyPassword");
 
         AccessDeniedException exception = assertThrows(AccessDeniedException.class, () ->
-                userService.deleteUser(userId, authenticatedUserId)
+                userService.deleteUser(userId, dto, authenticatedUserId)
         );
 
         assertEquals("You can only delete your own profile", exception.getMessage());
         verifyNoInteractions(userRepository);
+    }
+
+    @Test
+    void deleteUser_shouldThrowUserException_whenPasswordIsIncorrect() {
+        Integer userId = 1;
+        Integer authenticatedUserId = 1;
+        DeleteUserDTO dto = new DeleteUserDTO("wrongPassword");
+
+        User user = mock(User.class);
+        when(user.getPassword()).thenReturn("hashedPassword");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(dto.getPassword(), user.getPassword())).thenReturn(false);
+
+        UserException exception = assertThrows(UserException.class, () ->
+                userService.deleteUser(userId, dto, authenticatedUserId)
+        );
+
+        assertEquals("Current password is incorrect", exception.getMessage());
+
+        verify(userRepository).findById(userId);
+        verify(passwordEncoder).matches(dto.getPassword(), user.getPassword());
+        verify(userRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void deleteUser_shouldThrowUserException_whenUserDoesNotExist() {
+        Integer userId = 99;
+        Integer authenticatedUserId = 99;
+        DeleteUserDTO dto = new DeleteUserDTO("anyPassword");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        UserException exception = assertThrows(UserException.class, () ->
+                userService.deleteUser(userId, dto, authenticatedUserId)
+        );
+
+        assertEquals("99 not found", exception.getMessage());
+
+        verify(userRepository).findById(userId);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoInteractions(passwordEncoder);
     }
 
 }

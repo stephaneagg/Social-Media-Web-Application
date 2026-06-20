@@ -1,6 +1,7 @@
 package com.steph.user;
 
 import com.steph.exceptions.UserException;
+import com.steph.user.DTOs.DeleteUserDTO;
 import com.steph.user.DTOs.UpdateUserDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.config.JwtAuthenticationFilter;
@@ -114,21 +115,28 @@ class UserControllerTest {
         authenticateAs(1);
 
         Integer userId = 1;
+        DeleteUserDTO dto = new DeleteUserDTO("correctPassword");
 
-        mockMvc.perform(delete("/users/{id}", userId))
+        mockMvc.perform(delete("/users/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isNoContent());
 
-        verify(userService).deleteUser(userId, userId);
+        verify(userService).deleteUser(eq(userId), any(DeleteUserDTO.class), eq(userId));
     }
 
     @Test
     void deleteUser_shouldReturnNotFound_whenUserDoesNotExist() throws Exception {
         authenticateAs(1);
 
-        doThrow(new UserException("User does not exist"))
-                .when(userService).deleteUser(1, 1);
+        DeleteUserDTO dto = new DeleteUserDTO("anyPassword");
 
-        mockMvc.perform(delete("/users/1"))
+        doThrow(new UserException("User does not exist"))
+                .when(userService).deleteUser(eq(1), any(DeleteUserDTO.class), eq(1));
+
+        mockMvc.perform(delete("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("User does not exist"));
     }
