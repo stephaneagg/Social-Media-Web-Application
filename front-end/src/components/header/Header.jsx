@@ -16,6 +16,7 @@ export default function Header() {
     const { toggle, darkMode } = useContext(ThemeContext);
     const { currentUser } = useContext(AuthContext)
     const [ userMenu, setUserMenu] = useState(false);
+    const { logout } = useContext(AuthContext);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -81,6 +82,12 @@ export default function Header() {
                             >
                                 Settings
                             </Link>
+                            <button
+                                onClick={logout}
+                                className="logoutButton"
+                            >
+                                Logout
+                            </button>
                         </div>
                     )}
                 </div>
