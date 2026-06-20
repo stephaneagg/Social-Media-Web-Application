@@ -83,19 +83,30 @@ export async function changePassword({userId, currentPassword, newPassword, conf
 
 
 
-// Think about if this function is even needed
-export async function deleteUser(userId) {
+export async function deleteUser(userId, password) {
   const token = localStorage.getItem("token")
+
+  const body = {password: password}
 
   const res = await fetch(`${API_URL}${userId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-type": "application/json",
     },
+    body: JSON.stringify(body)
   });
 
   if (!res.ok) {
-    throw new Error("Failed to delete user");
+    const text = await res.text();
+    let message = text;
+
+    try {
+      const json = JSON.parse(text);
+      message = json.message;
+    } catch {
+    }
+    throw new Error(message);
   }
 
   return await res
