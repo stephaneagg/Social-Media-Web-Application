@@ -7,6 +7,7 @@ import HomePage from "./pages/home/HomePage"
 import ProfilePage from "./pages/profile/ProfilePage"
 import SettingsPage from "./pages/settings/SettingsPage"
 import SinglePostPage from "./pages/post/SinglePostPage"
+import SearchPage from "./pages/search/SearchPage"
 import Header from "./components/header/Header"
 import LeftBar from "./components/leftBar/LeftBar"
 import RightBar from "./components/rightBar/RightBar"
@@ -47,6 +48,7 @@ function App() {
           <Route path="profile/:id" element={<ProfilePage />} />
           <Route path="profile/:id/settings" element={<SettingsPage />} />
           <Route path="post/:id" element={<SinglePostPage />} />
+          <Route path="search" element={<SearchPage />} />
         </Route>
 
         <Route path="/login" element={<LoginPage/>} />

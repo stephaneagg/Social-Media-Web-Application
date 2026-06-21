@@ -10,13 +10,22 @@ import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function Header() {
     const { toggle, darkMode } = useContext(ThemeContext);
     const { currentUser } = useContext(AuthContext)
     const [ userMenu, setUserMenu] = useState(false);
     const { logout } = useContext(AuthContext);
+    const [searchInput, setSearchInput] = useState("");
+
+    const navigate = useNavigate();
+
+    const handleSearchKeyDown = (e) => {
+        if (e.key === "Enter" && searchInput.trim()) {
+            navigate(`/search?query=${encodeURIComponent(searchInput.trim())}`);
+        }
+    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -39,7 +48,7 @@ export default function Header() {
         <div className="header">
             <div className="left">
                 <Link to="/" style={{textDecoration:"none"}}>
-                    <span>Steph's Social</span>
+                    <span>Social Media Platform</span>
                 </Link>
 
                 <Link to="/" style={{textDecoration:"none", color: "inherit" }} >
@@ -53,7 +62,12 @@ export default function Header() {
 
                 <div className="search">
                     <SearchIcon />
-                    <input type="text" placeholder="Search..."/>
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        onKeyDown={handleSearchKeyDown}
+                    />
                 </div>
 
             </div>
