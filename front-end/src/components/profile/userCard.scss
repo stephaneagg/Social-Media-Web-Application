@@ -1,0 +1,21 @@
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  text-decoration: none;
+  background-color: var(--bg);
+  color: var(--text-color);
+  border-radius: 8px;
+
+  img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  span {
+    font-weight: 500;
+  }
+}
