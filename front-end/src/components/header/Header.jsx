@@ -1,6 +1,7 @@
 import "./header.scss"
 import { ThemeContext } from "../../context/themeContext.jsx";
 import { AuthContext } from "../../context/authContext.jsx";
+import AppsDockModal from "./AppsDockModal"
 import HomeIcon from '@mui/icons-material/Home';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -18,6 +19,7 @@ export default function Header() {
     const [ userMenu, setUserMenu] = useState(false);
     const { logout } = useContext(AuthContext);
     const [searchInput, setSearchInput] = useState("");
+    const [showAppsDockModal, setShowAppsDockModal] = useState(false);
 
     const navigate = useNavigate();
 
@@ -58,7 +60,12 @@ export default function Header() {
                 {darkMode ?
                     <LightModeIcon onClick={toggle}/>
                     : <DarkModeIcon onClick={toggle}/>}
-                <AppsIcon />
+
+                <div onClick={() => setShowAppsDockModal(true)} style={{textDecoration:"none", color: "inherit" }}>
+                    <AppsIcon />
+                </div>
+
+                {showAppsDockModal && <AppsDockModal onClose={() => setShowAppsDockModal(false)} />}
 
                 <div className="search">
                     <SearchIcon />

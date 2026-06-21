@@ -5,7 +5,7 @@
   padding: 20px 70px;
   min-height: 100%;
 
-  @include mobile {
+  @include style.mobile {
     padding: 10px;
   }
 
