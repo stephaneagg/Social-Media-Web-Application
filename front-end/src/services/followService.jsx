@@ -52,6 +52,24 @@ export async function getFollowSuggestions(limit = 5) {
   return await res.json(); // {[{userId, displayName, profileImageUrl, mutualCount, reason},...]}
 }
 
+
+export async function getRecentFollowers() {
+  const token = localStorage.getItem("token")
+
+  const res = await fetch(`${API_URL}recent`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch recent followers");
+  }
+
+  return await res.json(); // {[{id, displayName, profileImageUrl, createdAt},...]}
+}
+
 export async function follow(userId) {
   const token = localStorage.getItem("token")
 
