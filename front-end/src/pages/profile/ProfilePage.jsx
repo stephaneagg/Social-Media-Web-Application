@@ -29,7 +29,7 @@ export default function ProfilePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Refs for the menu dropdown and trigger button, used to detect outside clicks
   const menuRef = useRef(null);
