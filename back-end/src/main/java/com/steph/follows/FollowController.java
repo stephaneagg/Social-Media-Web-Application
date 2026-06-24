@@ -3,6 +3,7 @@ package com.steph.follows;
 import com.steph.exceptions.FollowException;
 import com.steph.exceptions.UserException;
 import com.steph.follows.DTOs.FollowSuggestionDTO;
+import com.steph.follows.DTOs.RecentFollowerDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.user.User;
 import jakarta.validation.constraints.Max;
@@ -47,6 +48,12 @@ public class FollowController {
         return followService.getFollowSuggestions(authenticatedUserId, limit);
     }
 
+    @GetMapping("recent")
+    public List<RecentFollowerDTO> getRecentFollowers(
+            @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId
+    ) {
+        return followService.getRecentFollowers(authenticatedUserId);
+    }
     // Create a follow relationship
     // Follow a User
     @PostMapping("{followedId}")

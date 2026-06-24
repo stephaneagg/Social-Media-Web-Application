@@ -3,6 +3,7 @@ package com.steph.follows;
 import com.steph.exceptions.FollowException;
 import com.steph.exceptions.UserException;
 import com.steph.follows.DTOs.FollowSuggestionDTO;
+import com.steph.follows.DTOs.RecentFollowerDTO;
 import com.steph.follows.projections.MutualSuggestionProjection;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.user.DTOs.UserProfileDTOMapper;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Array;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,6 +85,14 @@ public class FollowService {
         System.out.println("PopularSuggestions: " + popularsSuggestions);
 
         return Stream.concat(mutualSuggestions.stream(), popularsSuggestions.stream()).toList();
+    }
+
+
+    public List<RecentFollowerDTO> getRecentFollowers(Integer userId) {
+        return followRepository.findByFollowedIdAndCreatedAtAfter(userId, Instant.now().minus(30, ChronoUnit.DAYS))
+                .stream()
+                .map(f -> new RecentFollowerDTO(f.getFollower().getId(), f.getFollower().getDisplayName(), f.getFollower().getProfileImageUrl(), f.getCreatedAt()))
+                .toList();
     }
 
     /*

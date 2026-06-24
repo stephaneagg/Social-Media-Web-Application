@@ -6,12 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, FollowId> {
 
     List<Follow> findByFollowedId(Integer followedId);
     List<Follow> findByFollowerId(Integer followerId);
+
+    List<Follow> findByFollowedIdAndCreatedAtAfter(Integer followedId, Instant cutoff);
 
     @Query(value = """
         SELECT
