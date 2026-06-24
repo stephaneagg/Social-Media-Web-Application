@@ -7,6 +7,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
@@ -155,6 +156,18 @@ public class GlobalExceptionHandler {
                 exception.getMessage(),
                 webRequest.getDescription(false),
                 "MISSING_PARAMETER"
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorDetails> handleValidationException(HandlerMethodValidationException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "VALIDATION_ERROR"
         );
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);

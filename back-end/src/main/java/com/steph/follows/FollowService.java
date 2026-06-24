@@ -2,6 +2,8 @@ package com.steph.follows;
 
 import com.steph.exceptions.FollowException;
 import com.steph.exceptions.UserException;
+import com.steph.follows.DTOs.FollowSuggestionDTO;
+import com.steph.follows.projections.MutualSuggestionProjection;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.user.DTOs.UserProfileDTOMapper;
 import com.steph.user.User;
@@ -9,8 +11,11 @@ import com.steph.user.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FollowService {
@@ -44,6 +49,39 @@ public class FollowService {
                 .map(Follow::getFollowed)
                 .map(userProfileDTOMapper)
                 .toList();
+    }
+
+    // Find suggestions of users to follow. Calls findMutualFollowSuggestions and if the number of suggestions
+    // returned is less than the limit call findPopularFollowSuggestions to reach the limit
+    public List<FollowSuggestionDTO> getFollowSuggestions(Integer userId, Integer limit) {
+        List<MutualSuggestionProjection> mutuals = followRepository.findMutualFollowSuggestions(userId, limit);
+        List<FollowSuggestionDTO> mutualSuggestions = mutuals.stream()
+                .map(p -> new FollowSuggestionDTO(p.getUserId(), p.getDisplayName(), p.getProfileImageUrl(), p.getMutualCount(), FollowSuggestionDTO.SuggestionReason.MUTUAL))
+                .toList();
+        List<Integer> excludedIds = mutuals.stream().map(MutualSuggestionProjection::getUserId).toList();
+
+        int mutualCount = mutuals.size();
+
+        System.out.println("mutualSuggestions: " + mutualSuggestions);
+
+        // If findMutualFollowSuggestions returned enough suggestions return the list
+        if (mutualCount >= limit) {
+            return mutualSuggestions;
+        }
+        // else continue to call findPopularFollowSuggestions
+
+        limit -= mutualCount;
+        if (excludedIds.isEmpty()) {
+            excludedIds = List.of(-1);
+        }
+        List<FollowSuggestionDTO> popularsSuggestions = followRepository.findPopularFollowSuggestions(userId, excludedIds, limit)
+                .stream()
+                .map(p -> new FollowSuggestionDTO(p.getUserId(), p.getDisplayName(), p.getProfileImageUrl(), 0L, FollowSuggestionDTO.SuggestionReason.POPULAR))
+                .toList();
+
+        System.out.println("PopularSuggestions: " + popularsSuggestions);
+
+        return Stream.concat(mutualSuggestions.stream(), popularsSuggestions.stream()).toList();
     }
 
     /*

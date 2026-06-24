@@ -2,10 +2,14 @@ package com.steph.follows;
 
 import com.steph.exceptions.FollowException;
 import com.steph.exceptions.UserException;
+import com.steph.follows.DTOs.FollowSuggestionDTO;
 import com.steph.user.DTOs.UserProfileDTO;
 import com.steph.user.User;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
@@ -13,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("follows")
+@Validated
 public class FollowController {
 
     private final FollowService followService;
@@ -33,6 +38,13 @@ public class FollowController {
     @GetMapping("following/{userId}")
     public List<UserProfileDTO> getFollows(@PathVariable Integer userId){
         return followService.getFollows(userId);
+    }
+
+    @GetMapping("suggestions")
+    public List<FollowSuggestionDTO> getSuggestions(
+            @AuthenticationPrincipal(expression = "id") Integer authenticatedUserId,
+            @RequestParam(defaultValue = "5") @Min(1) @Max(50) Integer limit) {
+        return followService.getFollowSuggestions(authenticatedUserId, limit);
     }
 
     // Create a follow relationship
