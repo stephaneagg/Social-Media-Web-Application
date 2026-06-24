@@ -35,6 +35,23 @@ export async function getFollowees(userId) {
   return await res.json(); // {[{id, displayName, bio, profileImageUrl},...]}
 }
 
+export async function getFollowSuggestions(limit = 5) {
+  const token = localStorage.getItem("token")
+
+  const res = await fetch(`${API_URL}suggestions?limit=${limit}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch follow suggestions");
+  }
+
+  return await res.json(); // {[{userId, displayName, profileImageUrl, mutualCount, reason},...]}
+}
+
 export async function follow(userId) {
   const token = localStorage.getItem("token")
 
