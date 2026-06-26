@@ -65,8 +65,6 @@ public class FollowService {
 
         int mutualCount = mutuals.size();
 
-        System.out.println("mutualSuggestions: " + mutualSuggestions);
-
         // If findMutualFollowSuggestions returned enough suggestions return the list
         if (mutualCount >= limit) {
             return mutualSuggestions;
@@ -81,8 +79,6 @@ public class FollowService {
                 .stream()
                 .map(p -> new FollowSuggestionDTO(p.getUserId(), p.getDisplayName(), p.getProfileImageUrl(), 0L, FollowSuggestionDTO.SuggestionReason.POPULAR))
                 .toList();
-
-        System.out.println("PopularSuggestions: " + popularsSuggestions);
 
         return Stream.concat(mutualSuggestions.stream(), popularsSuggestions.stream()).toList();
     }
