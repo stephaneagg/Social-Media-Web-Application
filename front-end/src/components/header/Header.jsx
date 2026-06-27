@@ -1,6 +1,8 @@
 import "./header.scss"
 import { ThemeContext } from "../../context/themeContext.jsx";
 import { AuthContext } from "../../context/authContext.jsx";
+import { getRecentFollowers } from "../../services/followService"
+import { timeAgo } from "../../utils/formatDate";
 import AppsDockModal from "./AppsDockModal"
 import HomeIcon from '@mui/icons-material/Home';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -20,6 +22,8 @@ export default function Header() {
     const { logout } = useContext(AuthContext);
     const [searchInput, setSearchInput] = useState("");
     const [showAppsDockModal, setShowAppsDockModal] = useState(false);
+    const [showRecentFollowers, setShowRecentFollowers] = useState(false);
+    const [recentFollowers, setRecentFollowers] = useState(null);
 
     const navigate = useNavigate();
 
@@ -32,8 +36,8 @@ export default function Header() {
     useEffect(() => {
         const handleClickOutside = (event) => {
         if (
-            !event.target.closest(".userMenu") &&
-            !event.target.closest(".user")
+            !event.target.closest(".user") //&&
+            // !event.target.closest(".userMenu")
         ) {
             setUserMenu(false);
         }
@@ -45,6 +49,36 @@ export default function Header() {
         document.removeEventListener("click", handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+        if (
+            !event.target.closest(".notifications") //&&
+            // !event.target.closest(".follower")
+        ) {
+            setShowRecentFollowers(false);
+        }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+        document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
+    useEffect(() => {
+        handleGetRecentFollowers()
+    },[])
+
+    async function handleGetRecentFollowers() {
+        const data = await getRecentFollowers();
+        setRecentFollowers(data);
+    }
+
+    const goToProfile = (id) => {
+        navigate(`/profile/${id}`)
+    }
 
     return (
         <div className="header">
@@ -84,7 +118,25 @@ export default function Header() {
                     <PersonIcon />
                 </Link>
 
-                <NotificationsIcon />
+                <div className="notifications" onClick={() => {handleGetRecentFollowers(); setShowRecentFollowers((prev) => !prev)}}>
+                    <NotificationsIcon />
+                    <div className="recentFollowers">
+                    {showRecentFollowers && ( recentFollowers.map((follower) => (
+                            <div
+                                className="follower"
+                                key={follower.userId}
+                                onClick={() => goToProfile(follower.userId)}
+                            >
+                                <img src={follower.profileImageUrl ? `http://localhost:8080${follower.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
+                                <span>{`${follower.displayName} followed you ${timeAgo(follower.createdAt)}`}</span>
+
+                            </div>
+                        ))
+                    )}
+                    </div>
+                </div>
+
+
                 <div className="user" onClick={() => setUserMenu((prev) => !prev)}>
                     <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt=""/>
                     <span>{currentUser.displayName}</span>

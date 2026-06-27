@@ -58,6 +58,53 @@
       display: none;
     }
 
+    .notifications {
+
+
+      .recentFollowers {
+        position: absolute;
+
+        display: flex;
+        flex-direction: column;
+
+        top: 40px;
+        right: 0;
+
+        background-color: var(--bg-soft);
+        padding: 8px;
+
+        box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        z-index: 9999;
+
+        .follower {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px 12px;
+          transition: background-color 0.15s ease, color 0.15s ease;
+          cursor: pointer;
+
+          img{
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+          span{
+            font-weight: 500;
+            color: var(--text-soft);
+          }
+
+          &:hover {
+            background-color: var(--bg);
+            border-radius: 8px;
+          }
+        }
+      }
+
+
+    }
+
     .user {
       display: flex;
       align-items: center;
