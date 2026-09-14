@@ -1,6 +1,6 @@
 services:
   db:
-    container_name: postgres-spring-boot
+    container_name: social-media-db
     image: postgres:18
     environment:
       POSTGRES_DB: pgdev
@@ -15,8 +15,22 @@ services:
       - db
     restart: unless-stopped
 
+  backend:
+    container_name: social-media-backend
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - db
+    depends_on:
+      - db
+    restart: unless-stopped
+
 networks:
   db:
     driver: bridge
+
 volumes:
   db:
