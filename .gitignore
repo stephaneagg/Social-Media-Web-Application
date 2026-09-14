@@ -63,3 +63,6 @@ uploads/
 # Frontend (Vite)
 front-end/node_modules/
 front-end/dist/
+
+# Database backups
+*.sql
