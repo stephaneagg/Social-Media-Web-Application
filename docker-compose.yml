@@ -1,8 +1,9 @@
 services:
   db:
     container_name: postgres-spring-boot
-    image: postgres:latest
+    image: postgres:18
     environment:
+      POSTGRES_DB: pgdev
       POSTGRES_USER: stephg
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
