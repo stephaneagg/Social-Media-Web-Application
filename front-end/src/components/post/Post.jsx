@@ -1,3 +1,4 @@
+import "./post.scss";
 import { useState, useContext, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -11,7 +12,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import { timeAgo } from "../../utils/formatDate";
 
-import "./post.scss";
+import { API_BASE_URL } from "../../config";
 
 export default function Post(props) {
 
@@ -77,7 +78,7 @@ export default function Post(props) {
         <div className="user">
           <div className="userInfo">
             <img
-              src={`http://localhost:8080${props.post.userProfileImageUrl}`}
+              src={`${API_BASE_URL}${props.post.userProfileImageUrl}`}
               alt=""
             />
             <div className="details">
@@ -139,7 +140,7 @@ export default function Post(props) {
         <div className="content">
           <p>{props.post.content}</p>
           <img
-            src={`http://localhost:8080${props.post.imageUrl}`}
+            src={`${API_BASE_URL}${props.post.imageUrl}`}
             alt=""
           />
         </div>

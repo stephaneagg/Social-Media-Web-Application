@@ -3,6 +3,8 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "../../context/authContext.jsx";
 
+import { API_BASE_URL } from "../../config";
+
 export default function LeftBar() {
 
   const { currentUser } = useContext(AuthContext)
@@ -17,7 +19,7 @@ export default function LeftBar() {
         <div className="menu">
 
           <button className="user" onClick={() => navigate(`/profile/${currentUser.id}`)} >
-            <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt="" />
+            <img src={`${API_BASE_URL}${currentUser.profileImageUrl}`} alt="" />
             <span>{currentUser.displayName}</span>
           </button>
 

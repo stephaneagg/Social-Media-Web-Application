@@ -15,6 +15,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"
 
+import { API_BASE_URL } from "../../config";
+
 export default function Header() {
     const { toggle, darkMode } = useContext(ThemeContext);
     const { currentUser } = useContext(AuthContext)
@@ -127,7 +129,7 @@ export default function Header() {
                                 key={follower.userId}
                                 onClick={() => goToProfile(follower.userId)}
                             >
-                                <img src={follower.profileImageUrl ? `http://localhost:8080${follower.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
+                                <img src={follower.profileImageUrl ? `${API_BASE_URL}${follower.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
                                 <span>{`${follower.displayName} followed you ${timeAgo(follower.createdAt)}`}</span>
 
                             </div>
@@ -138,7 +140,7 @@ export default function Header() {
 
 
                 <div className="user" onClick={() => setUserMenu((prev) => !prev)}>
-                    <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt=""/>
+                    <img src={`${API_BASE_URL}${currentUser.profileImageUrl}`} alt=""/>
                     <span>{currentUser.displayName}</span>
 
                     {userMenu && (

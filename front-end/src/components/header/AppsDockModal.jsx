@@ -8,13 +8,15 @@ import galleryIcon from "/resources/galleryIcon.png"
 import gamingIcon from "/resources/gameIcon.png"
 import "./appsDockModal.scss";
 
+import { API_BASE_URL } from "../../config";
+
 
 export default function AppsDockModal({ onClose }) {
 
   const { currentUser } = useContext(AuthContext);
 
   const APPS = [
-    { label: "Profile", to: `/profile/${currentUser.id}`, icon:`http://localhost:8080${currentUser.profileImageUrl}`},
+    { label: "Profile", to: `/profile/${currentUser.id}`, icon:`${API_BASE_URL}${currentUser.profileImageUrl}`},
     { label: "Followers", to: "", icon:followersIcon},
     { label: "Groups", to: "", icon: groupsIcon },
     { label: "Messages", to: "", icon: messagesIcon },

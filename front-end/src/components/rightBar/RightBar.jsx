@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { getFollowers, getFollowSuggestions } from "../../services/followService"
 import { AuthContext } from "../../context/authContext" // adjust path to match your project structure
 
+import { API_BASE_URL } from "../../config";
+
 export default function RightBar() {
   const { currentUser } = useContext(AuthContext)
   const id = currentUser.id
@@ -41,7 +43,7 @@ export default function RightBar() {
               onClick={() => goToProfile(suggestion.userId)}
             >
               <div className="userInfo">
-                <img src={suggestion.profileImageUrl ? `http://localhost:8080${suggestion.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
+                <img src={suggestion.profileImageUrl ? `${API_BASE_URL}${suggestion.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
                 <div className="userText">
                   <span className="name">{suggestion.displayName}</span>
                   <span className="subtext">
@@ -65,7 +67,7 @@ export default function RightBar() {
               onClick={() => goToProfile(follower.id)}
             >
               <div className="userInfo">
-                <img src={follower.profileImageUrl ? `http://localhost:8080${follower.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
+                <img src={follower.profileImageUrl ? `${API_BASE_URL}${follower.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
                 <span>{follower.displayName}</span>
               </div>
             </div>

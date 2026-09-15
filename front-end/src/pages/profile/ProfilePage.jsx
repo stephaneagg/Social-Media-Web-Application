@@ -12,6 +12,8 @@ import { getUser } from "../../services/userService"
 import { getUsersPosts } from "../../services/postService"
 import { getFollowers, getFollowees, follow, unfollow } from "../../services/followService"
 
+import { API_BASE_URL } from "../../config";
+
 
 export default function ProfilePage() {
 
@@ -154,7 +156,7 @@ export default function ProfilePage() {
       <div className="images">
         <img
           src={user && user.coverImageUrl != null ?
-            `http://localhost:8080${user.coverImageUrl}`
+            `${API_BASE_URL}${user.coverImageUrl}`
             :
             "/resources/tempCoverPic.jpg"}
           alt="Cover Picture"
@@ -162,7 +164,7 @@ export default function ProfilePage() {
         />
         <img
           src={user && user.profileImageUrl != null ?
-            `http://localhost:8080${user.profileImageUrl}`
+            `${API_BASE_URL}${user.profileImageUrl}`
             :
             "/resources/tempProfileIcon.jpg"}
           alt="Profile Picture"

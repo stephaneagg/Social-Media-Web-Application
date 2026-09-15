@@ -6,6 +6,8 @@ import { getComments, createComment, deleteComment, editComment } from "../../se
 import { timeAgo } from "../../utils/formatDate";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
+import { API_BASE_URL } from "../../config";
+
 export default function Comments(props) {
 
   const {currentUser} = useContext(AuthContext);
@@ -108,7 +110,7 @@ export default function Comments(props) {
   return (
     <div className="comments">
       <div className="write">
-        <img src={`http://localhost:8080${currentUser.profileImageUrl}`} alt="" />
+        <img src={`${API_BASE_URL}${currentUser.profileImageUrl}`} alt="" />
         <form onSubmit={handleAddComment}>
           <input
             type="text"
@@ -129,7 +131,7 @@ export default function Comments(props) {
 
       {comments.map( (comment) => (
         <div className="comment" key={comment.id}>
-          <img src={`http://localhost:8080${comment.profilePictureUrl}`} alt="" />
+          <img src={`${API_BASE_URL}${comment.profilePictureUrl}`} alt="" />
           <div className="comment-info">
             <span>{comment.displayName}</span>
             { editing == comment.id ?
