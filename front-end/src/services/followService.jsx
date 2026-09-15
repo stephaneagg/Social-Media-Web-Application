@@ -1,10 +1,11 @@
+import { API_BASE_URL } from "../config";
 
-const API_URL = "http://localhost:8080/follows/"
+const API_URL = `${API_BASE_URL}/follows`;
 
 export async function getFollowers(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}followers/${userId}`, {
+  const res = await fetch(`${API_URL}/followers/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -21,7 +22,7 @@ export async function getFollowers(userId) {
 export async function getFollowees(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}following/${userId}`, {
+  const res = await fetch(`${API_URL}/following/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -38,7 +39,7 @@ export async function getFollowees(userId) {
 export async function getFollowSuggestions(limit = 5) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}suggestions?limit=${limit}`, {
+  const res = await fetch(`${API_URL}/suggestions?limit=${limit}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -56,7 +57,7 @@ export async function getFollowSuggestions(limit = 5) {
 export async function getRecentFollowers() {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}recent`, {
+  const res = await fetch(`${API_URL}/recent`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -73,7 +74,7 @@ export async function getRecentFollowers() {
 export async function follow(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}${userId}`, {
+  const res = await fetch(`${API_URL}/${userId}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -90,7 +91,7 @@ export async function follow(userId) {
 export async function unfollow(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}${userId}`, {
+  const res = await fetch(`${API_URL}/${userId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

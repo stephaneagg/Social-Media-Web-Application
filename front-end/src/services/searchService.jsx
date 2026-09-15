@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:8080/search"
+import { API_BASE_URL } from "../config";
+
+const API_URL = `${API_BASE_URL}/search`;
 
 export async function search(query) {
   const token = localStorage.getItem("token");

@@ -1,6 +1,6 @@
-const API_URL = "http://localhost:8080/comments"
+import { API_BASE_URL } from "../config";
 
-
+const API_URL = `${API_BASE_URL}/comments`;
 
 export async function getComments(postId) {
   const token = localStorage.getItem("token");

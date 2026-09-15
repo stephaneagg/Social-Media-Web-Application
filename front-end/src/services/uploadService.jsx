@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:8080/upload/"
+import { API_BASE_URL } from "../config";
+
+const API_URL = `${API_BASE_URL}/upload`;
 
 export async function uploadUserPhoto(file) {
   const token = localStorage.getItem("token")
@@ -6,7 +8,7 @@ export async function uploadUserPhoto(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`${API_URL}user`, {
+  const res = await fetch(`${API_URL}/user`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -27,7 +29,7 @@ export async function uploadPostPhoto(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`${API_URL}post`, {
+  const res = await fetch(`${API_URL}/post`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

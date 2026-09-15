@@ -1,9 +1,11 @@
-const API_URL = "http://localhost:8080/users/"
+import { API_BASE_URL } from "../config";
+
+const API_URL = `${API_BASE_URL}/users`;
 
 export async function getUser(userId) {
   const token = localStorage.getItem("token")
 
-  const res = await fetch(`${API_URL}${userId}`, {
+  const res = await fetch(`${API_URL}/${userId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -27,7 +29,7 @@ export async function editUser({userId, displayName, bio, profileImageUrl, cover
   if (profileImageUrl != null) body.profileImageUrl = profileImageUrl;
   if (coverImageUrl != null) body.coverImageUrl = coverImageUrl;
 
-  const res = await fetch(`${API_URL}${userId}`, {
+  const res = await fetch(`${API_URL}/${userId}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -57,7 +59,7 @@ export async function changePassword({userId, currentPassword, newPassword, conf
                 newPassword: newPassword,
                 confirmPassword: confirmPassword};
 
-  const res = await fetch(`${API_URL}${userId}/password`, {
+  const res = await fetch(`${API_URL}/${userId}/password`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -88,7 +90,7 @@ export async function deleteUser(userId, password) {
 
   const body = {password: password}
 
-  const res = await fetch(`${API_URL}${userId}`, {
+  const res = await fetch(`${API_URL}/${userId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

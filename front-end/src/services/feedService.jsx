@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:8080/feed"
+import { API_BASE_URL } from "../config";
+
+const API_URL = `${API_BASE_URL}/feed`;
 
 export async function getFeed(){
   const token = localStorage.getItem("token");
