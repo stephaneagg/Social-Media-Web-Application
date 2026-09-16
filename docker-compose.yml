@@ -12,7 +12,7 @@ services:
     ports:
       - "5332:5432"
     networks:
-      - db
+      - app-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U stephg -d pgdev"]
       interval: 10s
@@ -28,14 +28,27 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - db
+      - app-network
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
 
+  frontend:
+    container_name: social-media-frontend
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
 networks:
-  db:
+  app-network:
     driver: bridge
 
 volumes:
