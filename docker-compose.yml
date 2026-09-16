@@ -32,6 +32,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
     restart: unless-stopped
 
   frontend:
@@ -53,3 +55,4 @@ networks:
 
 volumes:
   db:
+  uploads:
