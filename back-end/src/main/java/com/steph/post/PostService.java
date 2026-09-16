@@ -100,6 +100,13 @@ public class PostService {
             throw new AccessDeniedException("You can only delete posts for your own profile");
         }
 
+        // Grab old image URL in case of update
+        String imageUrl = post.getImageUrl();
+
+        if (imageUrl != null) {
+            fileStorageService.deleteFile(imageUrl);
+        }
+
         postRepository.deleteById(postId);
     }
 }
