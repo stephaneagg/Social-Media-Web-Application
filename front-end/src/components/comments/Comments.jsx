@@ -131,7 +131,7 @@ export default function Comments(props) {
 
       {comments.map( (comment) => (
         <div className="comment" key={comment.id}>
-          <img src={`${API_BASE_URL}${comment.profilePictureUrl}`} alt="" />
+          <img src={comment.profilePictureUrl} alt="" />
           <div className="comment-info">
             <span>{comment.displayName}</span>
             { editing == comment.id ?
