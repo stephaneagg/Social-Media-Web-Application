@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/feed")
+@RequestMapping("api/v1/feed")
 public class FeedController {
 
     private final FeedService feedService;

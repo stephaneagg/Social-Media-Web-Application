@@ -17,7 +17,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
-@RequestMapping("follows")
+@RequestMapping("api/v1/follows")
 @Validated
 public class FollowController {
 

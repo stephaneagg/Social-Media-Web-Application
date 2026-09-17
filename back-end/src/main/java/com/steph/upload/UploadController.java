@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("api/v1/upload")
 public class UploadController {
 
     private final FileStorageService fileStorageService;
