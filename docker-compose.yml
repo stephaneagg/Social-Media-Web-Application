@@ -3,9 +3,9 @@ services:
     container_name: social-media-db
     image: postgres:18
     environment:
-      POSTGRES_DB: pgdev
-      POSTGRES_USER: stephg
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /data/postgres
     volumes:
       - db:/data/postgres
@@ -25,6 +25,15 @@ services:
     build:
       context: ./back-end
       dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION}
     ports:
       - "8080:8080"
     networks:
