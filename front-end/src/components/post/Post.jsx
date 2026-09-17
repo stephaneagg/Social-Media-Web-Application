@@ -64,7 +64,7 @@ export default function Post(props) {
   }
 
   function handleLink() {
-    navigator.clipboard.writeText(`http://localhost:5173/post/${props.post.id}`);
+    navigator.clipboard.writeText(`http://localhost:3000/post/${props.post.id}`);
     setCopied(true);
     setTimeout(() => {
       setCopied(false);

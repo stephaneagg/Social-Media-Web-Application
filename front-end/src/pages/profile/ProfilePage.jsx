@@ -84,7 +84,7 @@ export default function ProfilePage() {
   }
 
   function handleLink() {
-    navigator.clipboard.writeText(`http://localhost:5173/profile/${id}`);
+    navigator.clipboard.writeText(`http://localhost:3000/profile/${id}`);
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
