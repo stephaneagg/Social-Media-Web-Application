@@ -18,7 +18,7 @@ export default function LoginForm() {
       await login(loginInput, password);
       navigate("/");
     } catch (err) {
-      setError("Invalid credentials");
+      setError(err.message);
     }
   };
 
@@ -40,7 +40,7 @@ export default function LoginForm() {
 
       <button type="submit">Login</button>
 
-      {error && <p>{error}</p>}
+      {error && <p style={{color:'#f0544f'}}>{error}</p>}
     </form>
   );
 }
