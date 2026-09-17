@@ -6,7 +6,7 @@ export default function UserCard({ user }) {
   return (
     <Link to={`/profile/${user.id}`} className="userCard">
       <img
-        src={`${API_BASE_URL}${user.profileImageUrl}`}
+        src={user.profileImageUrl}
         alt=""
       />
       <span>{user.displayName}</span>

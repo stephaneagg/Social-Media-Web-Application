@@ -156,7 +156,7 @@ export default function ProfilePage() {
       <div className="images">
         <img
           src={user && user.coverImageUrl != null ?
-            `${API_BASE_URL}${user.coverImageUrl}`
+            user.coverImageUrl
             :
             "/resources/tempCoverPic.jpg"}
           alt="Cover Picture"
@@ -164,7 +164,7 @@ export default function ProfilePage() {
         />
         <img
           src={user && user.profileImageUrl != null ?
-            `${API_BASE_URL}${user.profileImageUrl}`
+            user.profileImageUrl
             :
             "/resources/tempProfileIcon.jpg"}
           alt="Profile Picture"

@@ -129,7 +129,7 @@ export default function Header() {
                                 key={follower.userId}
                                 onClick={() => goToProfile(follower.userId)}
                             >
-                                <img src={follower.profileImageUrl ? `${API_BASE_URL}${follower.profileImageUrl}` : "/resources/tempProfileIcon.jpeg"} alt="" />
+                                <img src={follower.profileImageUrl ? follower.profileImageUrl : "/resources/tempProfileIcon.jpeg"} alt="" />
                                 <span>{`${follower.displayName} followed you ${timeAgo(follower.createdAt)}`}</span>
 
                             </div>
@@ -140,7 +140,7 @@ export default function Header() {
 
 
                 <div className="user" onClick={() => setUserMenu((prev) => !prev)}>
-                    <img src={`${API_BASE_URL}${currentUser.profileImageUrl}`} alt=""/>
+                    <img src={currentUser.profileImageUrl} alt=""/>
                     <span>{currentUser.displayName}</span>
 
                     {userMenu && (

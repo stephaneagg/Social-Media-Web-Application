@@ -1,9 +1,9 @@
 import { API_BASE_URL } from "../config";
 
-const API_URL = `${API_BASE_URL}/`;
+const API_URL = API_BASE_URL;
 
 export async function register(username, email, password) {
-    const res = await fetch(`${API_URL}api/v1/auth/register`, {
+    const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export async function register(username, email, password) {
 }
 
 export async function login(login,password) {
-    const res = await fetch(`${API_URL}api/v1/auth/authenticate`, {
+    const res = await fetch(`${API_URL}/auth/authenticate`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export async function login(login,password) {
 }
 
 export async function getCurrentUser(token) {
-    const res = await fetch(`${API_URL}users/me`, {
+    const res = await fetch(`${API_URL}/users/me`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

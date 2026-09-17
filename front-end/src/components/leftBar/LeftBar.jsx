@@ -19,7 +19,7 @@ export default function LeftBar() {
         <div className="menu">
 
           <button className="user" onClick={() => navigate(`/profile/${currentUser.id}`)} >
-            <img src={`${API_BASE_URL}${currentUser.profileImageUrl}`} alt="" />
+            <img src={currentUser.profileImageUrl} alt="" />
             <span>{currentUser.displayName}</span>
           </button>
 

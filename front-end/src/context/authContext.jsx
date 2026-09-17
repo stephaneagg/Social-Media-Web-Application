@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
     const user = await authService.getCurrentUser(token);
 
     // 4. store user
+    console.log("Authenticated user:", user);
     setCurrentUser(user);
   };
 
@@ -49,7 +50,7 @@ export function AuthProvider({ children }) {
 
   // auto-login on refresh
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("token");
 
     if (!currentUser && token) {
       authService

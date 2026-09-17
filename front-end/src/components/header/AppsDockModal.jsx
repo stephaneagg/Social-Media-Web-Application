@@ -16,7 +16,7 @@ export default function AppsDockModal({ onClose }) {
   const { currentUser } = useContext(AuthContext);
 
   const APPS = [
-    { label: "Profile", to: `/profile/${currentUser.id}`, icon:`${API_BASE_URL}${currentUser.profileImageUrl}`},
+    { label: "Profile", to: `/profile/${currentUser.id}`, icon: currentUser.profileImageUrl},
     { label: "Followers", to: "", icon:followersIcon},
     { label: "Groups", to: "", icon: groupsIcon },
     { label: "Messages", to: "", icon: messagesIcon },

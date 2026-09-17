@@ -78,7 +78,7 @@ export default function Post(props) {
         <div className="user">
           <div className="userInfo">
             <img
-              src={`${API_BASE_URL}${props.post.userProfileImageUrl}`}
+              src={props.post.userProfileImageUrl}
               alt=""
             />
             <div className="details">
@@ -140,7 +140,7 @@ export default function Post(props) {
         <div className="content">
           <p>{props.post.content}</p>
           <img
-            src={`${API_BASE_URL}${props.post.imageUrl}`}
+            src={props.post.imageUrl}
             alt=""
           />
         </div>

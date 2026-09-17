@@ -110,7 +110,7 @@ export default function Comments(props) {
   return (
     <div className="comments">
       <div className="write">
-        <img src={`${API_BASE_URL}${currentUser.profileImageUrl}`} alt="" />
+        <img src={currentUser.profileImageUrl} alt="" />
         <form onSubmit={handleAddComment}>
           <input
             type="text"
