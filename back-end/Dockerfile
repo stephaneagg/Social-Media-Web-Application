@@ -1,5 +1,5 @@
 # BUILD
-FROM eclipse-temurin:17-jdk as BUILD
+FROM eclipse-temurin:21-jdk as BUILD
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Runtime
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
