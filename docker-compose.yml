@@ -1,5 +1,6 @@
 services:
   db:
+    # PostgreSQL database
     container_name: social-media-db
     image: postgres:18
     environment:
@@ -21,6 +22,7 @@ services:
     restart: unless-stopped
 
   backend:
+    # Spring Boot REST API
     container_name: social-media-backend
     build:
       context: ./back-end
@@ -52,6 +54,7 @@ services:
     restart: unless-stopped
 
   frontend:
+    # React application served by Nginx
     container_name: social-media-frontend
     build:
       context: ./front-end
@@ -72,9 +75,12 @@ services:
     restart: unless-stopped
 
 networks:
+  # Internal network used for service-to-service communication
   app-network:
     driver: bridge
 
 volumes:
+  # Persistent PostgreSQL data
   db:
+  # Persistent user/post uploads
   uploads:
