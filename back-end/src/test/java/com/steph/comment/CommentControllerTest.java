@@ -57,7 +57,7 @@ class CommentControllerTest {
 
         when(commentService.getComments(10)).thenReturn(List.of(first, second));
 
-        mockMvc.perform(get("/comments/post/10"))
+        mockMvc.perform(get("/api/v1/comments/post/10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -76,7 +76,7 @@ class CommentControllerTest {
 
         when(commentService.createComment(any(CreateCommentDTO.class), eq(10), eq(5))).thenReturn(created);
 
-        mockMvc.perform(post("/comments/post/10")
+        mockMvc.perform(post("/api/v1/comments/post/10")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -97,7 +97,7 @@ class CommentControllerTest {
 
         when(commentService.updateComment(any(UpdateCommentDTO.class), eq(3), eq(5))).thenReturn(updated);
 
-        mockMvc.perform(put("/comments/3")
+        mockMvc.perform(put("/api/v1/comments/3")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -111,7 +111,7 @@ class CommentControllerTest {
     void deleteComment_callsService() throws Exception {
         authenticateAs(5);
 
-        mockMvc.perform(delete("/comments/3"))
+        mockMvc.perform(delete("/api/v1/comments/3"))
                 .andExpect(status().isOk());
 
         verify(commentService).deleteComment(3, 5);

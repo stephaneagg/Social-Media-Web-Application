@@ -54,7 +54,7 @@ class FollowControllerTest {
 
         when(followService.getFollowers(10)).thenReturn(List.of(user1, user2));
 
-        mockMvc.perform(get("/follows/followers/10"))
+        mockMvc.perform(get("/api/v1/follows/followers/10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -70,7 +70,7 @@ class FollowControllerTest {
 
         when(followService.getFollows(5)).thenReturn(List.of(user1));
 
-        mockMvc.perform(get("/follows/following/5"))
+        mockMvc.perform(get("/api/v1/follows/following/5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(3));
@@ -91,7 +91,7 @@ class FollowControllerTest {
         when(followService.follow(2, 1))
                 .thenReturn(ResponseEntity.ok().build());
 
-        mockMvc.perform(post("/follows/2"))
+        mockMvc.perform(post("/api/v1/follows/2"))
                 .andExpect(status().isOk());
 
         verify(followService).follow(2, 1);
@@ -110,7 +110,7 @@ class FollowControllerTest {
         when(followService.unfollow(2, 1))
                 .thenReturn(ResponseEntity.ok().build());
 
-        mockMvc.perform(delete("/follows/2"))
+        mockMvc.perform(delete("/api/v1/follows/2"))
                 .andExpect(status().isOk());
 
         verify(followService).unfollow(2, 1);

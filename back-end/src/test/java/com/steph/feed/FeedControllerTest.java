@@ -51,7 +51,7 @@ class FeedControllerTest {
 
         when(feedService.getFeed(5)).thenReturn(List.of(first, second));
 
-        mockMvc.perform(get("/feed"))
+        mockMvc.perform(get("/api/v1/feed"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))

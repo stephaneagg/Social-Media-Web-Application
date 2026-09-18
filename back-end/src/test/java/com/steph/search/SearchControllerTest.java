@@ -43,7 +43,7 @@ class SearchControllerTest {
 
         when(searchService.search(eq("steph"))).thenReturn(resultsDTO);
 
-        mockMvc.perform(get("/search").param("query", "steph"))
+        mockMvc.perform(get("/api/v1/search").param("query", "steph"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.users.length()").value(1))
                 .andExpect(jsonPath("$.users[0].displayName").value("steph"))
@@ -57,7 +57,7 @@ class SearchControllerTest {
 
         when(searchService.search(eq("nomatch"))).thenReturn(resultsDTO);
 
-        mockMvc.perform(get("/search").param("query", "nomatch"))
+        mockMvc.perform(get("/api/v1/search").param("query", "nomatch"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.users.length()").value(0))
                 .andExpect(jsonPath("$.posts.length()").value(0));
@@ -65,7 +65,7 @@ class SearchControllerTest {
 
     @Test
     void search_shouldReturnBadRequest_whenQueryParamIsMissing() throws Exception {
-        mockMvc.perform(get("/search"))
+        mockMvc.perform(get("/api/v1/search"))
                 .andExpect(status().isBadRequest());
     }
 }

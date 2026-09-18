@@ -54,7 +54,7 @@ class UserControllerTest {
 
         when(userService.getAllUsers()).thenReturn(List.of(user1, user2));
 
-        mockMvc.perform(get("/users"))
+        mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -68,7 +68,7 @@ class UserControllerTest {
         UserProfileDTO user = new UserProfileDTO(1, "steph", null, null, null);
         when(userService.getUserById(1)).thenReturn(user);
 
-        mockMvc.perform(get("/users/1"))
+        mockMvc.perform(get("/api/v1/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.displayName").value("steph"));
@@ -83,7 +83,7 @@ class UserControllerTest {
 
         when(userService.updateUser(any(UpdateUserDTO.class), eq(1), eq(1))).thenReturn(updatedUser);
 
-        mockMvc.perform(put("/users/1")
+        mockMvc.perform(put("/api/v1/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
                 .andExpect(status().isOk())
@@ -103,7 +103,7 @@ class UserControllerTest {
         when(userService.updateUser(any(UpdateUserDTO.class), eq(1), eq(1)))
                 .thenThrow(new UserException("User does not exist"));
 
-        mockMvc.perform(put("/users/1")
+        mockMvc.perform(put("/api/v1/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
                 .andExpect(status().isNotFound())
@@ -117,7 +117,7 @@ class UserControllerTest {
         Integer userId = 1;
         DeleteUserDTO dto = new DeleteUserDTO("correctPassword");
 
-        mockMvc.perform(delete("/users/{id}", userId)
+        mockMvc.perform(delete("/api/v1/users/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isNoContent());
@@ -134,7 +134,7 @@ class UserControllerTest {
         doThrow(new UserException("User does not exist"))
                 .when(userService).deleteUser(eq(1), any(DeleteUserDTO.class), eq(1));
 
-        mockMvc.perform(delete("/users/1")
+        mockMvc.perform(delete("/api/v1/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isNotFound())

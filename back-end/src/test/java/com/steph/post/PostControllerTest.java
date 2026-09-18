@@ -58,7 +58,7 @@ class PostControllerTest {
         PostDTO post = new PostDTO(1, 10, "steph", "hello", null, "https://img", 0, Instant.parse("2026-01-01T10:00:00Z"));
         when(postService.getPost(1)).thenReturn(post);
 
-        mockMvc.perform(get("/posts/1"))
+        mockMvc.perform(get("/api/v1/posts/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.authorId").value(10))
@@ -75,7 +75,7 @@ class PostControllerTest {
 
         when(postService.getPostsByUser(10)).thenReturn(List.of(first, second));
 
-        mockMvc.perform(get("/posts/user/10"))
+        mockMvc.perform(get("/api/v1/posts/user/10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -93,7 +93,7 @@ class PostControllerTest {
 
         when(postService.createPost(any(CreatePostDTO.class), eq(10))).thenReturn(created);
 
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -114,7 +114,7 @@ class PostControllerTest {
 
         when(postService.updatePost(any(UpdatePostDTO.class), eq(1), eq(10))).thenReturn(updated);
 
-        mockMvc.perform(put("/posts/1")
+        mockMvc.perform(put("/api/v1/posts/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -127,7 +127,7 @@ class PostControllerTest {
     void deletePost_shouldCallServiceAndReturnNoContent() throws Exception {
         authenticateAs(10);
 
-        mockMvc.perform(delete("/posts/1"))
+        mockMvc.perform(delete("/api/v1/posts/1"))
                 .andExpect(status().isNoContent());
 
         verify(postService).deletePost(1, 10);
