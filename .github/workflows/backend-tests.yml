@@ -69,6 +69,8 @@ jobs:
       - name: Check service health
         run: |
           docker compose ps
+          sleep 15
+          docker compose ps
           test "$(docker inspect --format='{{.State.Health.Status}}' social-media-db)" = "healthy"
           test "$(docker inspect --format='{{.State.Health.Status}}' social-media-backend)" = "healthy"
           test "$(docker inspect --format='{{.State.Health.Status}}' social-media-frontend)" = "healthy"
