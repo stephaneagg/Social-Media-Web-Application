@@ -29,3 +29,17 @@ jobs:
 
       - name: Run tests
         run: ./mvnw clean test
+
+  docker-build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build backend image
+        run: docker build -t social-media-backend:ci ./back-end
+
+      - name: Build frontend image
+        run: docker build -t social-media-frontend:ci ./front-end
