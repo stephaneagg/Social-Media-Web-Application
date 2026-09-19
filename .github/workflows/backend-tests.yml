@@ -43,3 +43,40 @@ jobs:
 
       - name: Build frontend image
         run: docker build -t social-media-frontend:ci ./front-end
+
+  compose-test:
+    name: Test Docker Compose Stack
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Create test environment
+        run: |
+          cat > .env <<'EOF'
+          DB_NAME=pgdev
+          DB_USER=stephg
+          DB_PASSWORD=testpassword
+          JWT_SECRET=dGVzdC1zZWNyZXQta2V5LWZvci10ZXN0aW5n
+          JWT_EXPIRATION=86400000
+          JWT_REFRESH_EXPIRATION=604800000
+          EOF
+
+      - name: Start Docker Compose stack
+        run: docker compose up -d --build
+
+      - name: Check service health
+        run: |
+          docker compose ps
+          test "$(docker inspect --format='{{.State.Health.Status}}' social-media-db)" = "healthy"
+          test "$(docker inspect --format='{{.State.Health.Status}}' social-media-backend)" = "healthy"
+          test "$(docker inspect --format='{{.State.Health.Status}}' social-media-frontend)" = "healthy"
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Stop Docker Compose stack
+        if: always()
+        run: docker compose down -v
